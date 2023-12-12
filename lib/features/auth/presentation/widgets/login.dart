@@ -34,34 +34,32 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.grey,
         resizeToAvoidBottomInset: false,
         // appBar: AppBar(
         //   centerTitle: true,
         //   title: const Text("TRAVEL APP"),
         // ),
-        body: Container(
-          height: 880,
-          width: double.infinity,
-          decoration: BoxDecoration(
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.1),
               image: const DecorationImage(
-                //colorFilter: ColorFilter.linearToSrgbGamma(),
+                colorFilter: ColorFilter.linearToSrgbGamma(),
                 image: AssetImage(
                   'assets/images/hat.jpeg',
                 ),
                 fit: BoxFit.cover,
-              )),
-          child: SingleChildScrollView(
+              ),
+            ),
             child: Column(children: [
-              const Padding(
-                padding: EdgeInsets.fromLTRB(10, 60, 10, 20),
-                child: Text(
-                  'TravelTales',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.orange,
-                  ),
+              Text(
+                'TravelTales',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange,
                 ),
               ),
               Form(

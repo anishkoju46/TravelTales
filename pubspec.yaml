@@ -39,6 +39,8 @@ dependencies:
   flutter_inset_box_shadow: ^1.0.8
   http: ^1.1.0
   flutter_animate: ^4.2.0+1
+  hooks_riverpod: ^2.4.9
+  flutter_hooks: ^0.20.3
 
 dev_dependencies:
   flutter_test:

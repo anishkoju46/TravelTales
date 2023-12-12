@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:traveltales/location.dart';
+import 'package:traveltales/nothing/location.dart';
 
 class ViewLocation extends StatefulWidget {
   const ViewLocation({super.key});
@@ -104,7 +104,7 @@ class _TravelState extends State<ViewLocation> {
             //3RD MAIN ITEM
             travelDetails(myTravelList.first),
             //4TH MAIN ITEM
-            buttomUI()
+            //buttomUI(),
           ],
         ),
       ),

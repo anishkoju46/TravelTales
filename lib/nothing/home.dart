@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:traveltales/addLocation.dart';
-import 'package:traveltales/location.dart';
+import 'package:traveltales/nothing/addLocation.dart';
+import 'package:traveltales/nothing/location.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

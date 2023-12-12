@@ -1,7 +1,7 @@
 //import 'package:crud_login/home.dart';
 import 'package:flutter/material.dart';
-import 'package:traveltales/location.dart';
-import 'package:traveltales/validator.dart';
+import 'package:traveltales/nothing/location.dart';
+import 'package:traveltales/nothing/validator.dart';
 
 class AddLocation extends StatefulWidget {
   final Location? location;
