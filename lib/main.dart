@@ -32,8 +32,8 @@ class MyApp extends ConsumerWidget {
         //Secondary
         secondary: Colors.cyan,
         onSecondary: Colors.black,
-        secondaryContainer: Colors.orange, //[selected kura ko BG]
-        onSecondaryContainer: Colors.green, //[select kura]
+        secondaryContainer: Colors.white, //[selected kura ko BG]
+        onSecondaryContainer: Color(0xffD4A056), //[select kura]
 
         //Error
         error:
@@ -47,7 +47,7 @@ class MyApp extends ConsumerWidget {
         //Surface
         surface: Colors
             .grey, //[BACKGROUND : ElevatedButton, AppBar, ButtomNavigation]
-        onSurface: Colors.red, //[Text, IconButton, Icon, Chip, NavIcon]
+        onSurface: Color(0xff333C4B), //[Text, IconButton, Icon, Chip, NavIcon]
 
         //outline
         outline: Colors

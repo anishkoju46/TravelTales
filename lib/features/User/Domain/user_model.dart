@@ -28,7 +28,7 @@ class UserModel {
         role: role,
         userDetail: UserDetail(
             email: email ?? "aaaa",
-            imageUrl: "asdf",
+            imageUrl: imageUrl ?? "assets/images/default2.jpeg",
             phoneNumber: phoneNumber ?? "9999"),
       );
 

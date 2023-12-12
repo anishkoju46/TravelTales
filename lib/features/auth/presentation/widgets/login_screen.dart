@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/User/Domain/user_model.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/auth/presentation/controller/login_controller.dart';
-import 'package:traveltales/nothing/dashboard.dart';
 
 //auth ma model
 //usermodel type ko provider
@@ -14,11 +12,11 @@ class LoginScreen extends ConsumerWidget {
   final TextEditingController _emailController =
       TextEditingController(text: "four@gmail.com");
   final TextEditingController _passwordController =
-      TextEditingController(text: "1111");
+      TextEditingController(text: "4444");
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentUserController = ref.read(authNotifierProvider.notifier);
+    //final currentUserController = ref.read(authNotifierProvider.notifier);
     final loginController = ref.read(loginNotifierProvider.notifier);
     return SafeArea(
       child: Scaffold(
