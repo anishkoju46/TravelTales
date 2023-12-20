@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_controller.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
+import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 
 class DestinationList extends ConsumerWidget {
   const DestinationList({super.key});
@@ -86,24 +87,13 @@ class DestinationList extends ConsumerWidget {
                 top: 15,
                 right: 15,
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
                     ),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      ref
-                          .read(favouriteProvider.notifier)
-                          .addToFavourite(destination);
-                    },
-                    icon: Icon(
-                      Icons.star,
-                      color: Theme.of(context).colorScheme.background,
-                    ),
-                  ),
-                ),
+                    child: FavouriteButton(destination: destination)),
               );
             }),
           ],
