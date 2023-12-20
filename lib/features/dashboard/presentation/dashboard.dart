@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/dashboard/controller/navigation_controller.dart';
+import 'package:traveltales/features/dashboard/user_dashboard/presentation/user_dashboard_model.dart';
+import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
+import 'package:traveltales/features/favourite/presentation/widgets/favourite_screen.dart';
+import 'package:traveltales/features/photo/presentation/photo_screen.dart';
 import 'package:traveltales/features/profile/presentation/profile_screen.dart';
 
 class Dashboard extends ConsumerWidget {
@@ -23,7 +26,6 @@ class Dashboard extends ConsumerWidget {
         //     ),
         //   ],
         // ),
-        backgroundColor: Colors.grey,
         body: Column(
           children: [
             Consumer(builder: (context, ref, child) {
@@ -32,19 +34,9 @@ class Dashboard extends ConsumerWidget {
                 child: IndexedStack(
                   index: currentIndex,
                   children: [
-                    Container(
-                      //color: Colors.white,
-                      child:
-                          TextButton(onPressed: () {}, child: Text("Button")),
-                    ),
-                    Container(
-                      //color: Colors.grey,
-                      child: ElevatedButton(
-                          onPressed: () {}, child: Text('Elevated')),
-                    ),
-                    Container(
-                      color: Colors.white,
-                    ),
+                    UserDashboard(),
+                    PhotoScreen(),
+                    FavouriteScreen(),
                     ProfileScreen()
                   ],
                 ),
@@ -53,6 +45,7 @@ class Dashboard extends ConsumerWidget {
           ],
         ),
         bottomNavigationBar: NavigationBar(
+          backgroundColor: Theme.of(context).colorScheme.background,
           indicatorShape: CircleBorder(),
           selectedIndex: ref.watch(navigationProvider),
           //labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
@@ -66,9 +59,9 @@ class Dashboard extends ConsumerWidget {
               selectedIcon: Icon(Icons.home),
             ),
             NavigationDestination(
-              icon: Icon(Icons.map_outlined),
-              label: "map",
-              selectedIcon: Icon(Icons.map),
+              icon: Icon(Icons.add_a_photo_outlined),
+              label: "Photo",
+              selectedIcon: Icon(Icons.add_a_photo),
             ),
             NavigationDestination(
                 icon: Icon(Icons.favorite_outline),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
-import 'package:traveltales/features/auth/presentation/widgets/login_screen.dart';
 
 class Loader extends ConsumerStatefulWidget {
   const Loader({super.key});
@@ -14,18 +13,7 @@ class _LoaderState extends ConsumerState<Loader> {
   @override
   void initState() {
     super.initState();
-    final currentUser = ref.read(authNotifierProvider);
-
-    Future.delayed(Duration(seconds: 1), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return currentUser == null ? LoginScreen() : Container();
-          },
-        ),
-      );
-    });
+    ref.read(authNotifierProvider.notifier).loader(context);
   }
 
   @override
@@ -38,6 +26,5 @@ class _LoaderState extends ConsumerState<Loader> {
         ),
       ),
     );
-    ;
   }
 }
