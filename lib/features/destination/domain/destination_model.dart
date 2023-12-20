@@ -16,21 +16,24 @@ class DestinationModel {
   final String duration;
   final String maxHeight;
   final String bestSeason;
+  final bool isFavourite;
 
-  DestinationModel(
-      {required this.id,
-      required this.name,
-      required this.coordinates,
-      required this.description,
-      required this.itinerary,
-      required this.imageUrl,
-      required this.ratings,
-      required this.review,
-      required this.category,
-      required this.region,
-      required this.duration,
-      required this.maxHeight,
-      required this.bestSeason});
+  DestinationModel({
+    required this.id,
+    required this.name,
+    required this.coordinates,
+    required this.description,
+    required this.itinerary,
+    required this.imageUrl,
+    required this.ratings,
+    required this.review,
+    required this.category,
+    required this.region,
+    required this.duration,
+    required this.maxHeight,
+    required this.bestSeason,
+    this.isFavourite = false,
+  });
 
   DestinationModel copyWith({
     String? id,
@@ -79,7 +82,7 @@ class DestinationModel {
     String? bestSeason,
   }) =>
       DestinationModel(
-          id: "1",
+          id: id ?? "1",
           name: name ?? "sdf",
           coordinates:
               coordinates ?? Coordinates(longitude: 2.2, latitude: 3.3),

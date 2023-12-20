@@ -4,7 +4,7 @@ import 'package:traveltales/features/category/presentation/controller/category_c
 import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
 
-final destinationNotifierProvider =
+final destinationProvider =
     NotifierProvider<DestinationController, List<DestinationModel>>(
         DestinationController.new);
 

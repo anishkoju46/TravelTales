@@ -1,30 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_controller.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 
-class DestinationList extends ConsumerWidget {
-  const DestinationList({super.key});
+class FavouriteList extends ConsumerWidget {
+  const FavouriteList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final scrollController = ref.read(destinationProvider.notifier);
-    final destinationList = ref.watch(destinationProvider);
+    //final scrollController = ref.read(favouriteProvider.notifier);
+    final favouriteList = ref.watch(favouriteProvider).entries.toList();
     return ListView.builder(
-        controller: scrollController.listScrollController,
-        itemCount: destinationList.length,
+        // controller: scrollController.listScrollController,
+        itemCount: favouriteList.length,
         itemBuilder: (BuildContext context, int index) {
-          return destinationShowCase(context,
-              destination: destinationList[index], onPressed: () {
-            ref
-                .read(destinationProvider.notifier)
-                .showDestinationDetails(context, destinationList[index]);
-          });
+          return favouriteShowCase(context,
+              destination: favouriteList[index].value, onPressed: () {});
         });
   }
 
-  Padding destinationShowCase(
+  Padding favouriteShowCase(
     BuildContext context, {
     required DestinationModel destination,
     String explore = "Explore",
@@ -96,7 +91,7 @@ class DestinationList extends ConsumerWidget {
                     onPressed: () {
                       ref
                           .read(favouriteProvider.notifier)
-                          .addToFavourite(destination);
+                          .removeFromFavourite(destination.id);
                     },
                     icon: Icon(
                       Icons.star,
