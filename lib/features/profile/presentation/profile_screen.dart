@@ -123,51 +123,59 @@ class ProfileScreen extends StatelessWidget {
               return Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // customProfileButtons(context,
-                    //     icon: Icons.person, profileButtonText: "Edit Profile"),
-                    // customProfileButtons(context,
-                    //     icon: Icons.key,
-                    //     profileButtonText: "Emergency Contacts"),
-                    // customProfileButtons(context,
-                    //     icon: Icons.phone,
-                    //     profileButtonText: "Emergency Contacts"),
-                    // customProfileButtons(context,
-                    //     icon: Icons.info, profileButtonText: "About Us"),
-                    // customProfileButtons(context,
-                    //     icon: Icons.logout,
-                    //     profileButtonText: "Sign Out",
-                    //     color: Color(0xffD4A056))
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // customProfileButtons(context,
+                          //     icon: Icons.person, profileButtonText: "Edit Profile"),
+                          // customProfileButtons(context,
+                          //     icon: Icons.key,
+                          //     profileButtonText: "Emergency Contacts"),
+                          // customProfileButtons(context,
+                          //     icon: Icons.phone,
+                          //     profileButtonText: "Emergency Contacts"),
+                          // customProfileButtons(context,
+                          //     icon: Icons.info, profileButtonText: "About Us"),
+                          // customProfileButtons(context,
+                          //     icon: Icons.logout,
+                          //     profileButtonText: "Sign Out",
+                          //     color: Color(0xffD4A056))
 
-                    // Text("Edit Profile"),
-                    // Text("Change Password"),
-                    // GestureDetector(
-                    //     onTap: () {
-                    //       ref
-                    //           .read(authNotifierProvider.notifier)
-                    //           .signOut(context);
-                    //     },
-                    //     child: Text("SignOut"))
+                          // Text("Edit Profile"),
+                          // Text("Change Password"),
+                          // GestureDetector(
+                          //     onTap: () {
+                          //       ref
+                          //           .read(authNotifierProvider.notifier)
+                          //           .signOut(context);
+                          //     },
+                          //     child: Text("SignOut"))
 
-                    FilledButton.icon(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(
-                              Theme.of(context).colorScheme.primary),
-                        ),
-                        onPressed: () {
-                          ref
-                              .read(authNotifierProvider.notifier)
-                              .signOut(context);
-                        },
-                        icon: (Icon(
-                          Icons.person,
-                          color: Colors.red,
-                        )),
-                        label: Text(
-                          "Logout",
-                          style: TextStyle(color: Colors.amber),
-                        ))
+                          FilledButton.icon(
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll(
+                                  Theme.of(context).colorScheme.primary),
+                            ),
+                            onPressed: () {
+                              ref
+                                  .read(authNotifierProvider.notifier)
+                                  .signOut(context);
+                            },
+                            icon: (Icon(
+                              Icons.person,
+                              color: Colors.red,
+                            )),
+                            label: Text(
+                              "Logout",
+                              style: TextStyle(color: Colors.amber),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text("Version 1.1.0")
                   ],
                 ),
               );

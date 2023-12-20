@@ -11,15 +11,18 @@ class FavouriteButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final favourites = ref.watch(favouriteProvider);
     final isFavourite = favourites.containsKey(destination.id);
-    return IconButton(
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         ref.read(favouriteProvider.notifier).handleFavourite(destination);
       },
-      icon: Icon(
-        isFavourite ? Icons.star_outline : Icons.star,
-        color: isFavourite
-            ? Theme.of(context).colorScheme.secondaryContainer
-            : Theme.of(context).colorScheme.background,
+      child: Container(
+        padding: EdgeInsets.all(7),
+        child: Icon(
+          isFavourite ? Icons.star : Icons.star_outline,
+          color: isFavourite
+              ? Theme.of(context).colorScheme.secondaryContainer
+              : Theme.of(context).colorScheme.background,
+        ),
       ),
     );
   }

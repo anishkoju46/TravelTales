@@ -2,6 +2,13 @@ import 'dart:convert';
 
 import 'package:traveltales/features/category/domain/category_model.dart';
 
+List<DestinationModel> destinationModelFromJson(String str) =>
+    List<DestinationModel>.from(
+        json.decode(str).map((x) => DestinationModel.fromJson(x)));
+
+String destinationModelToJson(List<DestinationModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class DestinationModel {
   final String id;
   final String name;
