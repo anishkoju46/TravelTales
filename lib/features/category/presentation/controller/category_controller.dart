@@ -16,6 +16,7 @@ class CategoryController extends Notifier<CategoryModel> {
     CategoryModel(name: "Easy", id: "2"),
     CategoryModel(name: "Moderate", id: "3"),
     CategoryModel(name: "Challenging", id: "4"),
+    CategoryModel(name: "Top Rated", id: "5"),
   ];
 
   selectCategory(CategoryModel category) {

@@ -45,4 +45,15 @@ class LoginController extends Notifier {
       return Dashboard();
     }));
   }
+
+  updateUser(UserModel user) {
+    int index = userModel.indexWhere((element) => element.id == user.id);
+    if (index != -1) {
+      state = [...state..[index] = user];
+    }
+  }
+
+  deactivateUser(String index) {
+    state = [...state]..remove(index);
+  }
 }

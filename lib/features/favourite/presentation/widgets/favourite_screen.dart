@@ -37,16 +37,16 @@ class FavouriteScreen extends ConsumerWidget {
                   ),
                 ),
                 //Title: Category
-                Container(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Categories",
-                    style: Theme.of(context)
-                        .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w500),
-                  ),
-                ),
+                // Container(
+                //   alignment: Alignment.topLeft,
+                //   child: Text(
+                //     "Categories",
+                //     style: Theme.of(context)
+                //         .textTheme
+                //         .headlineSmall
+                //         ?.copyWith(fontWeight: FontWeight.w500),
+                //   ),
+                // ),
                 // Category Navigator Bar
               ],
             ),

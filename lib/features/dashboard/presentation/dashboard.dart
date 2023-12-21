@@ -5,7 +5,7 @@ import 'package:traveltales/features/dashboard/user_dashboard/presentation/user_
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_screen.dart';
 import 'package:traveltales/features/photo/presentation/photo_screen.dart';
-import 'package:traveltales/features/profile/presentation/profile_screen.dart';
+import 'package:traveltales/features/profile/presentation/widgets/profile_screen.dart';
 
 class Dashboard extends ConsumerWidget {
   const Dashboard({super.key});

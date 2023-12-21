@@ -24,7 +24,7 @@ class DestinationController extends Notifier<List<DestinationModel>> {
         description: "Langtang is alskdfj",
         itinerary: "alskdfj",
         imageUrl: "assets/langtang/langtang1.jpeg",
-        ratings: 2,
+        ratings: 4,
         review: [Review(id: "1", comment: "sajkdf", rating: 2)],
         category: ref.read(CategoryNotifierProvider.notifier).categories[1],
         region: "smth",
@@ -84,6 +84,8 @@ class DestinationController extends Notifier<List<DestinationModel>> {
     final selectedCategory = ref.watch(CategoryNotifierProvider);
     if (selectedCategory.id == "1") {
       state = [...destinationModel]..shuffle();
+    } else if (selectedCategory.id == "5") {
+      showTopRatedDestination();
     } else {
       state = [
         ...[...destinationModel]
@@ -107,5 +109,9 @@ class DestinationController extends Notifier<List<DestinationModel>> {
         },
       ),
     );
+  }
+
+  showTopRatedDestination() {
+    state = [...destinationModel.where((element) => element.ratings >= 3)];
   }
 }

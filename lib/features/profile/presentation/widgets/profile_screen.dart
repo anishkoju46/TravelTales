@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
+import 'package:traveltales/features/profile/presentation/controller/profile_controller.dart';
+import 'package:traveltales/features/profile/presentation/widgets/edit_profile_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(builder: (context, ref, child) {
       return Column(children: [
         //Profile Part 1
@@ -61,6 +63,7 @@ class ProfileScreen extends StatelessWidget {
                   flex: 3,
                   child: Consumer(builder: (context, ref, child) {
                     final authController = ref.read(authNotifierProvider);
+
                     return Column(
                       children: [
                         Text(
@@ -126,22 +129,34 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // customProfileButtons(context,
-                          //     icon: Icons.person, profileButtonText: "Edit Profile"),
-                          // customProfileButtons(context,
-                          //     icon: Icons.key,
-                          //     profileButtonText: "Emergency Contacts"),
-                          // customProfileButtons(context,
-                          //     icon: Icons.phone,
-                          //     profileButtonText: "Emergency Contacts"),
-                          // customProfileButtons(context,
-                          //     icon: Icons.info, profileButtonText: "About Us"),
-                          // customProfileButtons(context,
-                          //     icon: Icons.logout,
-                          //     profileButtonText: "Sign Out",
-                          //     color: Color(0xffD4A056))
+                          customProfileButtons(context,
+                              icon: Icons.person,
+                              profileButtonText: "Edit Profile", onTap: () {
+                            ref
+                                .read(profileProvider.notifier)
+                                .navigateToEditPage(context);
+                          }),
+                          customProfileButtons(context,
+                              icon: Icons.key,
+                              profileButtonText: "Change Password",
+                              onTap: () {}),
+                          customProfileButtons(context,
+                              icon: Icons.phone,
+                              profileButtonText: "Emergency Contacts",
+                              onTap: () {}),
+                          customProfileButtons(context,
+                              icon: Icons.info,
+                              profileButtonText: "About Us",
+                              onTap: () {}),
+                          customProfileButtons(context,
+                              icon: Icons.exit_to_app,
+                              profileButtonText: "Sign Out",
+                              color: Color(0xffD4A056), onTap: () {
+                            ref
+                                .read(authNotifierProvider.notifier)
+                                .signOut(context);
+                          }),
 
                           // Text("Edit Profile"),
                           // Text("Change Password"),
@@ -153,25 +168,25 @@ class ProfileScreen extends StatelessWidget {
                           //     },
                           //     child: Text("SignOut"))
 
-                          FilledButton.icon(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                  Theme.of(context).colorScheme.primary),
-                            ),
-                            onPressed: () {
-                              ref
-                                  .read(authNotifierProvider.notifier)
-                                  .signOut(context);
-                            },
-                            icon: (Icon(
-                              Icons.person,
-                              color: Colors.red,
-                            )),
-                            label: Text(
-                              "Logout",
-                              style: TextStyle(color: Colors.amber),
-                            ),
-                          ),
+                          // FilledButton.icon(
+                          //   style: ButtonStyle(
+                          //     backgroundColor: MaterialStatePropertyAll(
+                          //         Theme.of(context).colorScheme.primary),
+                          //   ),
+                          //   onPressed: () {
+                          //     ref
+                          //         .read(authNotifierProvider.notifier)
+                          //         .signOut(context);
+                          //   },
+                          //   icon: (Icon(
+                          //     Icons.person,
+                          //     color: Colors.red,
+                          //   )),
+                          //   label: Text(
+                          //     "Sign Out",
+                          //     style: TextStyle(color: Colors.amber),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -189,11 +204,14 @@ class ProfileScreen extends StatelessWidget {
   Padding customProfileButtons(BuildContext context,
       {required IconData icon,
       required String profileButtonText,
-      Color? color}) {
+      Color? color,
+      required Function onTap}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      child: GestureDetector(
-        onTap: () {},
+      child: InkWell(
+        onTap: () {
+          onTap();
+        },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(

@@ -17,7 +17,6 @@ class DestinationListItem extends StatelessWidget {
   Padding destinationShowCase(
     BuildContext context, {
     required DestinationModel destination,
-    String explore = "Explore",
     required Function onPressed,
   }) {
     return Padding(
@@ -61,7 +60,7 @@ class DestinationListItem extends StatelessWidget {
                           color: Theme.of(context).colorScheme.background),
                     ),
                     Text(
-                      explore,
+                      "Ratings: ${destination.ratings}/5",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.background),

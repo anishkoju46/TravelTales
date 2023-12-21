@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
+import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
   const DestinationDetailScreen({super.key, required this.destinationModel});
@@ -70,25 +71,7 @@ class DestinationDetailScreen extends ConsumerWidget {
         left: left,
         bottom: bottom,
         right: right,
-        child: InkWell(
-          onTap: () {
-            if (onTap == null) {
-              Navigator.pop(context);
-            } else {
-              onTap();
-            }
-          },
-          child: Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(12),
-                ),
-              ),
-              child:
-                  Icon(icon, color: Theme.of(context).colorScheme.background)),
-        ));
+        child: ArrowBackWidget());
   }
 
   Container details({required DestinationModel destinationModel}) {
@@ -116,3 +99,24 @@ class DestinationDetailScreen extends ConsumerWidget {
         ]));
   }
 }
+
+
+//  InkWell(
+//           onTap: () {
+//             if (onTap == null) {
+//               Navigator.pop(context);
+//             } else {
+//               onTap();
+//             }
+//           },
+//           child: Container(
+//               padding: EdgeInsets.all(5),
+//               decoration: BoxDecoration(
+//                 color: Theme.of(context).colorScheme.primary,
+//                 borderRadius: BorderRadius.all(
+//                   Radius.circular(12),
+//                 ),
+//               ),
+//               child:
+//                   Icon(icon, color: Theme.of(context).colorScheme.background)),
+//         )
