@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/presentation/widgets/category_list.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
 
-class UserDashboard extends ConsumerWidget {
-  const UserDashboard({super.key});
+class UserHome extends ConsumerWidget {
+  const UserHome({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

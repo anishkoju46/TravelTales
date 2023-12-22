@@ -51,14 +51,14 @@ class SignupScreen extends StatelessWidget {
                 text: TextSpan(
                   children: [
                     TextSpan(
-                      text: "dont have an account?",
+                      text: "already have an account?",
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     TextSpan(
-                      text: " Sign Up",
+                      text: " Login",
                       style: Theme.of(context)
                           .textTheme
                           .bodySmall

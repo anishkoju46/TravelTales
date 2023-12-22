@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/User/Presentation/widgets/profile_screen.dart';
 import 'package:traveltales/features/dashboard/controller/navigation_controller.dart';
-import 'package:traveltales/features/dashboard/user_dashboard/presentation/user_dashboard_model.dart';
-import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
+import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_home.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_screen.dart';
 import 'package:traveltales/features/photo/presentation/photo_screen.dart';
-import 'package:traveltales/features/profile/presentation/widgets/profile_screen.dart';
 
-class Dashboard extends ConsumerWidget {
-  const Dashboard({super.key});
+class UserDashboard extends ConsumerWidget {
+  const UserDashboard({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,7 +33,7 @@ class Dashboard extends ConsumerWidget {
                 child: IndexedStack(
                   index: currentIndex,
                   children: [
-                    UserDashboard(),
+                    UserHome(),
                     PhotoScreen(),
                     FavouriteScreen(),
                     ProfileScreen()

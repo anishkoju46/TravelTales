@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/domain/category_model.dart';
 
 List<DestinationModel> destinationModelFromJson(String str) =>
@@ -126,6 +130,21 @@ class DestinationModel {
         maxHeight: json["maxHeight"],
         bestSeason: json["bestSeason"],
       );
+
+  factory DestinationModel.empty() => DestinationModel(
+      id: shortHash(Container()),
+      name: "",
+      coordinates: Coordinates(longitude: 0, latitude: 0),
+      description: "",
+      itinerary: "",
+      imageUrl: "",
+      ratings: 1,
+      review: [],
+      category: CategoryModel(name: "", id: ""),
+      region: "",
+      duration: "",
+      maxHeight: "",
+      bestSeason: "");
 
   Map<String, dynamic> toJson() => {
         "id": id,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model.dart';
+import 'package:traveltales/features/User/Presentation/widgets/edit_profile_screen.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/auth/presentation/controller/login_controller.dart';
-import 'package:traveltales/features/profile/presentation/widgets/edit_profile_screen.dart';
 
 final profileProvider =
     NotifierProvider<ProfileController, UserModel>(ProfileController.new);

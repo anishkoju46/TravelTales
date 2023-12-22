@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
-import 'package:traveltales/features/profile/presentation/controller/profile_controller.dart';
-import 'package:traveltales/features/profile/presentation/widgets/edit_profile_screen.dart';
+import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});

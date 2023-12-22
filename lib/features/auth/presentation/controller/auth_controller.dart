@@ -3,7 +3,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model.dart';
 import 'package:traveltales/features/auth/presentation/widgets/login_screen.dart';
-import 'package:traveltales/features/dashboard/presentation/dashboard.dart';
+import 'package:traveltales/features/dashboard/presentation/admin_dashboard/widgets/admin_dashboard.dart';
+import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_dashboard.dart';
 import 'package:traveltales/utility/loader.dart';
 
 final storage = GetStorage();
@@ -54,7 +55,11 @@ class AuthController extends Notifier<UserModel?> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return state == null ? LoginScreen() : Dashboard();
+              return state == null
+                  ? LoginScreen()
+                  : state!.role
+                      ? AdminDashboard()
+                      : UserDashboard();
             },
           ),
         );
