@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
+import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class EditProfileScreen extends ConsumerWidget {
@@ -43,26 +44,28 @@ class EditProfileScreen extends ConsumerWidget {
                     userFormController.update(phoneNumber: value);
                   },
                 ),
-                Row(
-                  children: [
-                    Text("ADMIN "),
-                    Switch(
-                        value: userFormState.role,
-                        onChanged: (value) {
-                          userFormController.update(role: value);
-                        }),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text("BLOCK "),
-                    Switch(
-                        value: userFormState.block,
-                        onChanged: (value) {
-                          userFormController.update(block: value);
-                        }),
-                  ],
-                )
+                if (ref.read(authNotifierProvider)!.role) ...[
+                  Row(
+                    children: [
+                      Text("ADMIN "),
+                      Switch(
+                          value: userFormState.role,
+                          onChanged: (value) {
+                            userFormController.update(role: value);
+                          }),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text("BLOCK "),
+                      Switch(
+                          value: userFormState.block,
+                          onChanged: (value) {
+                            userFormController.update(block: value);
+                          }),
+                    ],
+                  )
+                ]
               ]
                   .map((e) => Container(
                         margin:

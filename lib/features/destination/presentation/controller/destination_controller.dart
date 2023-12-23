@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
+import 'package:traveltales/features/destination/presentation/widgets/destination_form.dart';
 
 final destinationProvider =
     NotifierProvider<DestinationController, List<DestinationModel>>(
@@ -114,4 +116,12 @@ class DestinationController extends Notifier<List<DestinationModel>> {
   showTopRatedDestination() {
     state = [...destinationModel.where((element) => element.ratings >= 3)];
   }
+
+  // navigateToAddOrEditDestinationPage(BuildContext context) {
+  //   final destination = ref.read(destinationProvider);
+  //   Navigator.push(context, MaterialPageRoute(builder: (context) {
+  //               //YETA PASS GARNA PARXA HAI
+  //               return DestinationForm(destination:destination,);
+  //             }));
+  // }
 }

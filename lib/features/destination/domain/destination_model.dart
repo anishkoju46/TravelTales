@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -60,6 +58,7 @@ class DestinationModel {
     String? duration,
     String? maxHeight,
     String? bestSeason,
+    bool? isFavourite,
   }) =>
       DestinationModel(
         id: id ?? this.id,
@@ -75,6 +74,7 @@ class DestinationModel {
         duration: duration ?? this.duration,
         maxHeight: maxHeight ?? this.maxHeight,
         bestSeason: bestSeason ?? this.bestSeason,
+        isFavourite: isFavourite ?? this.isFavourite,
       );
 
   factory DestinationModel.generateDestination({
@@ -91,6 +91,7 @@ class DestinationModel {
     String? duration,
     String? maxHeight,
     String? bestSeason,
+    bool? isFavourite,
   }) =>
       DestinationModel(
           id: id ?? "1",
@@ -106,7 +107,8 @@ class DestinationModel {
           region: region ?? "Nepal",
           duration: duration ?? "duration",
           maxHeight: maxHeight ?? "max Height",
-          bestSeason: bestSeason ?? "bes season");
+          bestSeason: bestSeason ?? "bes season",
+          isFavourite: isFavourite ?? false);
 
   factory DestinationModel.fromRawJson(String str) =>
       DestinationModel.fromJson(json.decode(str));
@@ -129,6 +131,7 @@ class DestinationModel {
         duration: json["duration"],
         maxHeight: json["maxHeight"],
         bestSeason: json["bestSeason"],
+        isFavourite: json["isFavourite"],
       );
 
   factory DestinationModel.empty() => DestinationModel(
@@ -144,7 +147,8 @@ class DestinationModel {
       region: "",
       duration: "",
       maxHeight: "",
-      bestSeason: "");
+      bestSeason: "",
+      isFavourite: false);
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -159,7 +163,8 @@ class DestinationModel {
         "region": region,
         "duration": duration,
         "maxHeight": maxHeight,
-        "bestSeason": bestSeason
+        "bestSeason": bestSeason,
+        "isFavourite": isFavourite,
       };
 }
 

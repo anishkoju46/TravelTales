@@ -14,17 +14,6 @@ class UserDashboard extends ConsumerWidget {
     final navigationIndex = ref.watch(navigationProvider.notifier);
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   title: Text("${ref.watch(authNotifierProvider)?.userDetail.email}"),
-        //   actions: [
-        //     IconButton(
-        //       onPressed: () {
-        //         ref.read(authNotifierProvider.notifier).signOut(context);
-        //       },
-        //       icon: Icon(Icons.logout),
-        //     ),
-        //   ],
-        // ),
         body: Column(
           children: [
             Consumer(builder: (context, ref, child) {
