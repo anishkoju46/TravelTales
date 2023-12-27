@@ -34,15 +34,22 @@ class UserList extends ConsumerWidget {
         Container(
           padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
           alignment: Alignment.centerRight,
-          child: FloatingActionButton(
-            onPressed: () {
-              //userListController.storeUserList();
-            },
-            child: Icon(
+          child: IconButton(
+            onPressed: () {},
+            icon: Icon(
               Icons.person_add,
               color: Theme.of(context).colorScheme.secondaryContainer,
             ),
           ),
+          // child: FloatingActionButton(
+          //   onPressed: () {
+          //     userListController.storeUserList();
+          //   },
+          //   child: Icon(
+          //     Icons.person_add,
+          //     color: Theme.of(context).colorScheme.secondaryContainer,
+          //   ),
+          // ),
         )
       ],
     );

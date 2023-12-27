@@ -19,7 +19,6 @@ class DestinationDetailScreen extends ConsumerWidget {
               Container(
                 height: 300,
                 decoration: BoxDecoration(
-                  color: Colors.red,
                   image: DecorationImage(
                       image: AssetImage(destinationModel.imageUrl),
                       fit: BoxFit.cover),

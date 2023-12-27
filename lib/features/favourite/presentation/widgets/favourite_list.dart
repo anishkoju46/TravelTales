@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/domain/destination_model.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_controller.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list_item.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
-import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 
 class FavouriteList extends ConsumerWidget {
   const FavouriteList({super.key});
@@ -20,8 +18,10 @@ class FavouriteList extends ConsumerWidget {
           return DestinationListItem(
               destination: favouriteList[index].value,
               onPressed: () {
-                ref.read(destinationProvider.notifier).showDestinationDetails(
-                    context, favouriteList[index].value);
+                ref
+                    .read(destinationListProvider.notifier)
+                    .showDestinationDetails(
+                        context, favouriteList[index].value);
               });
         });
   }

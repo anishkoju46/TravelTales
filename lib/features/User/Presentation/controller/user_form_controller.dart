@@ -1,18 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
+import 'package:traveltales/utility/form_controller.dart';
 
-class UserFormController
-    extends AutoDisposeFamilyNotifier<UserModel, UserModel?> {
+class UserFormController extends FormController<UserModel> {
   @override
   UserModel build(UserModel? arg) {
     return arg ?? UserModel.empty();
   }
 
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  @override
   update({
     String? fullName,
     bool? role,
@@ -32,11 +30,13 @@ class UserFormController
     );
   }
 
+  @override
   handleSubmit(BuildContext context) {
-    if (formKey.currentState!.validate()) {
+    if (isValidated) {
       if (state != arg) {
         ref.read(userListProvider.notifier).handleSubmit(state);
-        Navigator.pop(context);
+        //Navigator.pop(context);
+        resetForm();
       } else {
         if (kDebugMode) {
           print("No Changes Made");

@@ -7,19 +7,16 @@ class AdminProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-        child: Scaffold(
-      body: Column(
-        children: [
-          customProfileButtons(context,
-              icon: Icons.exit_to_app,
-              profileButtonText: "Sign Out",
-              color: Color(0xffD4A056), onTap: () {
-            ref.read(authNotifierProvider.notifier).signOut(context);
-          }),
-        ],
-      ),
-    ));
+    return Column(
+      children: [
+        customProfileButtons(context,
+            icon: Icons.exit_to_app,
+            profileButtonText: "Sign Out",
+            color: Color(0xffD4A056), onTap: () {
+          ref.read(authNotifierProvider.notifier).signOut(context);
+        }),
+      ],
+    );
   }
 
   Padding customProfileButtons(BuildContext context,

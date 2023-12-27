@@ -3,7 +3,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model.dart';
 import 'package:traveltales/features/User/Presentation/widgets/edit_profile_screen.dart';
-import 'package:traveltales/features/auth/presentation/controller/login_controller.dart';
 
 class UserListController extends Notifier<List<UserModel>> {
   final storage = GetStorage();

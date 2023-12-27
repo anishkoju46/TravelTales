@@ -23,4 +23,7 @@ class CategoryController extends Notifier<CategoryModel> {
     state = category;
     // ref.read(destinationNotifierProvider.notifier).showByCategory();
   }
+
+  List<CategoryModel> get usableCategories => [...categories].sublist(1, 4);
+  //categories..removeWhere((element) => element.id == "1");
 }

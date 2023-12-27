@@ -131,10 +131,10 @@ class DestinationModel {
         duration: json["duration"],
         maxHeight: json["maxHeight"],
         bestSeason: json["bestSeason"],
-        isFavourite: json["isFavourite"],
+        isFavourite: json["isFavourite"] ?? false,
       );
 
-  factory DestinationModel.empty() => DestinationModel(
+  factory DestinationModel.empty({CategoryModel? category}) => DestinationModel(
       id: shortHash(Container()),
       name: "",
       coordinates: Coordinates(longitude: 0, latitude: 0),
@@ -143,7 +143,7 @@ class DestinationModel {
       imageUrl: "",
       ratings: 1,
       review: [],
-      category: CategoryModel(name: "", id: ""),
+      category: category ?? CategoryModel(name: "Easy", id: "2"),
       region: "",
       duration: "",
       maxHeight: "",

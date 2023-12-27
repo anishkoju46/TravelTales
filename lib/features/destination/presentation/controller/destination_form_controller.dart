@@ -1,23 +1,29 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/category/domain/category_model.dart';
+import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
+import 'package:traveltales/utility/form_controller.dart';
 
 final destinationFormProvider = AutoDisposeNotifierProviderFamily<
     DestinationFormController,
     DestinationModel,
     DestinationModel?>(DestinationFormController.new);
 
-class DestinationFormController
-    extends AutoDisposeFamilyNotifier<DestinationModel, DestinationModel?> {
+class DestinationFormController extends FormController<DestinationModel> {
   @override
   DestinationModel build(DestinationModel? arg) {
-    return arg ?? DestinationModel.empty();
+    return arg ??
+        DestinationModel.empty(
+            category: ref
+                .read(CategoryNotifierProvider.notifier)
+                .usableCategories
+                .first);
   }
 
-  final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
+  @override
   update({
     String? name,
     String? description,
@@ -29,7 +35,7 @@ class DestinationFormController
     String? bestSeason,
     double? latitude,
     double? longitude,
-    String? categoryName,
+    CategoryModel? category,
   }) {
     state = state.copyWith(
       name: name ?? state.name,
@@ -43,18 +49,18 @@ class DestinationFormController
       coordinates: state.coordinates.copyWith(
           latitude: latitude ?? state.coordinates.latitude,
           longitude: longitude ?? state.coordinates.longitude),
-      category: state.category.copyWith(
-        name: categoryName ?? state.category.name,
-      ),
-      // review: [...state.review]
+      category: category ?? state.category,
     );
   }
 
+  @override
   handleSubmit(BuildContext context) {
-    if (formkey.currentState!.validate()) {
+    if (isValidated) {
+      // print(state.length);
       if (state != arg) {
         ref.read(destinationListProvider.notifier).handelSubmit(state);
-        Navigator.pop(context);
+        //Navigator.pop(context);
+        //resetForm();
       } else {
         if (kDebugMode) {
           print("No changes Made");

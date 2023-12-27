@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Presentation/widgets/profile_screen.dart';
-import 'package:traveltales/features/dashboard/controller/navigation_controller.dart';
+import 'package:traveltales/features/dashboard/presentation/controller/navigation_controller.dart';
 import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_home.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_screen.dart';
 import 'package:traveltales/features/photo/presentation/photo_screen.dart';
@@ -11,13 +11,13 @@ class UserDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigationIndex = ref.watch(navigationProvider.notifier);
+    final navigationIndex = ref.watch(userNavigationProvider.notifier);
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
             Consumer(builder: (context, ref, child) {
-              final currentIndex = ref.watch(navigationProvider);
+              final currentIndex = ref.watch(userNavigationProvider);
               return Expanded(
                 child: IndexedStack(
                   index: currentIndex,
@@ -35,7 +35,7 @@ class UserDashboard extends ConsumerWidget {
         bottomNavigationBar: NavigationBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           indicatorShape: CircleBorder(),
-          selectedIndex: ref.watch(navigationProvider),
+          selectedIndex: ref.watch(userNavigationProvider),
           //labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
           onDestinationSelected: (index) {
             navigationIndex.state = index;

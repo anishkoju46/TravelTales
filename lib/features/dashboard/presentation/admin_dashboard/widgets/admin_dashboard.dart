@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Presentation/widgets/admin_profile_screen.dart';
 import 'package:traveltales/features/User/Presentation/widgets/user_list.dart';
-import 'package:traveltales/features/dashboard/controller/navigation_controller.dart';
+import 'package:traveltales/features/dashboard/presentation/controller/navigation_controller.dart';
 import 'package:traveltales/features/dashboard/presentation/admin_dashboard/widgets/admin_home.dart';
 
 class AdminDashboard extends ConsumerWidget {
@@ -10,14 +10,14 @@ class AdminDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigationIndex = ref.watch(navigationProvider.notifier);
+    final navigationIndex = ref.watch(adminNavigationProvider.notifier);
     return SafeArea(
       child: Scaffold(
         body: Column(
           children: [
             Consumer(
               builder: (context, ref, child) {
-                final currentIndex = ref.watch(navigationProvider);
+                final currentIndex = ref.watch(adminNavigationProvider);
                 return Expanded(
                   child: IndexedStack(
                     index: currentIndex,
@@ -38,7 +38,7 @@ class AdminDashboard extends ConsumerWidget {
         bottomNavigationBar: NavigationBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           indicatorShape: CircleBorder(),
-          selectedIndex: ref.watch(navigationProvider),
+          selectedIndex: ref.watch(adminNavigationProvider),
           onDestinationSelected: (index) {
             navigationIndex.state = index;
           },

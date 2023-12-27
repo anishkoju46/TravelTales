@@ -29,6 +29,7 @@ class FavouriteController extends Notifier<Map<String, DestinationModel>> {
     var value = state.values.toList();
     favouriteStorage.write(favouriteKey, destinationModelToJson(value));
   }
+  //Map banaunu paryo!! id ma user id, value ma model
 
   removeFromFavourite(String id) {
     state = {...state..remove(id)};
