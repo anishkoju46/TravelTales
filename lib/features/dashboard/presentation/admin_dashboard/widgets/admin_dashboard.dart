@@ -10,7 +10,7 @@ class AdminDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigationIndex = ref.watch(adminNavigationProvider.notifier);
+    final navigationIndex = ref.read(adminNavigationProvider.notifier);
     return SafeArea(
       child: Scaffold(
         body: Column(

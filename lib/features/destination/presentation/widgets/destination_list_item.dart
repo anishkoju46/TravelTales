@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 
-class DestinationListItem extends StatelessWidget {
+class DestinationListItem extends ConsumerWidget {
   const DestinationListItem(
       {super.key, required this.destination, required this.onPressed});
   final DestinationModel destination;
   final Function onPressed;
 
   @override
-  Widget build(BuildContext context) {
-    return destinationShowCase(context,
+  Widget build(BuildContext context, WidgetRef ref) {
+    return destinationShowCase(context, ref,
         destination: destination, onPressed: onPressed);
   }
 
   Padding destinationShowCase(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required DestinationModel destination,
     required Function onPressed,
   }) {
@@ -81,7 +85,28 @@ class DestinationListItem extends StatelessWidget {
                     ),
                   ),
                   child: FavouriteButton(destination: destination)),
-            )
+            ),
+            Positioned(
+                top: 15,
+                left: 15,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                  child: IconButton(
+                      onPressed: () {
+                        ref
+                            .read(destinationListProvider.notifier)
+                            .showForm(context, model: destination);
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.green,
+                      )),
+                )),
           ],
         ),
       ),

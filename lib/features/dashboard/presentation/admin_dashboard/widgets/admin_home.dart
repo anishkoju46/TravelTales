@@ -3,7 +3,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_form.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
 
-
 class AdminHome extends ConsumerWidget {
   const AdminHome({super.key});
 

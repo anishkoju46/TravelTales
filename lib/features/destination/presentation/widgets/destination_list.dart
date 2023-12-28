@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_controller.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list_item.dart';
 

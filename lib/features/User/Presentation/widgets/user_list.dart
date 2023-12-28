@@ -18,13 +18,13 @@ class UserList extends ConsumerWidget {
               final user = userList[index];
               return ListTile(
                 onTap: () {
-                  userListController.showUserForm(context, user: user);
+                  userListController.showForm(context, model: user);
                 },
                 title: Text(user.fullName),
                 subtitle: Text(user.userDetail.email!),
                 trailing: IconButton(
                     onPressed: () {
-                      userListController.removeUser(index);
+                      userListController.remove(context, index:index);
                     },
                     icon: Icon(Icons.delete)),
               );

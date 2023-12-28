@@ -11,7 +11,7 @@ class UserDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final navigationIndex = ref.watch(userNavigationProvider.notifier);
+    final navigationIndex = ref.read(userNavigationProvider.notifier);
     return SafeArea(
       child: Scaffold(
         body: Column(

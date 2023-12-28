@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
 
 ({String name}) record = (name: "sdf");
 
@@ -23,9 +24,26 @@ class DestinationForm extends ConsumerWidget {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
-          title: Text(
-            "Add Destination",
-            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.delete))],
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Add Destination",
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+              IconButton(
+                  onPressed: () {
+                    ref
+                        .read(destinationListProvider.notifier)
+                        .remove(context, model: destination);
+                  },
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ))
+            ],
           ),
         ),
         body: SingleChildScrollView(
@@ -36,24 +54,29 @@ class DestinationForm extends ConsumerWidget {
                 child: Column(
                   children: [
                     customTextFormField(
+                      initialValue: destinationFormState.name,
                       labelText: "Destination Name",
                       onChanged: (value) {
                         destinationFormController.update(name: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue: destinationFormState.imageUrl,
                       labelText: "IMAGE URL HAI",
                       onChanged: (value) {
                         destinationFormController.update(imageUrl: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue: destinationFormState.description,
                       labelText: "Description (in short)",
                       onChanged: (value) {
                         destinationFormController.update(description: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue:
+                          destinationFormState.coordinates.longitude.toString(),
                       labelText: "Longitude",
                       onChanged: (value) {
                         destinationFormController.update(
@@ -61,6 +84,8 @@ class DestinationForm extends ConsumerWidget {
                       },
                     ),
                     customTextFormField(
+                      initialValue:
+                          destinationFormState.coordinates.latitude.toString(),
                       labelText: "Latitude",
                       onChanged: (value) {
                         destinationFormController.update(
@@ -72,30 +97,35 @@ class DestinationForm extends ConsumerWidget {
                     //   onChanged: (value) {},
                     // ),
                     customTextFormField(
+                      initialValue: destinationFormState.region,
                       labelText: "Region (example:Jumla)",
                       onChanged: (value) {
                         destinationFormController.update(region: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue: destinationFormState.duration,
                       labelText: "Duration (In days)",
                       onChanged: (value) {
                         destinationFormController.update(duration: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue: destinationFormState.maxHeight,
                       labelText: "Max Height (in Meters)",
                       onChanged: (value) {
                         destinationFormController.update(maxHeight: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue: destinationFormState.bestSeason,
                       labelText: "Best Season (example:Months)",
                       onChanged: (value) {
                         destinationFormController.update(bestSeason: value);
                       },
                     ),
                     customTextFormField(
+                      initialValue: destinationFormState.itinerary,
                       labelText: "Itinerary (Day to day plans)",
                       onChanged: (value) {
                         destinationFormController.update(itinerary: value);
@@ -148,7 +178,7 @@ class DestinationForm extends ConsumerWidget {
   }
 
   Padding customTextFormField(
-      {TextEditingController? textEditingController,
+      {String? initialValue,
       IconData? iconData,
       required String labelText,
       required Function(dynamic) onChanged,
@@ -156,10 +186,10 @@ class DestinationForm extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       child: TextFormField(
+        initialValue: initialValue,
         onChanged: (value) {
           onChanged(value);
         },
-        controller: textEditingController,
         decoration: InputDecoration(
           suffixIcon: Icon(iconData),
           labelText: labelText,

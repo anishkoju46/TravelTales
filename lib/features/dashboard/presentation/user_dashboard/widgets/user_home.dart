@@ -102,7 +102,7 @@ class UserHome extends ConsumerWidget {
           //           image: "assets/langtang/langtang11.png",
           //           destination: "Ramechap"),
           //       destinationShowCase(context,
-          //           image: "assets/langtang/langtang11.png",
+          //           image: "assets//langtang11.png",
           //           destination: "Mama Ghar"),
           //       destinationShowCase(context,
           //           image: "assets/langtang/langtang11.png",

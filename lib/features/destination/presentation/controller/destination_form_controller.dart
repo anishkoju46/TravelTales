@@ -53,19 +53,27 @@ class DestinationFormController extends FormController<DestinationModel> {
     );
   }
 
-  @override
+@override
   handleSubmit(BuildContext context) {
     if (isValidated) {
       // print(state.length);
       if (state != arg) {
-        ref.read(destinationListProvider.notifier).handelSubmit(state);
+        ref
+            .read(destinationListProvider.notifier)
+            .handleSubmit(context, model: state);
         //Navigator.pop(context);
-        //resetForm();
+        resetForm();
       } else {
         if (kDebugMode) {
           print("No changes Made");
         }
       }
     }
+  }
+
+  @override
+  updateState() {
+    // TODO: implement updateState
+    throw UnimplementedError();
   }
 }

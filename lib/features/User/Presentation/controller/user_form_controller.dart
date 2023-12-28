@@ -34,7 +34,7 @@ class UserFormController extends FormController<UserModel> {
   handleSubmit(BuildContext context) {
     if (isValidated) {
       if (state != arg) {
-        ref.read(userListProvider.notifier).handleSubmit(state);
+        ref.read(userListProvider.notifier).handleSubmit(context, model: state);
         //Navigator.pop(context);
         resetForm();
       } else {
@@ -43,5 +43,11 @@ class UserFormController extends FormController<UserModel> {
         }
       }
     }
+  }
+
+  @override
+  updateState() {
+    // TODO: implement updateState
+    throw UnimplementedError();
   }
 }
