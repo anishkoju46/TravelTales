@@ -45,7 +45,9 @@ class CategoryList extends ConsumerWidget {
               categoryOption.name,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? Colors.red : Colors.grey),
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onSecondary
+                      : Colors.grey),
             )),
       );
     });

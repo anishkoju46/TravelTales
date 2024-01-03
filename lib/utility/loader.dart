@@ -22,7 +22,15 @@ class _LoaderState extends ConsumerState<Loader> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Icon(Icons.hiking), Text("TravelTales")],
+          children: [
+            //Icon(Icons.hiking), Text("TravelTales"),
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/images/TT.png"))),
+            )
+          ],
         ),
       ),
     );

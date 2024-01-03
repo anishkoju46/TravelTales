@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model.dart';
-import 'package:traveltales/features/User/Presentation/controller/user_form_controller.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/auth/presentation/widgets/login_screen.dart';
 
@@ -12,7 +11,7 @@ class SignupScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final signupFormController = ref.read(userFormProvider(user).notifier);
-    final signupFormState = ref.watch(userFormProvider(user));
+    //final signupFormState = ref.watch(userFormProvider(user));
     return SafeArea(
         child: Scaffold(
       body: SingleChildScrollView(

@@ -3,17 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/controller/login_controller.dart';
 import 'package:traveltales/features/auth/presentation/widgets/signup_screen.dart';
 
-//auth ma model
-//usermodel type ko provider
+final TextEditingController _emailController = TextEditingController();
+final TextEditingController _passwordController = TextEditingController();
 
 class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
-
-  final TextEditingController _emailController =
-      TextEditingController(text: "four@gmail.com");
-  final TextEditingController _passwordController =
-      TextEditingController(text: "4444");
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final currentUserController = ref.read(authNotifierProvider.notifier);
@@ -25,19 +19,12 @@ class LoginScreen extends ConsumerWidget {
             SizedBox(
               height: 10,
             ),
-            Text(
-              "Travel Tales",
-              style: Theme.of(context)
-                  .textTheme
-                  .headlineLarge
-                  ?.copyWith(fontWeight: FontWeight.bold),
-            ),
             Expanded(
               flex: 2,
               child: Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/images/Logo.jpeg"))),
+                        image: AssetImage("assets/images/TT.png"))),
               ),
             ),
             Expanded(
