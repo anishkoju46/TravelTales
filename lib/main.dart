@@ -6,6 +6,7 @@ import 'package:traveltales/utility/theme_controller.dart';
 
 void main() async {
   await GetStorage.init();
+  // GetStorage().erase;
   runApp(
     const ProviderScope(
       child: MyApp(),

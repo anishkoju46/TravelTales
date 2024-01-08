@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/auth/presentation/controller/login_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/auth/presentation/widgets/signup_screen.dart';
-
-final TextEditingController _emailController = TextEditingController();
-final TextEditingController _passwordController = TextEditingController();
 
 class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final loginFormState = ref.watch(loginNotifierProvider);
     //final currentUserController = ref.read(authNotifierProvider.notifier);
     final loginController = ref.read(loginNotifierProvider.notifier);
     return SafeArea(
@@ -32,23 +30,36 @@ class LoginScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   Form(
-                    autovalidateMode: AutovalidateMode.always,
+                    key: loginController.formKey,
                     child: Column(
                       children: [
                         customTextFormField(
-                          textEditingController: _emailController,
+                          controller: loginController.emailController,
+                          // initialValue: loginFormState.email,
                           credentials: "Email",
                           iconData: Icons.email,
+                          onchanged: (value) {
+                            loginController.update(email: value);
+                          },
                         ),
                         customTextFormField(
-                            textEditingController: _passwordController,
+                            controller: loginController.passwordController,
+                            obscureText: loginFormState.showPassword,
+                            // initialValue: loginFormState.password,
+                            iconData: loginFormState.showPassword
+                                ? Icons.lock
+                                : Icons.lock_open,
+                            onTapIcon: (value) {
+                              return loginController.update(
+                                  showPassword: value);
+                            },
                             credentials: "Password",
-                            iconData: Icons.lock),
+                            onchanged: (value) {
+                              loginController.update(password: value);
+                            }),
                         ElevatedButton(
                           onPressed: () {
-                            loginController.login(context,
-                                email: _emailController.text,
-                                password: _passwordController.text);
+                            loginController.login(context);
                           },
                           child: Text('LOGIN'),
                         )
@@ -60,8 +71,7 @@ class LoginScreen extends ConsumerWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return SignupScreen();
                 }));
               },
@@ -95,16 +105,33 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Padding customTextFormField(
-      {TextEditingController? textEditingController,
-      required IconData iconData,
-      required String credentials}) {
+  Padding customTextFormField({
+    required IconData iconData,
+    required String credentials,
+    String? initialValue,
+    required Function(String) onchanged,
+    bool obscureText = false,
+    bool? Function(bool)? onTapIcon,
+    TextEditingController? controller,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
-        controller: textEditingController,
+        controller: controller,
+        obscureText: obscureText,
+        onChanged: (data) {
+          onchanged(data);
+        },
+        initialValue: initialValue,
         decoration: InputDecoration(
-          suffixIcon: Icon(iconData),
+          suffixIcon: InkWell(
+            onTap: onTapIcon != null
+                ? () {
+                    onTapIcon(!obscureText);
+                  }
+                : null,
+            child: Icon(iconData),
+          ),
           labelText: credentials,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),

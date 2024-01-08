@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 
 final favouriteStorage = GetStorage();
 
@@ -17,7 +18,7 @@ class FavouriteController extends Notifier<Map<String, DestinationModel>> {
     var fav = favouriteStorage.read(favouriteKey);
     if (fav != null) {
       List<DestinationModel> list = destinationModelFromJson(fav);
-      return {for (var e in list) e.id: e};
+      return {for (var e in list) e.id!: e};
     } else {
       return {};
     }
@@ -25,7 +26,7 @@ class FavouriteController extends Notifier<Map<String, DestinationModel>> {
   }
 
   addToFavourite(DestinationModel destination) {
-    state = {...state..putIfAbsent(destination.id, () => destination)};
+    state = {...state..putIfAbsent(destination.id!, () => destination)};
     var value = state.values.toList();
     favouriteStorage.write(favouriteKey, destinationModelToJson(value));
   }
@@ -45,7 +46,7 @@ class FavouriteController extends Notifier<Map<String, DestinationModel>> {
 
   handleFavourite(DestinationModel destination) {
     if (state.containsKey(destination.id)) {
-      removeFromFavourite(destination.id);
+      removeFromFavourite(destination.id!);
     } else {
       addToFavourite(destination);
     }

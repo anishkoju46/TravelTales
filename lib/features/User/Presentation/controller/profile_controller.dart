@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/User/Domain/user_model.dart';
+import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/widgets/edit_profile_screen.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/auth/presentation/controller/login_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 
 final profileProvider =
     NotifierProvider<ProfileController, UserModel>(ProfileController.new);
@@ -26,14 +27,14 @@ class ProfileController extends Notifier<UserModel> {
     }));
   }
 
-  update(UserModel user) {
-    ref.read(loginNotifierProvider.notifier).updateUser(user.copyWith(
-        fullName: fullNameController.text,
-        userDetail: user.userDetail.copyWith(
-            email: EmailController.text, phoneNumber: phoneController.text)));
-  }
+  // update(UserModel user) {
+  //   ref.read(loginNotifierProvider.notifier).updateUser(user.copyWith(
+  //       fullName: fullNameController.text,
+  //       email: EmailController.text,
+  //       phoneNumber: phoneController.text));
+  // }
 
-  delete(UserModel user) {
-    ref.read(loginNotifierProvider.notifier).deactivateUser(user.id);
-  }
+  // delete(UserModel user) {
+  //   ref.read(loginNotifierProvider.notifier).deactivateUser(user.id!);
+  // }
 }

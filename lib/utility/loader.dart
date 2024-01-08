@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 
 class Loader extends ConsumerStatefulWidget {
   const Loader({super.key});

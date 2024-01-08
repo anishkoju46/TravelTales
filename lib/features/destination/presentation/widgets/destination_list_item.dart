@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/domain/destination_model.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 
 class DestinationListItem extends ConsumerWidget {
@@ -40,7 +40,7 @@ class DestinationListItem extends ConsumerWidget {
                 ),
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
-                  image: AssetImage(destination.imageUrl),
+                  image: AssetImage(destination.imageUrl!.first), //TODO
                 ),
                 // boxShadow: [
                 //   BoxShadow(
@@ -58,13 +58,13 @@ class DestinationListItem extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      destination.name,
+                      destination.name!,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.background),
                     ),
                     Text(
-                      "Ratings: ${destination.ratings}/5",
+                      "Ratings: ${destination.rating}/5",
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.background),
@@ -86,27 +86,29 @@ class DestinationListItem extends ConsumerWidget {
                   ),
                   child: FavouriteButton(destination: destination)),
             ),
-            Positioned(
-                top: 15,
-                left: 15,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
+            //using if condition for frontend - role true hunda matra yo edit button dekhaune
+            if (ref.read(authNotifierProvider)!.role!)
+              Positioned(
+                  top: 15,
+                  left: 15,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
                     ),
-                  ),
-                  child: IconButton(
-                      onPressed: () {
-                        ref
-                            .read(destinationListProvider.notifier)
-                            .showForm(context, model: destination);
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.green,
-                      )),
-                )),
+                    child: IconButton(
+                        onPressed: () {
+                          ref
+                              .read(destinationListProvider.notifier)
+                              .showForm(context, model: destination);
+                        },
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.green,
+                        )),
+                  )),
           ],
         ),
       ),

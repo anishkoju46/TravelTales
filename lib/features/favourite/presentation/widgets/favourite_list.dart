@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list_item.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 
@@ -18,10 +17,11 @@ class FavouriteList extends ConsumerWidget {
           return DestinationListItem(
               destination: favouriteList[index].value,
               onPressed: () {
-                ref
-                    .read(destinationListProvider.notifier)
-                    .showDestinationDetails(
-                        context, favouriteList[index].value);
+                //TODO
+                // ref
+                //     .read(destinationListProvider.notifier)
+                //     .showDestinationDetails(
+                //         context, favouriteList[index].value);
               });
         });
   }

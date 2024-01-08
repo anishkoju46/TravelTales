@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/category/domain/category_model.dart';
+import 'package:traveltales/features/category/domain/category_model_new.dart';
+import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 
 class CategoryList extends ConsumerWidget {
@@ -8,19 +9,29 @@ class CategoryList extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedCategory = ref.watch(CategoryNotifierProvider);
-    final categoryList = ref.read(CategoryNotifierProvider.notifier).categories;
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: categoryList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            color: Color(0xffD9D9D9),
-            child: customCategoryBar(context,
-                categoryOption: categoryList[index],
-                isSelected: selectedCategory.id == categoryList[index].id),
-          );
-        });
+    final categoryList = ref.watch(categoryListProvider);
+    return categoryList.when(
+        data: (data) {
+          final selectedCategory = ref.watch(CategoryNotifierProvider);
+          final categories = [CategoryModel(name: "All"), ...data];
+          return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Container(
+                  color: Color(0xffD9D9D9),
+                  child: customCategoryBar(
+                    context,
+                    categoryOption: categories[index],
+                    isSelected: selectedCategory!.id == categories[index].id,
+                  ),
+                );
+              });
+        },
+        error: ((error, stackTrace) => Center(
+              child: Text(error.toString()),
+            )),
+        loading: () => Container());
   }
 
   Consumer customCategoryBar(BuildContext context,
@@ -42,7 +53,7 @@ class CategoryList extends ConsumerWidget {
               ),
             ),
             child: Text(
-              categoryOption.name,
+              categoryOption.name!,
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   fontWeight: FontWeight.w600,
                   color: isSelected

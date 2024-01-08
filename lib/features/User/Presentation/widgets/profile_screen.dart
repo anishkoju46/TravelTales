@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -38,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 image: AssetImage(
-                                    "${ref.read(authNotifierProvider)?.userDetail.imageUrl}")),
+                                    "${ref.read(authNotifierProvider)!.imageUrl!.isEmpty ? "assets/images/aa.jpg" : ref.read(authNotifierProvider)!.imageUrl}")),
                             shape: BoxShape.circle,
                             color: Colors.amber,
                             border: Border.all()),
@@ -73,14 +74,14 @@ class ProfileScreen extends ConsumerWidget {
                               ?.copyWith(fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          "${authController?.userDetail.email}",
+                          "${authController?.email}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "${authController?.userDetail.phoneNumber}",
+                          "${authController?.phoneNumber}",
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
@@ -154,7 +155,7 @@ class ProfileScreen extends ConsumerWidget {
                               color: Color(0xffD4A056), onTap: () {
                             ref
                                 .read(authNotifierProvider.notifier)
-                                .signOut(context);
+                                .logout(context);
                           }),
 
                           // Text("Edit Profile"),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 
 class AdminProfileScreen extends ConsumerWidget {
   const AdminProfileScreen({super.key});
@@ -13,7 +13,7 @@ class AdminProfileScreen extends ConsumerWidget {
             icon: Icons.exit_to_app,
             profileButtonText: "Sign Out",
             color: Color(0xffD4A056), onTap: () {
-          ref.read(authNotifierProvider.notifier).signOut(context);
+          ref.read(authNotifierProvider.notifier).logout(context);
         }),
       ],
     );

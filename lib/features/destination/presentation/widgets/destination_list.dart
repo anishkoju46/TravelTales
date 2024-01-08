@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list_item.dart';
 
 class DestinationList extends ConsumerWidget {
@@ -10,18 +10,24 @@ class DestinationList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollController = ref.read(destinationListProvider.notifier);
     final destinationList = ref.watch(destinationListProvider);
-    print(destinationList.length);
-    return ListView.builder(
-        controller: scrollController.listScrollController,
-        itemCount: destinationList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return DestinationListItem(
-              destination: destinationList[index],
-              onPressed: () {
-                ref
-                    .read(destinationListProvider.notifier)
-                    .showDestinationDetails(context, destinationList[index]);
-              });
-        });
+    return destinationList.when(
+        data: (data) => ListView.builder(
+            controller: scrollController.listScrollController,
+            itemCount: data.length,
+            itemBuilder: (BuildContext context, int index) {
+              return DestinationListItem(
+                  destination: data[index],
+                  onPressed: () {
+                    ref
+                        .read(destinationListProvider.notifier)
+                        .showDestinationDetails(context, data[index]);
+                  });
+            }),
+        error: ((error, stackTrace) => Center(
+              child: Text(error.toString()),
+            )),
+        loading: () => Center(
+              child: CircularProgressIndicator(),
+            ));
   }
 }

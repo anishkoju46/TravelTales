@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 
 class FavouriteButton extends ConsumerWidget {

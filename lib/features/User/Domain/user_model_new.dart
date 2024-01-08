@@ -1,17 +1,25 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 
+List<UserModel> userModelFromJson(String str) =>
+    List<UserModel>.from(json.decode(str).map((x) => UserModel.fromJson(x)));
+
+String userModelToJson(List<UserModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 class UserModel extends Equatable {
   @override
   List<Object?> get props =>
-      [id, fullName, phoneNumber, role, block, favourites, gallery];
+      [id, fullName, phoneNumber, imageUrl, role, block, favourites, gallery];
 
   final String? id;
   final String? fullName;
   final String? email;
   final String? phoneNumber;
+  final String? imageUrl;
   final bool? role;
   final bool? block;
   final List<DestinationModel>? favourites; //yeta destination hunu parxa hai
@@ -26,6 +34,7 @@ class UserModel extends Equatable {
     this.fullName,
     this.email,
     this.phoneNumber,
+    this.imageUrl,
     this.role,
     this.block,
     this.favourites,
@@ -41,6 +50,7 @@ class UserModel extends Equatable {
     String? fullName,
     String? email,
     String? phoneNumber,
+    String? imageUrl,
     bool? role,
     bool? block,
     List<DestinationModel>? favourites,
@@ -55,6 +65,7 @@ class UserModel extends Equatable {
         fullName: fullName ?? this.fullName,
         email: email ?? this.email,
         phoneNumber: phoneNumber ?? this.phoneNumber,
+        imageUrl: imageUrl ?? this.imageUrl,
         role: role ?? this.role,
         block: block ?? this.block,
         favourites: favourites ?? this.favourites,
@@ -75,6 +86,7 @@ class UserModel extends Equatable {
         fullName: json["fullName"],
         email: json["email"],
         phoneNumber: json["phoneNumber"],
+        imageUrl: json["imageUrl"],
         role: json["role"],
         block: json["block"],
         favourites: json["favourites"] == null
@@ -99,6 +111,7 @@ class UserModel extends Equatable {
         "fullName": fullName,
         "email": email,
         "phoneNumber": phoneNumber,
+        "imageUrl": imageUrl,
         "role": role,
         "block": block,
         "favourites": favourites == null

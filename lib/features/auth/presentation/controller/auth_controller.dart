@@ -1,51 +1,92 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/User/Domain/user_model.dart';
+import 'package:traveltales/features/User/Domain/user_model_new.dart';
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/auth/presentation/widgets/login_screen.dart';
 import 'package:traveltales/features/dashboard/presentation/admin_dashboard/widgets/admin_dashboard.dart';
 import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_dashboard.dart';
-import 'package:traveltales/utility/loader.dart';
+import 'package:traveltales/utility/async_list_controller.dart';
 
 final storage = GetStorage();
 
-final authNotifierProvider =
-    NotifierProvider<AuthController, UserModel?>(AuthController.new);
-
 class AuthController extends Notifier<UserModel?> {
-  final String key = "key";
   @override
   UserModel? build() {
-    var user = storage.read(key);
-    if (user != null) {
-      return UserModel.fromRawJson(user);
-    }
-    return null;
+    return loadUser();
   }
 
-  login([UserModel? user]) {
-    //to do: check if the user model is null or not
-    //state ma vako lai rawjason use gareera getStorage ma save garnu paryo
+  final key = "currentUser";
 
-    state = user ?? UserModel.generateUser(role: false);
-    storage.write("key", state!.toRawJson());
+  UserModel? loadUser() {
+    final storedUser = storage.read(key);
+
+    if (storedUser == null) return null;
+
+    final user = UserModel.fromRawJson(storedUser);
+
+    return user;
   }
 
-  signOut(BuildContext context) {
-    //remove key
-    state = null;
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) {
-          return Loader();
-        },
-      ),
-    );
-    storage.remove(key);
+  // init(BuildContext context) async {
+  //   if (state == null) {
+  //     return Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => LoginScreen(),
+  //         ));
+  //   }
+  //   //loginWithToken();
+
+  //   Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //         builder: (context) => const UserDashboard(),
+  //       ));
+  // }
+
+  // loginWithToken() async {
+  //   if (state?.token != null) {
+  //     state = await AuthRepository(token: state?.token).login();
+  //   }
+  // }
+
+  login(BuildContext context,
+      {required String email, required String password}) async {
+    final client = await ref.getDebouncedHttpClient();
+    state = await AuthRepository(client: client)
+        .login(email: email, password: password);
+
+    storage.write(key, state?.toRawJson());
+
+    Future.delayed(Duration(milliseconds: 100), () {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  state!.role! ? AdminDashboard() : UserDashboard()));
+    });
   }
 
-  bool get role => state!.role;
+  signUp(BuildContext context,
+      {required String fullName,
+      required String email,
+      required String phoneNumber,
+      required String password}) async {
+    final client = await ref.getDebouncedHttpClient();
+    await AuthRepository(client: client).signUp(
+        fullName: fullName,
+        email: email,
+        password: password,
+        phoneNumber: phoneNumber);
+    Navigator.pop(context);
+    ref
+        .read(loginNotifierProvider.notifier)
+        .update(email: email, password: password);
+  }
+
+  // bool get role => state!.role!;
 
   loader(BuildContext context) {
     Future.delayed(
@@ -57,7 +98,7 @@ class AuthController extends Notifier<UserModel?> {
             builder: (context) {
               return state == null
                   ? LoginScreen()
-                  : state!.role
+                  : state!.role!
                       ? AdminDashboard()
                       : UserDashboard();
             },
@@ -66,7 +107,39 @@ class AuthController extends Notifier<UserModel?> {
       },
     );
   }
+
+  logout(BuildContext context) {
+    storage.remove(key);
+    state = null;
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
+  }
+
+  // login([UserModel? user]) {
+  //   //to do: check if the user model is null or not
+  //   //state ma vako lai rawjason use gareera getStorage ma save garnu paryo
+
+  //   //TODO
+  //   //state = user ?? UserModel.generateUser(role: false);
+  //   storage.write("key", state!.toRawJson());
+  // }
+
+  // signOut(BuildContext context) {
+  //   //remove key
+  //   state = null;
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) {
+  //         return Loader();
+  //       },
+  //     ),
+  //   );
+  //   storage.remove(key);
+  // }
 }
+
+
 
 //email + password
 //login ra sign up ma textediting controller

@@ -1,32 +1,34 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:traveltales/features/User/Domain/user_model.dart';
+import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/utility/form_controller.dart';
 
 class UserFormController extends FormController<UserModel> {
   @override
   UserModel build(UserModel? arg) {
-    return arg ?? UserModel.empty();
+    return arg ?? UserModel();
   }
 
   @override
-  update({
-    String? fullName,
-    bool? role,
-    bool? block,
-    String? email,
-    String? imageUrl,
-    String? phoneNumber,
-  }) {
+  update(
+      {String? fullName,
+      String? email,
+      String? phoneNumber,
+      String? imageUrl,
+      bool? role,
+      bool? block,
+      List? favourites,
+      List? gallery}) {
     state = state.copyWith(
       fullName: fullName ?? state.fullName,
+      email: email ?? state.email,
+      phoneNumber: phoneNumber ?? state.phoneNumber,
+      imageUrl: imageUrl ?? state.imageUrl,
       role: role ?? state.role,
       block: block ?? state.block,
-      userDetail: state.userDetail.copyWith(
-          email: email ?? state.userDetail.email,
-          imageUrl: imageUrl ?? state.userDetail.imageUrl,
-          phoneNumber: phoneNumber ?? state.userDetail.phoneNumber),
+      // favourites: favourites ?? state.favourites,
+      // gallery: gallery ?? state.gallery,
     );
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/User/Domain/user_model.dart';
+import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class EditProfileScreen extends ConsumerWidget {
@@ -23,7 +24,7 @@ class EditProfileScreen extends ConsumerWidget {
             child: Column(
               children: [
                 feild(
-                  initialValue: userFormState.fullName,
+                  initialValue: userFormState.fullName!,
                   label: "Full Name",
                   onchanged: (value) {
                     userFormController.update(fullName: value);
@@ -31,24 +32,24 @@ class EditProfileScreen extends ConsumerWidget {
                 ),
                 feild(
                   label: "Email",
-                  initialValue: userFormState.userDetail.email!,
+                  initialValue: userFormState.email!,
                   onchanged: (value) {
                     userFormController.update(email: value);
                   },
                 ),
                 feild(
                   label: "Phone Number",
-                  initialValue: userFormState.userDetail.phoneNumber,
+                  initialValue: userFormState.phoneNumber!,
                   onchanged: (value) {
                     userFormController.update(phoneNumber: value);
                   },
                 ),
-                if (ref.read(authNotifierProvider)!.role) ...[
+                if (ref.read(authNotifierProvider)!.role!) ...[
                   Row(
                     children: [
                       Text("ADMIN "),
                       Switch(
-                          value: userFormState.role,
+                          value: userFormState.role!,
                           onChanged: (value) {
                             userFormController.update(role: value);
                           }),
@@ -58,7 +59,7 @@ class EditProfileScreen extends ConsumerWidget {
                     children: [
                       Text("BLOCK "),
                       Switch(
-                          value: userFormState.block,
+                          value: userFormState.block!,
                           onChanged: (value) {
                             userFormController.update(block: value);
                           }),

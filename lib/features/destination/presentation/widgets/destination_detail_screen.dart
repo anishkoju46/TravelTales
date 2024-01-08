@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
@@ -20,7 +21,8 @@ class DestinationDetailScreen extends ConsumerWidget {
                 height: 300,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(destinationModel.imageUrl),
+                      image:
+                          AssetImage(destinationModel.imageUrl!.first), //TODO
                       fit: BoxFit.cover),
                 ),
               ),
@@ -87,14 +89,14 @@ class DestinationDetailScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(destinationModel.name),
-              Text(destinationModel.maxHeight)
+              Text(destinationModel.name!),
+              Text(destinationModel.maxHeight!)
             ],
           ),
-          Text(destinationModel.description),
-          Text(destinationModel.bestSeason),
-          Text(destinationModel.region),
-          Text(destinationModel.itinerary)
+          Text(destinationModel.description!),
+          Text(destinationModel.bestSeason!),
+          Text(destinationModel.region!),
+          Text(destinationModel.itinerary!.first) //TODO
         ]));
   }
 }

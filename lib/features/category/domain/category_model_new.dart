@@ -7,7 +7,7 @@ List<CategoryModel> categoryModelFromJson(String str) =>
     List<CategoryModel>.from(
         json.decode(str).map((x) => CategoryModel.fromJson(x)));
 
-String userModelToJson(List<CategoryModel> data) =>
+String categoryModelToJson(List<CategoryModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class CategoryModel extends Equatable {
@@ -53,7 +53,7 @@ class CategoryModel extends Equatable {
   String toRawJson() => json.encode(toJson());
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => CategoryModel(
-        id: json["_id"],
+        id: json["name"] == "All" ? null : json["_id"],
         name: json["name"],
         user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
         createdAt: json["createdAt"] == null

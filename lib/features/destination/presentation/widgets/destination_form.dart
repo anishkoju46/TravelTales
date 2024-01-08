@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/domain/destination_model.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
 
@@ -35,9 +37,10 @@ class DestinationForm extends ConsumerWidget {
               ),
               IconButton(
                   onPressed: () {
-                    ref
-                        .read(destinationListProvider.notifier)
-                        .remove(context, model: destination);
+                    //TODO
+                    // ref
+                    //     .read(destinationListProvider.notifier)
+                    //     .remove(destination!);
                   },
                   icon: Icon(
                     Icons.delete,
@@ -61,7 +64,7 @@ class DestinationForm extends ConsumerWidget {
                       },
                     ),
                     customTextFormField(
-                      initialValue: destinationFormState.imageUrl,
+                      initialValue: destinationFormState.imageUrl!.first, //TODO
                       labelText: "IMAGE URL HAI",
                       onChanged: (value) {
                         destinationFormController.update(imageUrl: value);
@@ -75,8 +78,9 @@ class DestinationForm extends ConsumerWidget {
                       },
                     ),
                     customTextFormField(
-                      initialValue:
-                          destinationFormState.coordinates.longitude.toString(),
+                      initialValue: destinationFormState
+                          .coordinates!.coordinates
+                          .toString(),
                       labelText: "Longitude",
                       onChanged: (value) {
                         destinationFormController.update(
@@ -84,18 +88,15 @@ class DestinationForm extends ConsumerWidget {
                       },
                     ),
                     customTextFormField(
-                      initialValue:
-                          destinationFormState.coordinates.latitude.toString(),
+                      initialValue: destinationFormState
+                          .coordinates!.coordinates
+                          .toString(),
                       labelText: "Latitude",
                       onChanged: (value) {
                         destinationFormController.update(
                             latitude: double.tryParse(value as String) ?? 0.0);
                       },
                     ),
-                    // customTextFormField(
-                    //   labelText: "ImageUrl",
-                    //   onChanged: (value) {},
-                    // ),
                     customTextFormField(
                       initialValue: destinationFormState.region,
                       labelText: "Region (example:Jumla)",
@@ -124,13 +125,13 @@ class DestinationForm extends ConsumerWidget {
                         destinationFormController.update(bestSeason: value);
                       },
                     ),
-                    customTextFormField(
-                      initialValue: destinationFormState.itinerary,
-                      labelText: "Itinerary (Day to day plans)",
-                      onChanged: (value) {
-                        destinationFormController.update(itinerary: value);
-                      },
-                    ),
+                    // customTextFormField(
+                    //   initialValue: destinationFormState.itinerary,
+                    //   labelText: "Itinerary (Day to day plans)",
+                    //   onChanged: (value) {
+                    //     destinationFormController.update(itinerary: value);
+                    //   },
+                    // ),
                     Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -148,7 +149,7 @@ class DestinationForm extends ConsumerWidget {
                                 .map(
                                   (e) => DropdownMenuItem(
                                     value: e,
-                                    child: Text(e.name),
+                                    child: Text(e.name!),
                                   ),
                                 )
                                 .toList(),

@@ -20,11 +20,11 @@ class UserList extends ConsumerWidget {
                 onTap: () {
                   userListController.showForm(context, model: user);
                 },
-                title: Text(user.fullName),
-                subtitle: Text(user.userDetail.email!),
+                title: Text(user.fullName!),
+                subtitle: Text("${user.email}"),
                 trailing: IconButton(
                     onPressed: () {
-                      userListController.remove(context, index:index);
+                      userListController.remove(context, index: index);
                     },
                     icon: Icon(Icons.delete)),
               );
