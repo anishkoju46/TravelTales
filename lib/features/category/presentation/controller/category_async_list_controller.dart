@@ -47,4 +47,8 @@ class CategoryController extends AsyncListController<CategoryModel> {
     //}
     return categories;
   }
+
+  List<CategoryModel> get usableCategories => hasData
+      ? [...state.value!..removeWhere((element) => element.name == "Top Rated")]
+      : [];
 }

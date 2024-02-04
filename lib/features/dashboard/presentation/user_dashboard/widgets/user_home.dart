@@ -45,11 +45,14 @@ class UserHome extends ConsumerWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w500),
+                        ?.copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
                 // Category Navigator Bar
-                SizedBox(height: 30, child: CategoryList()),
+                Container(
+                    //color: Colors.red,
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child: SizedBox(height: 30, child: CategoryList())),
                 // SingleChildScrollView(
                 //   scrollDirection: Axis.horizontal,
                 //   child: Container(

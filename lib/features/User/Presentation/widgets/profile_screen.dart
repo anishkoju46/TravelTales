@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 
@@ -10,23 +9,25 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Consumer(builder: (context, ref, child) {
+      final user = ref.watch(authNotifierProvider);
       return Column(children: [
         //Profile Part 1
         Expanded(
           flex: 4,
           child: Container(
+            color: Color(0xff798CAB),
             padding: EdgeInsets.symmetric(vertical: 5),
             alignment: Alignment.center,
             child: Column(
               children: [
                 Expanded(
+                  flex: 2,
                   child: Container(
-                    //color: Colors.amber,
                     child: Text(
                       "PROFILE",
                       style: Theme.of(context)
                           .textTheme
-                          .headlineLarge
+                          .headlineMedium
                           ?.copyWith(fontWeight: FontWeight.w500),
                     ),
                   ),
@@ -35,26 +36,29 @@ class ProfileScreen extends ConsumerWidget {
                   flex: 5,
                   child: Stack(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage(
-                                    "${ref.read(authNotifierProvider)!.imageUrl!.isEmpty ? "assets/images/aa.jpg" : ref.read(authNotifierProvider)!.imageUrl}")),
-                            shape: BoxShape.circle,
-                            color: Colors.amber,
-                            border: Border.all()),
-                      ),
+                      if (user != null)
+                        Container(
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      "${user.imageUrl!.isEmpty ? "assets/images/aa.jpg" : ref.read(authNotifierProvider)!.imageUrl}")),
+                              shape: BoxShape.circle,
+                              color: Colors.amber,
+                              border: Border.all()),
+                        ),
                       Positioned(
-                          bottom: 0,
-                          right: 110,
+                          bottom: 10,
+                          right: 125,
                           child: Container(
                             margin: EdgeInsets.all(4),
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color:
-                                    Theme.of(context).colorScheme.onTertiary),
+                                color: Theme.of(context).colorScheme.primary),
                             child: IconButton(
-                                onPressed: () {}, icon: Icon(Icons.edit)),
+                              onPressed: () {},
+                              icon: Icon(Icons.edit),
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                           ))
                     ],
                   ),
@@ -62,7 +66,7 @@ class ProfileScreen extends ConsumerWidget {
                 Expanded(
                   flex: 3,
                   child: Consumer(builder: (context, ref, child) {
-                    final authController = ref.read(authNotifierProvider);
+                    final authController = ref.watch(authNotifierProvider);
 
                     return Column(
                       children: [
@@ -80,13 +84,13 @@ class ProfileScreen extends ConsumerWidget {
                               .bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
-                        Text(
-                          "${authController?.phoneNumber}",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        )
+                        // Text(
+                        //   "${authController?.phoneNumber}",
+                        //   style: Theme.of(context)
+                        //       .textTheme
+                        //       .bodyLarge
+                        //       ?.copyWith(fontWeight: FontWeight.w600),
+                        // )
                       ],
                     );
                   }),
@@ -123,76 +127,75 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ),
             child: Consumer(builder: (context, ref, child) {
-              return Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                          customProfileButtons(context,
-                              icon: Icons.person,
-                              profileButtonText: "Edit Profile", onTap: () {
-                            ref
-                                .read(profileProvider.notifier)
-                                .navigateToEditPage(context);
-                          }),
-                          customProfileButtons(context,
-                              icon: Icons.key,
-                              profileButtonText: "Change Password",
-                              onTap: () {}),
-                          customProfileButtons(context,
-                              icon: Icons.phone,
-                              profileButtonText: "Emergency Contacts",
-                              onTap: () {}),
-                          customProfileButtons(context,
-                              icon: Icons.info,
-                              profileButtonText: "About Us",
-                              onTap: () {}),
-                          customProfileButtons(context,
-                              icon: Icons.exit_to_app,
-                              profileButtonText: "Sign Out",
-                              color: Color(0xffD4A056), onTap: () {
-                            ref
-                                .read(authNotifierProvider.notifier)
-                                .logout(context);
-                          }),
+              return Column(
+                children: [
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        customProfileButtons(context,
+                            icon: Icons.person,
+                            profileButtonText: "Edit Profile", onTap: () {
+                          ref.read(profileProvider.notifier).edit(context);
+                        }),
+                        customProfileButtons(context,
+                            icon: Icons.key,
+                            profileButtonText: "Change Password", onTap: () {
+                          // ref
+                          //     .read(profileProvider.notifier)
+                          //     .navigateToChangePasswordPage(context);
+                        }),
+                        customProfileButtons(context,
+                            icon: Icons.phone,
+                            profileButtonText: "Emergency Contacts",
+                            onTap: () {}),
+                        customProfileButtons(context,
+                            icon: Icons.info,
+                            profileButtonText: "About Us",
+                            onTap: () {}),
+                        customProfileButtons(context,
+                            icon: Icons.exit_to_app,
+                            profileButtonText: "Sign Out",
+                            color: Color(0xffD4A056), onTap: () {
+                          ref
+                              .read(authNotifierProvider.notifier)
+                              .logout(context);
+                        }),
 
-                          // Text("Edit Profile"),
-                          // Text("Change Password"),
-                          // GestureDetector(
-                          //     onTap: () {
-                          //       ref
-                          //           .read(authNotifierProvider.notifier)
-                          //           .signOut(context);
-                          //     },
-                          //     child: Text("SignOut"))
+                        // Text("Edit Profile"),
+                        // Text("Change Password"),
+                        // GestureDetector(
+                        //     onTap: () {
+                        //       ref
+                        //           .read(authNotifierProvider.notifier)
+                        //           .signOut(context);
+                        //     },
+                        //     child: Text("SignOut"))
 
-                          // FilledButton.icon(
-                          //   style: ButtonStyle(
-                          //     backgroundColor: MaterialStatePropertyAll(
-                          //         Theme.of(context).colorScheme.primary),
-                          //   ),
-                          //   onPressed: () {
-                          //     ref
-                          //         .read(authNotifierProvider.notifier)
-                          //         .signOut(context);
-                          //   },
-                          //   icon: (Icon(
-                          //     Icons.person,
-                          //     color: Colors.red,
-                          //   )),
-                          //   label: Text(
-                          //     "Sign Out",
-                          //     style: TextStyle(color: Colors.amber),
-                          //   ),
-                          // ),
-                        ],
-                      ),
+                        // FilledButton.icon(
+                        //   style: ButtonStyle(
+                        //     backgroundColor: MaterialStatePropertyAll(
+                        //         Theme.of(context).colorScheme.primary),
+                        //   ),
+                        //   onPressed: () {
+                        //     ref
+                        //         .read(authNotifierProvider.notifier)
+                        //         .signOut(context);
+                        //   },
+                        //   icon: (Icon(
+                        //     Icons.person,
+                        //     color: Colors.red,
+                        //   )),
+                        //   label: Text(
+                        //     "Sign Out",
+                        //     style: TextStyle(color: Colors.amber),
+                        //   ),
+                        // ),
+                      ],
                     ),
-                    Text("Version 1.1.0")
-                  ],
-                ),
+                  ),
+                  Text("Version 1.1.0")
+                ],
               );
             }),
           ),
@@ -224,13 +227,24 @@ class ProfileScreen extends ConsumerWidget {
           child: Container(
             //color: Colors.red,
             child: Row(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              //mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(icon),
-                Text(
-                  profileButtonText,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.background),
+                SizedBox(width: 10),
+                Expanded(
+                  flex: 1,
+                  child: Icon(
+                    icon,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
+                ),
+                Expanded(
+                  flex: 7,
+                  child: Text(
+                    profileButtonText,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.background),
+                  ),
                 ),
               ],
             ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/category/presentation/widgets/category_list.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_form.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
 
@@ -31,11 +33,14 @@ class AdminHome extends ConsumerWidget {
                         ),
                         IconButton(
                           onPressed: () {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              //YETA PASS GARNA PARXA HAI
-                              return DestinationForm();
-                            }));
+                            ref
+                                .read(destinationListProvider.notifier)
+                                .showForm(context);
+                            // Navigator.push(context,
+                            //     MaterialPageRoute(builder: (context) {
+                            //   //YETA PASS GARNA PARXA HAI to EDIT destination
+                            //   return AddDestinationForm();
+                            // }));
                           },
                           icon: Icon(
                             Icons.add_link,
@@ -56,6 +61,10 @@ class AdminHome extends ConsumerWidget {
                       hintText: "Search for a place",
                     ),
                   ),
+                  Container(
+                      //color: Colors.red,
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      child: SizedBox(height: 30, child: CategoryList())),
                 ],
               ),
             ),

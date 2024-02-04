@@ -30,4 +30,8 @@ class AuthRepository extends Repository<UserModel> {
       "phoneNumber": phoneNumber
     }, path: "/signup");
   }
+
+  forgotPassword() {}
+
+  changePassword() {}
 }

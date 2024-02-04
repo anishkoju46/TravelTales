@@ -22,7 +22,10 @@ class SignupScreen extends ConsumerWidget {
                 alignment: Alignment.topLeft,
                 child: Text(
                   "Ready to Explore\nReal Nepal?",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 )),
             Form(
               key: signUpFormController.formKey,

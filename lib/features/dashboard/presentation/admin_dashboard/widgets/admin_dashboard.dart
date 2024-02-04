@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Presentation/widgets/admin_profile_screen.dart';
+import 'package:traveltales/features/User/Presentation/widgets/profile_screen.dart';
 import 'package:traveltales/features/User/Presentation/widgets/user_list.dart';
 import 'package:traveltales/features/dashboard/presentation/controller/navigation_controller.dart';
 import 'package:traveltales/features/dashboard/presentation/admin_dashboard/widgets/admin_home.dart';
@@ -27,6 +28,7 @@ class AdminDashboard extends ConsumerWidget {
                       Container(
                         color: Colors.white,
                       ),
+                      //ProfileScreen()
                       AdminProfileScreen()
                     ],
                   ),

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
-import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
 import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_list_controller.dart';
-
-({String name}) record = (name: "sdf");
 
 class DestinationForm extends ConsumerWidget {
   const DestinationForm({super.key, this.destination});
@@ -15,12 +11,12 @@ class DestinationForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bool isAdd = destination == null;
     final destinationFormController =
         ref.read(destinationFormProvider(destination).notifier);
     final destinationFormState =
         ref.watch(destinationFormProvider(destination));
-    final categories =
-        ref.read(CategoryNotifierProvider.notifier).usableCategories;
+    final categories = ref.read(categoryListProvider.notifier).usableCategories;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -31,7 +27,7 @@ class DestinationForm extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Add Destination",
+                isAdd ? "Add Destination" : "Update Destination",
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onPrimary),
               ),
@@ -64,10 +60,11 @@ class DestinationForm extends ConsumerWidget {
                       },
                     ),
                     customTextFormField(
-                      initialValue: destinationFormState.imageUrl!.first, //TODO
+                      initialValue:
+                          (destinationFormState.imageUrl?.first), //TODO
                       labelText: "IMAGE URL HAI",
                       onChanged: (value) {
-                        destinationFormController.update(imageUrl: value);
+                        destinationFormController.update(imageUrl: [value]);
                       },
                     ),
                     customTextFormField(
@@ -79,7 +76,7 @@ class DestinationForm extends ConsumerWidget {
                     ),
                     customTextFormField(
                       initialValue: destinationFormState
-                          .coordinates!.coordinates
+                          .coordinates?.coordinates!.first
                           .toString(),
                       labelText: "Longitude",
                       onChanged: (value) {
@@ -89,7 +86,7 @@ class DestinationForm extends ConsumerWidget {
                     ),
                     customTextFormField(
                       initialValue: destinationFormState
-                          .coordinates!.coordinates
+                          .coordinates?.coordinates!.last
                           .toString(),
                       labelText: "Latitude",
                       onChanged: (value) {
@@ -125,13 +122,13 @@ class DestinationForm extends ConsumerWidget {
                         destinationFormController.update(bestSeason: value);
                       },
                     ),
-                    // customTextFormField(
-                    //   initialValue: destinationFormState.itinerary,
-                    //   labelText: "Itinerary (Day to day plans)",
-                    //   onChanged: (value) {
-                    //     destinationFormController.update(itinerary: value);
-                    //   },
-                    // ),
+                    customTextFormField(
+                      initialValue: destinationFormState.itinerary?.first,
+                      labelText: "Itinerary (Day to day plans)",
+                      onChanged: (value) {
+                        destinationFormController.update(itinerary: [value]);
+                      },
+                    ),
                     Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -167,9 +164,10 @@ class DestinationForm extends ConsumerWidget {
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: ElevatedButton(
                     onPressed: () {
-                      destinationFormController.handleSubmit(context);
+                      destinationFormController.handleSubmit(context,
+                          isAdd: isAdd);
                     },
-                    child: Text("ADD Destination")),
+                    child: Text(isAdd ? "ADD" : "UPDATE")),
               )
             ],
           ),

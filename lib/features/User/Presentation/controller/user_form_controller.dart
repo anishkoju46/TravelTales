@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
-import 'package:traveltales/features/User/Presentation/state/user_state.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/form_controller.dart';
 
 class UserFormController extends FormController<UserModel> {
@@ -33,16 +34,29 @@ class UserFormController extends FormController<UserModel> {
   }
 
   @override
-  handleSubmit(BuildContext context) {
+  handleSubmit(BuildContext context) async {
     if (isValidated) {
       if (state != arg) {
-        ref.read(userListProvider.notifier).handleSubmit(context, model: state);
+        //TODO admin ko lagi list of users
+        //ref.read(userListProvider.notifier).handleSubmit(context, model: state);
         //Navigator.pop(context);
+        try {
+          final user = await UserRepository(
+                  token: ref.watch(authNotifierProvider)?.token)
+              .editProfile(
+                  fullName: state.fullName!,
+                  email: state.email!,
+                  phoneNumber: state.phoneNumber!);
+          ref.read(authNotifierProvider.notifier).update(user);
+          CustomSnack.success(context, message: "Profile Updated");
+        } catch (e, s) {
+          CustomSnack.error(context, message: e.toString());
+          // print(e);
+          // print(s);
+        }
         resetForm();
       } else {
-        if (kDebugMode) {
-          print("No Changes Made");
-        }
+        CustomSnack.info(context, message: "No changes Made");
       }
     }
   }

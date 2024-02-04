@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
-import 'package:traveltales/features/auth/presentation/controller/auth_controller.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
@@ -17,96 +16,133 @@ class EditProfileScreen extends ConsumerWidget {
     return SafeArea(
         child: Scaffold(
       body: Column(
+        //crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ArrowBackWidget(),
-          Form(
-            key: userFormController.formKey,
-            child: Column(
-              children: [
-                feild(
-                  initialValue: userFormState.fullName!,
-                  label: "Full Name",
-                  onchanged: (value) {
-                    userFormController.update(fullName: value);
-                  },
-                ),
-                feild(
-                  label: "Email",
-                  initialValue: userFormState.email!,
-                  onchanged: (value) {
-                    userFormController.update(email: value);
-                  },
-                ),
-                feild(
-                  label: "Phone Number",
-                  initialValue: userFormState.phoneNumber!,
-                  onchanged: (value) {
-                    userFormController.update(phoneNumber: value);
-                  },
-                ),
-                if (ref.read(authNotifierProvider)!.role!) ...[
-                  Row(
-                    children: [
-                      Text("ADMIN "),
-                      Switch(
-                          value: userFormState.role!,
-                          onChanged: (value) {
-                            userFormController.update(role: value);
-                          }),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("BLOCK "),
-                      Switch(
-                          value: userFormState.block!,
-                          onChanged: (value) {
-                            userFormController.update(block: value);
-                          }),
-                    ],
+          Container(
+              color: Theme.of(context).colorScheme.primary,
+              width: double.infinity,
+              child: Row(
+                children: [
+                  ArrowBackWidget(),
+                  Text(
+                    "Edit Profile",
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary),
                   )
-                ]
-              ]
-                  .map((e) => Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        child: e,
-                      ))
-                  .toList(),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                ],
+              )),
+          Column(
             children: [
-              customButton(
-                  onPressed: () {
-                    userFormController.handleSubmit(context);
-                  },
-                  iconData: Icons.done,
-                  string: "Save"),
-              customButton(
-                  onPressed: () {}, iconData: Icons.close, string: "Discard")
+              Form(
+                key: userFormController.formKey,
+                child: Column(
+                  children: [
+                    feild(
+                      initialValue: userFormState.fullName!,
+                      label: "Full Name",
+                      onchanged: (value) {
+                        userFormController.update(fullName: value);
+                      },
+                    ),
+                    feild(
+                      label: "Email",
+                      initialValue: userFormState.email!,
+                      onchanged: (value) {
+                        userFormController.update(email: value);
+                      },
+                    ),
+                    feild(
+                      label: "Phone Number",
+                      initialValue: userFormState.phoneNumber!,
+                      onchanged: (value) {
+                        userFormController.update(phoneNumber: value);
+                      },
+                    ),
+                    if (ref.read(authNotifierProvider)!.role!) ...[
+                      Row(
+                        children: [
+                          Text("ADMIN "),
+                          Switch(
+                              value: userFormState.role!,
+                              onChanged: (value) {
+                                userFormController.update(role: value);
+                              }),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("BLOCK "),
+                          Switch(
+                              value: userFormState.block!,
+                              onChanged: (value) {
+                                userFormController.update(block: value);
+                              }),
+                        ],
+                      )
+                    ]
+                  ]
+                      .map((e) => Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            child: e,
+                          ))
+                      .toList(),
+                ),
+              ),
             ],
           ),
-          customButton(
-              onPressed: () {}, iconData: Icons.delete, string: "Deactivate ")
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  customButton(
+                      onPressed: () {},
+                      iconData: Icons.close,
+                      string: "DISCARD"),
+                  customButton(
+                      onPressed: () {
+                        userFormController.handleSubmit(context);
+                      },
+                      iconData: Icons.done,
+                      string: "SAVE")
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 80),
+                child: customButton(
+                    onPressed: () {},
+                    iconData: Icons.delete,
+                    string: "Deactivate "),
+              )
+            ],
+          ),
         ],
       ),
     ));
   }
 
-  TextFormField feild(
+  Padding feild(
       {required String label,
       required String initialValue,
       required Function(String) onchanged,
       String? Function(String?)? validator}) {
-    return TextFormField(
-      onChanged: (value) {
-        onchanged(value);
-      },
-      initialValue: initialValue,
-      validator: validator,
-      decoration: InputDecoration(labelText: label),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+      child: TextFormField(
+        onChanged: (value) {
+          onchanged(value);
+        },
+        initialValue: initialValue,
+        validator: validator,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Colors.red),
+          ),
+        ),
+      ),
     );
   }
 

@@ -26,6 +26,7 @@ class MyApp extends ConsumerWidget {
       theme: themeController,
       debugShowCheckedModeBanner: false,
       home: const Loader(),
+      //home: const DestinationDashboard(),
     );
   }
 }

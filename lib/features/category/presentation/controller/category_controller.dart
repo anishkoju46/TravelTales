@@ -27,6 +27,6 @@ class CategoryController extends Notifier<CategoryModel?> {
     // return ref.refresh(categoryListProvider);
   }
 
-  List<CategoryModel> get usableCategories => [];
+  //List<CategoryModel> get usableCategories => state == null ? [] : [...state.];
   //categories..removeWhere((element) => element.id == "1");
 }

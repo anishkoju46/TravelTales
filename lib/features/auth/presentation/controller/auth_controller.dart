@@ -115,6 +115,14 @@ class AuthController extends Notifier<UserModel?> {
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
 
+  update(UserModel user) {
+    state = state!.copyWith(
+        fullName: user.fullName,
+        email: user.email,
+        phoneNumber: user.phoneNumber);
+    storage.write(key, state?.toRawJson());
+  }
+
   // login([UserModel? user]) {
   //   //to do: check if the user model is null or not
   //   //state ma vako lai rawjason use gareera getStorage ma save garnu paryo

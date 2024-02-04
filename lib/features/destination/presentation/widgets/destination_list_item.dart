@@ -78,27 +78,16 @@ class DestinationListItem extends ConsumerWidget {
               top: 15,
               right: 15,
               child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(12),
                   ),
-                  child: FavouriteButton(destination: destination)),
-            ),
-            //using if condition for frontend - role true hunda matra yo edit button dekhaune
-            if (ref.read(authNotifierProvider)!.role!)
-              Positioned(
-                  top: 15,
-                  left: 15,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(12),
-                      ),
-                    ),
-                    child: IconButton(
+                ),
+                child: ref.read(authNotifierProvider)?.role == false
+                    //if user show favourite button, if admin show edit button
+                    ? FavouriteButton(destination: destination)
+                    : IconButton(
                         onPressed: () {
                           ref
                               .read(destinationListProvider.notifier)
@@ -106,9 +95,61 @@ class DestinationListItem extends ConsumerWidget {
                         },
                         icon: Icon(
                           Icons.edit,
-                          color: Colors.green,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer,
                         )),
-                  )),
+              ),
+            ),
+            if (ref.read(authNotifierProvider)!.role!)
+              Positioned(
+                top: 75,
+                right: 15,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                  child: IconButton(
+                      onPressed: () {
+                        ref
+                            .read(destinationListProvider.notifier)
+                            .delete(context, destination);
+                        // ref
+                        //     .read(destinationListProvider.notifier)
+                        //     .showForm(context, model: destination);
+                      },
+                      icon: Icon(
+                        Icons.delete,
+                        color: Theme.of(context).colorScheme.secondaryContainer,
+                      )),
+                ),
+              ),
+            //using if condition for frontend - role true hunda matra yo edit button dekhaune
+            // if (ref.read(authNotifierProvider)!.role!)
+            //   Positioned(
+            //     top: 15,
+            //     left: 15,
+            //     child: Container(
+            //       decoration: BoxDecoration(
+            //         color: Theme.of(context).colorScheme.primary,
+            //         borderRadius: BorderRadius.all(
+            //           Radius.circular(12),
+            //         ),
+            //       ),
+            //       child: IconButton(
+            //           onPressed: () {
+            //             ref
+            //                 .read(destinationListProvider.notifier)
+            //                 .showForm(context, model: destination);
+            //           },
+            //           icon: Icon(
+            //             Icons.edit,
+            //             color: Colors.green,
+            //           )),
+            //     ),
+            //   ),
           ],
         ),
       ),

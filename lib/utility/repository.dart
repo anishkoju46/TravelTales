@@ -4,8 +4,8 @@ import 'package:http/http.dart';
 
 abstract class Repository<T> {
   Repository({this.token, this.client});
-  // final baseUrl = "http://localhost:8000/";
-  final baseUrl = "http://10.0.2.2:8000/";
+  final baseUrl = "http://localhost:8000/";
+  //final baseUrl = "http://10.0.2.2:8000/";
   final endPoint = "api";
 
   late final Map<String, String> headers = {
@@ -53,21 +53,23 @@ abstract class Repository<T> {
   }
 
   Future<T> updateOne(
-      {Client? client, required Map<String, dynamic> data}) async {
+      {Client? client,
+      required Map<String, dynamic> data,
+      String id = ""}) async {
     client ??= Client();
 
-    final response = await client.put(Uri.parse(baseUrl + endPoint),
-        body: data, headers: headers);
+    final response = await client.put(Uri.parse(baseUrl + endPoint + id),
+        body: jsonEncode(data), headers: headers);
 
     // if (response.statusCode == 200)
     return fromJson(_handleStatusCode(response).body);
     // return null;
   }
 
-  Future<T> removeOne({Client? client, required String id}) async {
+  Future<T> removeOne({Client? client, String id = ""}) async {
     client ??= Client();
 
-    final response = await client.delete(Uri.parse("$baseUrl$endPoint/id"),
+    final response = await client.delete(Uri.parse("$baseUrl$endPoint$id"),
         headers: headers);
 
     // if (response.statusCode == 200)

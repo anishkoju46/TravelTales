@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
@@ -13,47 +11,27 @@ class DestinationDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
         child: Scaffold(
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-                height: 300,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image:
-                          AssetImage(destinationModel.imageUrl!.first), //TODO
-                      fit: BoxFit.cover),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Column(
+          children: [
+            Expanded(
+              child: details(context, destinationModel: destinationModel),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(25),
                 ),
               ),
-              iconMethods(context, top: 7, left: 7, icon: Icons.arrow_back),
-              Positioned(
-                  right: 7,
-                  top: 7,
-                  child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(12),
-                        ),
-                      ),
-                      child: FavouriteButton(destination: destinationModel)))
-            ],
-          ),
-          Expanded(child: details(destinationModel: destinationModel)),
-          Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(
-                Radius.circular(22),
+              child: FilledButton.icon(
+                onPressed: () {},
+                icon: Icon(Icons.explore_rounded),
+                label: Text("Directions"),
               ),
-            ),
-            child: FilledButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.explore),
-              label: Text("Directions"),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     ));
   }
@@ -75,29 +53,100 @@ class DestinationDetailScreen extends ConsumerWidget {
         child: ArrowBackWidget());
   }
 
-  Container details({required DestinationModel destinationModel}) {
-    return Container(
-        height: 200,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(22),
-            topRight: Radius.circular(22),
-          ),
+  Column details(BuildContext context,
+      {required DestinationModel destinationModel}) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text(destinationModel.name!,
+          style: Theme.of(context).textTheme.displaySmall),
+      Container(
+        padding: EdgeInsets.symmetric(vertical: 5),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: infoMethod(
+                    destinationModel: destinationModel,
+                    icon: Icons.landscape,
+                    infoTitle: "Max Height",
+                    information: destinationModel.maxHeight!,
+                  ),
+                ),
+                Expanded(
+                    child: infoMethod(
+                        destinationModel: destinationModel,
+                        infoTitle: "Best Season",
+                        information: destinationModel.bestSeason!,
+                        icon: Icons.foggy)),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: infoMethod(
+                    destinationModel: destinationModel,
+                    icon: Icons.calendar_month,
+                    infoTitle: "Duration",
+                    information: destinationModel.duration!,
+                  ),
+                ),
+                Expanded(
+                    child: infoMethod(
+                        destinationModel: destinationModel,
+                        infoTitle: "Region",
+                        information: destinationModel.region!,
+                        icon: Icons.map)),
+              ],
+            ),
+          ],
         ),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(destinationModel.name!),
-              Text(destinationModel.maxHeight!)
-            ],
-          ),
-          Text(destinationModel.description!),
-          Text(destinationModel.bestSeason!),
-          Text(destinationModel.region!),
-          Text(destinationModel.itinerary!.first) //TODO
-        ]));
+      ),
+      Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Description",
+                style: Theme.of(context).textTheme.headlineSmall),
+            Text(destinationModel.description!),
+          ],
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Itinerary", style: Theme.of(context).textTheme.headlineSmall),
+            Text(destinationModel.itinerary!.first), //TODO
+          ],
+        ),
+      ),
+    ]);
+  }
+
+  Row infoMethod({
+    required DestinationModel destinationModel,
+    required String infoTitle,
+    required String information,
+    required IconData icon,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon),
+        Column(
+          children: [
+            Text(infoTitle),
+            Text(information),
+          ],
+        )
+      ],
+    );
   }
 }
 

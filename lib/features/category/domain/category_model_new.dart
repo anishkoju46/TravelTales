@@ -12,7 +12,7 @@ String categoryModelToJson(List<CategoryModel> data) =>
 
 class CategoryModel extends Equatable {
   @override
-  List<Object?> get props => [id, name, user];
+  List<Object?> get props => [id];
 
   final String? id;
   final String? name;
