@@ -1,21 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/category/domain/category_model_new.dart';
 import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
-import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/form_controller.dart';
-import 'package:traveltales/utility/repository.dart';
-
-final destinationFormProvider = AutoDisposeNotifierProviderFamily<
-    DestinationFormController,
-    DestinationModel,
-    DestinationModel?>(DestinationFormController.new);
 
 class DestinationFormController extends FormController<DestinationModel> {
   @override
@@ -72,14 +63,14 @@ class DestinationFormController extends FormController<DestinationModel> {
             ref
                 .read(destinationListProvider.notifier)
                 .handleSubmit(destination);
-            CustomSnack.info(context, message: "Destination Added");
+            CustomSnack.success(context, message: "Destination Added");
           } else {
             final destination =
                 await repository.editDestination(destination: state);
             ref
                 .read(destinationListProvider.notifier)
                 .handleSubmit(destination);
-            CustomSnack.info(context, message: "Destination Edited");
+            CustomSnack.success(context, message: "Destination Edited");
           }
         } catch (e, s) {
           CustomSnack.error(context, message: e.toString());

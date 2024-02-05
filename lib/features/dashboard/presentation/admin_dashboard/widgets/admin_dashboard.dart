@@ -28,8 +28,8 @@ class AdminDashboard extends ConsumerWidget {
                       Container(
                         color: Colors.white,
                       ),
-                      //ProfileScreen()
-                      AdminProfileScreen()
+                      ProfileScreen()
+                      //AdminProfileScreen()
                     ],
                   ),
                 );

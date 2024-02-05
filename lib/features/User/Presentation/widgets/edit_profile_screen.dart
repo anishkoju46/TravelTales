@@ -58,28 +58,30 @@ class EditProfileScreen extends ConsumerWidget {
                         userFormController.update(phoneNumber: value);
                       },
                     ),
-                    if (ref.read(authNotifierProvider)!.role!) ...[
-                      Row(
-                        children: [
-                          Text("ADMIN "),
-                          Switch(
-                              value: userFormState.role!,
-                              onChanged: (value) {
-                                userFormController.update(role: value);
-                              }),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("BLOCK "),
-                          Switch(
-                              value: userFormState.block!,
-                              onChanged: (value) {
-                                userFormController.update(block: value);
-                              }),
-                        ],
-                      )
-                    ]
+                    //TODO
+
+                    // if (ref.read(authNotifierProvider)!.role!) ...[
+                    //   Row(
+                    //     children: [
+                    //       Text("ADMIN "),
+                    //       Switch(
+                    //           value: userFormState.role!,
+                    //           onChanged: (value) {
+                    //             userFormController.update(role: value);
+                    //           }),
+                    //     ],
+                    //   ),
+                    //   Row(
+                    //     children: [
+                    //       Text("BLOCK "),
+                    //       Switch(
+                    //           value: userFormState.block!,
+                    //           onChanged: (value) {
+                    //             userFormController.update(block: value);
+                    //           }),
+                    //     ],
+                    //   )
+                    // ]
                   ]
                       .map((e) => Container(
                             margin: EdgeInsets.symmetric(

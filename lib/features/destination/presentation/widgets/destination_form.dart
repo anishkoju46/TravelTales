@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
-import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
+import 'package:traveltales/utility/alertBox.dart';
+import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class DestinationForm extends ConsumerWidget {
   const DestinationForm({super.key, this.destination});
@@ -19,35 +20,31 @@ class DestinationForm extends ConsumerWidget {
     final categories = ref.read(categoryListProvider.notifier).usableCategories;
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          centerTitle: true,
-          // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.delete))],
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                isAdd ? "Add Destination" : "Update Destination",
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-              ),
-              IconButton(
-                  onPressed: () {
-                    //TODO
-                    // ref
-                    //     .read(destinationListProvider.notifier)
-                    //     .remove(destination!);
-                  },
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ))
-            ],
-          ),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Theme.of(context).colorScheme.primary,
+        //   centerTitle: true,
+        //   // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.delete))],
+        //   title: Text(
+        //     isAdd ? "Add Destination" : "Update Destination",
+        //     style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+        //   ),
+        // ),
         body: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                  color: Theme.of(context).colorScheme.primary,
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      ArrowBackWidget(),
+                      Text(
+                        isAdd ? "Add Destination" : "Update Destination",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.onPrimary),
+                      )
+                    ],
+                  )),
               Form(
                 key: destinationFormController.formKey,
                 child: Column(
@@ -163,10 +160,26 @@ class DestinationForm extends ConsumerWidget {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: ElevatedButton(
-                    onPressed: () {
-                      destinationFormController.handleSubmit(context,
-                          isAdd: isAdd);
+                    onPressed: () async {
+                      await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertBox(
+                                confirmText: isAdd ? "Yes, Add" : "Yes, Update",
+                                onPressed: () {
+                                  Navigator.pop(
+                                      context); //So that add button click garesi, alert box close in hos + handleSubmit()
+                                  destinationFormController
+                                      .handleSubmit(context, isAdd: isAdd);
+                                },
+                                title: "Are you sure?");
+                          });
                     },
+
+                    // onPressed: () {
+                    //   destinationFormController.handleSubmit(context,
+                    //       isAdd: isAdd);
+                    // },
                     child: Text(isAdd ? "ADD" : "UPDATE")),
               )
             ],

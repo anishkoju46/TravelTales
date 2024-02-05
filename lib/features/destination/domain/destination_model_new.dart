@@ -132,7 +132,7 @@ class DestinationModel extends Equatable {
         imageUrl: json["imageUrl"] == null
             ? []
             : List<String>.from(json["imageUrl"]!.map((x) => x)),
-        rating: json["rating"],
+        rating: json["rating"] ?? 0,
         reviews: json["reviews"] == null
             ? []
             : List<ReviewModel>.from(

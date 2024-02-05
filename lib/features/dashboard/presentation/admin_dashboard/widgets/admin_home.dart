@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/presentation/widgets/category_list.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
-import 'package:traveltales/features/destination/presentation/widgets/destination_form.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
 
 class AdminHome extends ConsumerWidget {

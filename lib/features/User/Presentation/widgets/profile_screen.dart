@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/alertBox.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -156,10 +157,22 @@ class ProfileScreen extends ConsumerWidget {
                         customProfileButtons(context,
                             icon: Icons.exit_to_app,
                             profileButtonText: "Sign Out",
-                            color: Color(0xffD4A056), onTap: () {
-                          ref
-                              .read(authNotifierProvider.notifier)
-                              .logout(context);
+                            color: Color(0xffD4A056), onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertBox(
+                                    confirmText: "Logout",
+                                    onPressed: () {
+                                      ref
+                                          .watch(authNotifierProvider.notifier)
+                                          .logout(context);
+                                    },
+                                    title: "Logout?");
+                              });
+                          // ref
+                          //     .read(authNotifierProvider.notifier)
+                          //     .logout(context);
                         }),
 
                         // Text("Edit Profile"),

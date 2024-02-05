@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
+import 'package:traveltales/utility/alertBox.dart';
 
 class DestinationListItem extends ConsumerWidget {
   const DestinationListItem(
@@ -100,31 +101,39 @@ class DestinationListItem extends ConsumerWidget {
                         )),
               ),
             ),
+            //Delete Button ho hai
             if (ref.read(authNotifierProvider)!.role!)
               Positioned(
                 top: 75,
                 right: 15,
                 child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
                     ),
-                  ),
-                  child: IconButton(
-                      onPressed: () {
-                        ref
-                            .read(destinationListProvider.notifier)
-                            .delete(context, destination);
-                        // ref
-                        //     .read(destinationListProvider.notifier)
-                        //     .showForm(context, model: destination);
+                    child: IconButton(
+                      onPressed: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertBox(
+                                confirmText: "Yes, Delete",
+                                onPressed: () {
+                                  ref
+                                      .read(destinationListProvider.notifier)
+                                      .delete(context, destination);
+                                },
+                                title: "Are you sure?");
+                          },
+                        );
                       },
                       icon: Icon(
                         Icons.delete,
                         color: Theme.of(context).colorScheme.secondaryContainer,
-                      )),
-                ),
+                      ),
+                    )),
               ),
             //using if condition for frontend - role true hunda matra yo edit button dekhaune
             // if (ref.read(authNotifierProvider)!.role!)

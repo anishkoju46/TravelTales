@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
-import 'package:traveltales/features/destination/presentation/widgets/destination_review_screen.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
+import 'package:traveltales/features/review/presentation/widget/destination_review_screen.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/smooth_Page_Indicator.dart';
 
 class DestinationDashboard extends StatelessWidget {
   const DestinationDashboard({super.key, required this.destinationModel});
   final DestinationModel destinationModel;
+  //final PageController pageController = PageController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,7 +40,17 @@ class DestinationDashboard extends StatelessWidget {
                             Radius.circular(12),
                           ),
                         ),
-                        child: FavouriteButton(destination: destinationModel)))
+                        child: FavouriteButton(destination: destinationModel))),
+                // Positioned(
+                //     bottom: 10,
+                //     left: 200,
+                //     child: MyCustomSmoothPageIndicator(
+                //       pageController: pageController,
+                //       count: destinationModel.imageUrl!.length,
+                //       activeColor: const Color(0xffCA8226),
+                //       inActiveColor: const Color(0xffFFCC5C),
+                //       pageScrollDuration: const Duration(milliseconds: 200),
+                //     ))
               ],
             ),
             Container(

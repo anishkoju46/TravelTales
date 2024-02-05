@@ -25,17 +25,17 @@ class ReviewBox extends StatelessWidget {
           child: Row(
             children: [
               //imageuserko
-              Container(
-                margin: const EdgeInsets.only(right: 10),
-                height: 60,
-                width: 60,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: AssetImage("${review.user?.imageUrl}"),
-                  ),
-                ),
-              ),
+              // Container(
+              //   margin: const EdgeInsets.only(right: 10),
+              //   height: 60,
+              //   width: 60,
+              //   decoration: BoxDecoration(
+              //     shape: BoxShape.circle,
+              //     image: DecorationImage(
+              //       image: AssetImage("${review.user?.imageUrl}"),
+              //     ),
+              //   ),
+              // ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

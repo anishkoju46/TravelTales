@@ -10,11 +10,9 @@ import 'package:traveltales/utility/async_list_controller.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/repository.dart';
 
-final destinationListProvider = AsyncNotifierProvider.autoDispose<
-    DestinationController, List<DestinationModel>>(DestinationController.new);
-
 class DestinationController extends AsyncListController<DestinationModel> {
   final ScrollController listScrollController = ScrollController();
+  DestinationModel? currentDestination;
 
   @override
   bool findById(DestinationModel element, DestinationModel current) =>
@@ -36,8 +34,9 @@ class DestinationController extends AsyncListController<DestinationModel> {
   String toStorage() => destinationModelToJson(state.value!);
 
   showDestinationDetails(
-      BuildContext context, DestinationModel destinationModel) {
-    Navigator.push(
+      BuildContext context, DestinationModel destinationModel) async {
+    currentDestination = destinationModel;
+    await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
@@ -45,6 +44,7 @@ class DestinationController extends AsyncListController<DestinationModel> {
         },
       ),
     );
+    currentDestination = null;
   }
 
   @override
@@ -58,7 +58,7 @@ class DestinationController extends AsyncListController<DestinationModel> {
       await DestinationRepository(token: ref.watch(authNotifierProvider)?.token)
           .delete(destination.id!);
       remove(destination);
-      CustomSnack.error(context, message: "Destination Deleted");
+      CustomSnack.success(context, message: "Destination Deleted");
     } catch (e, s) {
       CustomSnack.error(context, message: e.toString());
     }

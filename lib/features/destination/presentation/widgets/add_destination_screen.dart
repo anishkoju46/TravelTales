@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 
 class AddDestinationScreen extends ConsumerWidget {
   const AddDestinationScreen({super.key, required this.destination});
