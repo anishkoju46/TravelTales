@@ -42,7 +42,7 @@ class ProfileScreen extends ConsumerWidget {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(
-                                      "${user.imageUrl!.isEmpty ? "assets/images/aa.jpg" : ref.read(authNotifierProvider)!.imageUrl}")),
+                                      "${user.imageUrl!.isEmpty ? "assets/images/default2.jpeg" : user.imageUrl}")),
                               shape: BoxShape.circle,
                               color: Colors.amber,
                               border: Border.all()),
@@ -157,7 +157,9 @@ class ProfileScreen extends ConsumerWidget {
                         customProfileButtons(context,
                             icon: Icons.exit_to_app,
                             profileButtonText: "Sign Out",
-                            color: Color(0xffD4A056), onTap: () async {
+                            color: Theme.of(context)
+                                .colorScheme
+                                .secondaryContainer, onTap: () async {
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {

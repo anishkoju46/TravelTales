@@ -6,5 +6,6 @@ import 'package:traveltales/features/User/Presentation/controller/user_list_cont
 final userFormProvider = AutoDisposeNotifierProviderFamily<UserFormController,
     UserModel, UserModel?>(UserFormController.new);
 
-final userListProvider = NotifierProvider<UserListController, List<UserModel>>(
-    UserListController.new);
+final userListProvider =
+    AsyncNotifierProvider.autoDispose<UserListController, List<UserModel>>(
+        UserListController.new);

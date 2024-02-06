@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class EditProfileScreen extends ConsumerWidget {
@@ -95,28 +96,29 @@ class EditProfileScreen extends ConsumerWidget {
           ),
           Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  customButton(
-                      onPressed: () {},
-                      iconData: Icons.close,
-                      string: "DISCARD"),
-                  customButton(
-                      onPressed: () {
-                        userFormController.handleSubmit(context);
-                      },
-                      iconData: Icons.done,
-                      string: "SAVE")
-                ],
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 80),
-                child: customButton(
-                    onPressed: () {},
-                    iconData: Icons.delete,
-                    string: "Deactivate "),
-              )
+              customButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertBox(
+                              confirmText: "Confirm",
+                              onPressed: () {
+                                Navigator.pop(context);
+                                userFormController.handleSubmit(context);
+                              },
+                              title: "Save Changes");
+                        });
+                  },
+                  iconData: Icons.published_with_changes,
+                  string: "Save Changes"),
+              // Container(
+              //   padding: EdgeInsets.symmetric(vertical: 80),
+              //   child: customButton(
+              //       onPressed: () {},
+              //       iconData: Icons.delete,
+              //       string: "Deactivate "),
+              // )
             ],
           ),
         ],

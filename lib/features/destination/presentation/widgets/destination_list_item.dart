@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
@@ -51,7 +52,7 @@ class DestinationListItem extends ConsumerWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
                 decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.45),
+                    color: Colors.black.withOpacity(0.22),
                     borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(25),
                         bottomRight: Radius.circular(25))),
@@ -64,12 +65,24 @@ class DestinationListItem extends ConsumerWidget {
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).colorScheme.background),
                     ),
-                    Text(
-                      "Ratings: ${destination.rating}/5",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.background),
-                    ),
+                    RatingBar.builder(
+                        ignoreGestures: true,
+                        itemSize: 17,
+                        initialRating: destination.rating!.toDouble(),
+                        itemCount: 5,
+                        itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .secondaryContainer,
+                            ),
+                        onRatingUpdate: (value) {})
+                    // Text(
+                    //   "Ratings: ${destination.rating}/5",
+                    //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    //       fontWeight: FontWeight.w600,
+                    //       color: Theme.of(context).colorScheme.background),
+                    // ),
                   ],
                 ),
               ),
@@ -129,10 +142,9 @@ class DestinationListItem extends ConsumerWidget {
                           },
                         );
                       },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Theme.of(context).colorScheme.secondaryContainer,
-                      ),
+                      icon: Icon(Icons.delete, color: Color(0xff798CAB)
+                          //Theme.of(context).colorScheme.secondaryContainer,
+                          ),
                     )),
               ),
             //using if condition for frontend - role true hunda matra yo edit button dekhaune

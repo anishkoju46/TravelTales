@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CustomTextFormFeild extends StatelessWidget {
   const CustomTextFormFeild(
@@ -42,6 +43,8 @@ class CustomTextFormFeild extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
+        maxLines: null,
+        inputFormatters: [LengthLimitingTextInputFormatter(200)],
         controller: controller,
         obscureText: obscureText,
         onChanged: (data) {

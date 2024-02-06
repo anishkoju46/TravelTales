@@ -3,11 +3,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/review/domain/review_model_new.dart';
-import 'package:traveltales/features/review/presentation/controller/review_form_controller.dart';
 import 'package:traveltales/features/review/presentation/state/review_state.dart';
 import 'package:traveltales/features/review/presentation/widget/review_box.dart';
-import 'package:traveltales/utility/alertBox.dart';
-import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/custom_textform_feild.dart';
 
 class DestinationReview extends ConsumerWidget {
@@ -25,136 +22,99 @@ class DestinationReview extends ConsumerWidget {
       body: Column(
         children: [
           Expanded(
-              child: reviewList.when(
-                  data: (data) => data.isEmpty
-                      ? Center(child: Text("There are no reviews"))
-                      : ListView.builder(
-                          itemCount: data.length,
-                          itemBuilder: (context, index) {
-                            return ReviewBox(review: data[index]);
-                          }),
-                  error: ((error, stackTrace) => Center(
-                        child: Text(error.toString()),
-                      )),
-                  loading: () => Center(
-                        child: CircularProgressIndicator(),
-                      ))),
-          //For Rating Dialouge Box
-          //ratingBox(context, rating, reviewFormController),
-          Column(
-            children: [
-              RatingBar.builder(
-                  initialRating: rating.toDouble(),
-                  minRating: 1,
-                  direction: Axis.horizontal,
-                  allowHalfRating: false,
-                  itemCount: 5,
-                  itemPadding: EdgeInsets.symmetric(horizontal: 4),
-                  itemBuilder: (context, _) => Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                  onRatingUpdate: (value) {
-                    rating = value.toInt();
-                    // update yeta hai
-                    reviewFormController.update(
-                        rating: rating, destination: destination);
-                  }),
-              Row(
-                children: [
-                  Expanded(
-                    child: Form(
-                      key: reviewFormController.formKey,
-                      child: CustomTextFormFeild(
-                        credentials: "Write a review...",
-                        onchanged: (value) {
-                          reviewFormController.update(
-                              review: value, destination: destination);
-                        },
-                        iconData: Icons.notes,
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                      onPressed: () async {
-                        await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertBox(
-                                  confirmText: "Post",
+            child: reviewList.when(
+              data: (data) => data.isEmpty
+                  ? Center(child: Text("There are no reviews"))
+                  : ListView.builder(
+                      itemCount: data.length,
+                      itemBuilder: (context, index) {
+                        return ReviewBox(review: data[index]);
+                      }),
+              error: ((error, stackTrace) => Center(
+                    child: Text(error.toString()),
+                  )),
+              loading: () => Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: FilledButton(
+              onPressed: () {
+                //bottom modalsheet
+                showModalBottomSheet(
+                  backgroundColor: Colors.white,
+                  useSafeArea: true,
+                  context: context,
+                  builder: (context) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Form(
+                            key: reviewFormController.formKey,
+                            child: CustomTextFormFeild(
+                                credentials: "Write a Review...",
+                                onchanged: (value) {
+                                  reviewFormController.update(review: value);
+                                }),
+                          ),
+                          Column(
+                            children: [
+                              RatingBar.builder(
+                                  updateOnDrag: true,
+                                  initialRating: rating!.toDouble(),
+                                  itemCount: 5,
+                                  itemPadding:
+                                      EdgeInsets.symmetric(horizontal: 4),
+                                  itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondaryContainer,
+                                      ),
+                                  onRatingUpdate: (value) {
+                                    rating = value.toInt();
+                                    // update yeta hai
+                                    reviewFormController.update(
+                                        rating: rating,
+                                        destination: destination);
+                                  }),
+                            ],
+                          ),
+                          Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: ElevatedButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                     reviewFormController.handleSubmit(context);
                                   },
-                                  title: "Post Review?");
-                            });
-                      },
-                      child: Text("Post"))
-                ],
+                                  child: Text("Submit"))),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text("Write a Review...  "),
+                    Icon(Icons.notes),
+                  ],
+                ),
               ),
-            ],
-          )
+            ),
+          ),
         ],
       ),
     ));
-  }
-
-  ElevatedButton ratingBox(BuildContext context, int? rating,
-      ReviewFormController reviewFormController) {
-    return ElevatedButton(
-      onPressed: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Rate Destination",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleLarge
-                          ?.copyWith(fontWeight: FontWeight.w600),
-                    )),
-                content: RatingBar.builder(
-                    initialRating: rating!.toDouble(),
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: false,
-                    itemCount: 5,
-                    itemPadding: EdgeInsets.symmetric(horizontal: 4),
-                    itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                    onRatingUpdate: (value) {
-                      rating = value.toInt();
-                      // update yeta hai
-                      reviewFormController.update(
-                          rating: rating, destination: destination);
-                    }),
-                actions: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text("Discard")),
-                      ElevatedButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                            reviewFormController.handleSubmit(context);
-                          },
-                          child: Text("Rate"))
-                    ],
-                  )
-                ],
-              );
-            });
-      },
-      child: Text("Rate Destination"),
-    );
   }
 }

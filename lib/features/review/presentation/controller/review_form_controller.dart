@@ -31,7 +31,9 @@ class ReviewFormController extends FormController<ReviewModel> {
   handleSubmit(BuildContext context) async {
     if (isValidated) {
       if (state != arg) {
-        if (state.rating != null && state.review?.isNotEmpty != null) {
+        if (state.review != null &&
+            state.review!.isNotEmpty &&
+            state.rating != null) {
           try {
             final review = await ReviewRepository(
                     token: ref.watch(authNotifierProvider)?.token)
@@ -43,10 +45,11 @@ class ReviewFormController extends FormController<ReviewModel> {
           } catch (e, s) {
             CustomSnack.error(context, message: e.toString());
           }
+          resetForm();
         } else {
           CustomSnack.error(context, message: "Invalid Review");
         }
-        resetForm();
+        // resetForm();
       } else {
         CustomSnack.info(context, message: "No changes Made");
       }

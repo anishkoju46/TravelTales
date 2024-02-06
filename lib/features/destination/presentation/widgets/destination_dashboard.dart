@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 import 'package:traveltales/features/review/presentation/widget/destination_review_screen.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
-import 'package:traveltales/utility/smooth_Page_Indicator.dart';
 
-class DestinationDashboard extends StatelessWidget {
+class DestinationDashboard extends ConsumerWidget {
   const DestinationDashboard({super.key, required this.destinationModel});
   final DestinationModel destinationModel;
   //final PageController pageController = PageController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
         child: DefaultTabController(
       length: 2,
@@ -30,7 +31,9 @@ class DestinationDashboard extends StatelessWidget {
                   ),
                 ),
                 iconMethods(context, top: 7, left: 7, icon: Icons.arrow_back),
-                Positioned(
+                //Only show the add to favourite button if the user is normal user
+                if (ref.read(authNotifierProvider)!.role == false)
+                  Positioned(
                     right: 7,
                     top: 7,
                     child: Container(
@@ -40,7 +43,8 @@ class DestinationDashboard extends StatelessWidget {
                             Radius.circular(12),
                           ),
                         ),
-                        child: FavouriteButton(destination: destinationModel))),
+                        child: FavouriteButton(destination: destinationModel)),
+                  ),
                 // Positioned(
                 //     bottom: 10,
                 //     left: 200,
