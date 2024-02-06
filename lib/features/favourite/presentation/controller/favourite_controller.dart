@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/domain/destination_model.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 
 final favouriteStorage = GetStorage();

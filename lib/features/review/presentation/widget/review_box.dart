@@ -27,8 +27,8 @@ class ReviewBox extends StatelessWidget {
               //imageuserko
               // Container(
               //   margin: const EdgeInsets.only(right: 10),
-              //   height: 60,
-              //   width: 60,
+              //   height: 40,
+              //   width: 50,
               //   decoration: BoxDecoration(
               //     shape: BoxShape.circle,
               //     image: DecorationImage(
@@ -45,11 +45,17 @@ class ReviewBox extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("${review.user?.email}"),
+                        Text(
+                          "${review.user?.email}",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge
+                              ?.copyWith(fontWeight: FontWeight.w600),
+                        ),
                         Text(DateFormat.yMMMd().format(review.createdAt!)),
                       ],
                     ),
-                    Text(review.review!),
+                    Text("${review.review}"),
                   ],
                 ),
               )

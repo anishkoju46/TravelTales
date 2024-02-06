@@ -31,14 +31,20 @@ class ReviewFormController extends FormController<ReviewModel> {
   handleSubmit(BuildContext context) async {
     if (isValidated) {
       if (state != arg) {
-        try {
-          final review = await ReviewRepository(
-                  token: ref.watch(authNotifierProvider)?.token)
-              .addReview(review: state);
-          ref.read(reviewListProvider.notifier).handleSubmit(review);
-          CustomSnack.success(context, message: "Review Added");
-        } catch (e, s) {
-          CustomSnack.error(context, message: e.toString());
+        if (state.rating != null && state.review?.isNotEmpty != null) {
+          try {
+            final review = await ReviewRepository(
+                    token: ref.watch(authNotifierProvider)?.token)
+                .addReview(
+                    review:
+                        state.copyWith(user: ref.read(authNotifierProvider)));
+            ref.read(reviewListProvider.notifier).handleSubmit(review);
+            CustomSnack.success(context, message: "Review Added");
+          } catch (e, s) {
+            CustomSnack.error(context, message: e.toString());
+          }
+        } else {
+          CustomSnack.error(context, message: "Invalid Review");
         }
         resetForm();
       } else {

@@ -7,6 +7,7 @@ import 'package:traveltales/features/review/presentation/controller/review_form_
 import 'package:traveltales/features/review/presentation/state/review_state.dart';
 import 'package:traveltales/features/review/presentation/widget/review_box.dart';
 import 'package:traveltales/utility/alertBox.dart';
+import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/custom_textform_feild.dart';
 
 class DestinationReview extends ConsumerWidget {
@@ -39,33 +40,58 @@ class DestinationReview extends ConsumerWidget {
                         child: CircularProgressIndicator(),
                       ))),
           //For Rating Dialouge Box
-          ratingBox(context, rating, reviewFormController),
-          Row(
+          //ratingBox(context, rating, reviewFormController),
+          Column(
             children: [
-              Expanded(
-                child: CustomTextFormFeild(
-                  credentials: "Write a review...",
-                  onchanged: (value) {
-                    reviewFormController.update(review: value);
-                  },
-                  iconData: Icons.notes,
-                ),
+              RatingBar.builder(
+                  initialRating: rating.toDouble(),
+                  minRating: 1,
+                  direction: Axis.horizontal,
+                  allowHalfRating: false,
+                  itemCount: 5,
+                  itemPadding: EdgeInsets.symmetric(horizontal: 4),
+                  itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                  onRatingUpdate: (value) {
+                    rating = value.toInt();
+                    // update yeta hai
+                    reviewFormController.update(
+                        rating: rating, destination: destination);
+                  }),
+              Row(
+                children: [
+                  Expanded(
+                    child: Form(
+                      key: reviewFormController.formKey,
+                      child: CustomTextFormFeild(
+                        credentials: "Write a review...",
+                        onchanged: (value) {
+                          reviewFormController.update(
+                              review: value, destination: destination);
+                        },
+                        iconData: Icons.notes,
+                      ),
+                    ),
+                  ),
+                  ElevatedButton(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertBox(
+                                  confirmText: "Post",
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    reviewFormController.handleSubmit(context);
+                                  },
+                                  title: "Post Review?");
+                            });
+                      },
+                      child: Text("Post"))
+                ],
               ),
-              ElevatedButton(
-                  onPressed: () async {
-                    await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertBox(
-                              confirmText: "Post",
-                              onPressed: () {
-                                Navigator.pop(context);
-                                reviewFormController.handleSubmit(context);
-                              },
-                              title: "Post Review?");
-                        });
-                  },
-                  child: Text("Post"))
             ],
           )
         ],
@@ -83,7 +109,13 @@ class DestinationReview extends ConsumerWidget {
               return AlertDialog(
                 title: Container(
                     alignment: Alignment.center,
-                    child: Text("Rate Destination")),
+                    child: Text(
+                      "Rate Destination",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(fontWeight: FontWeight.w600),
+                    )),
                 content: RatingBar.builder(
                     initialRating: rating!.toDouble(),
                     minRating: 1,
@@ -98,7 +130,8 @@ class DestinationReview extends ConsumerWidget {
                     onRatingUpdate: (value) {
                       rating = value.toInt();
                       // update yeta hai
-                      reviewFormController.update(rating: rating);
+                      reviewFormController.update(
+                          rating: rating, destination: destination);
                     }),
                 actions: [
                   Row(
@@ -124,87 +157,4 @@ class DestinationReview extends ConsumerWidget {
       child: Text("Rate Destination"),
     );
   }
-
-  // Future<void> showRatingDialog(
-  //     BuildContext context, ReviewFormController reviewFormController) async {
-  //   double rating = 0; // Initialize with default rating value
-
-  //   await showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text("Rate Destination"),
-  //         content: RatingBar.builder(
-  //           initialRating: rating,
-  //           fillColor: Colors.amber,
-  //           borderColor: Colors.amber,
-  //           allowHalfRating: false,
-  //           onRatingUpdate: (value) {
-  //             rating = value;
-  //           },
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text("Discard"),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               // Pass the selected rating to your controller for further processing
-  //               //reviewFormController.updateRating(rating.toInt());
-  //             },
-  //             child: Text("Rate"),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Future<void> showRatingDialog(BuildContext context, ReviewFormController reviewFormController) async {
-  //   int? rating = 0; // Initialize with default rating value
-
-  //   await showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text("Rate Destination"),
-  //         content: Ratingbar.builder(
-  //           initialRating: rating,
-  //           minRating: 1,
-  //           direction: Axis.horizontal,
-  //           allowHalfRating: false,
-  //           itemCount: 5,
-  //           itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-  //           itemBuilder: (context, _) => Icon(
-  //             Icons.star,
-  //             color: Colors.amber,
-  //           ),
-  //           onRatingUpdate: (value) {
-  //             rating = value.toInt();
-  //           },
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //             child: Text("Discard"),
-  //           ),
-  //           TextButton(
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //               // Pass the selected rating to your controller for further processing
-  //               reviewFormController.updateRating(rating);
-  //             },
-  //             child: Text("Rate"),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 }

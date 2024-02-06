@@ -31,15 +31,15 @@ class AlertBox extends ConsumerWidget {
       //content: Text("Do you want to delete"),
       actions: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
               child: Text("Discard"),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 onPressed();
                 //Navigator.of(context).pop(); // Close the dialog

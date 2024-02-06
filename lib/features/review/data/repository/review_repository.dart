@@ -5,7 +5,7 @@ class ReviewRepository extends Repository<ReviewModel> {
   ReviewRepository({super.token, super.client});
 
   @override
-  String get endPoint => "reviews/";
+  String get endPoint => "reviews";
 
   @override
   ReviewModel fromJson(String json) => ReviewModel.fromRawJson(json);
@@ -14,14 +14,14 @@ class ReviewRepository extends Repository<ReviewModel> {
   List<ReviewModel> listfromJson(String json) => reviewModelFromJson(json);
 
   Future<List<ReviewModel>> fetchByDestination({String? id}) async {
-    return await fetch(path: "destinations/", param: "$id");
+    return await fetch(path: "/destinations/", param: "$id");
   }
 
   Future<ReviewModel> addReview({required ReviewModel review}) async {
     return await add(data: {
       "review": review.review,
       "destination": review.destination?.id,
-      "user": review.user?.toJson(),
+      "user": review.user?.id,
       "rating": review.rating,
     });
   }
