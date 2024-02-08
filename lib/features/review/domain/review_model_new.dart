@@ -17,7 +17,7 @@ class ReviewModel extends Equatable {
   final String? id;
   final String? review;
   final UserModel? user;
-  final int? rating;
+  final double? rating;
   final DestinationModel? destination;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -38,7 +38,7 @@ class ReviewModel extends Equatable {
     String? id,
     String? review,
     UserModel? user,
-    int? rating,
+    double? rating,
     DestinationModel? destination,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -64,7 +64,7 @@ class ReviewModel extends Equatable {
         id: json["_id"],
         review: json["review"],
         user: json["user"] == null ? null : UserModel.fromJson(json["user"]),
-        rating: json["rating"],
+        rating: json["rating"] == null ? 0.0 : json["rating"].toDouble(),
         destination: json["destination"] == null
             ? null
             : DestinationModel.fromJson(json["destination"]),

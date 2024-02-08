@@ -64,6 +64,11 @@ class DestinationFormController extends FormController<DestinationModel> {
                 .read(destinationListProvider.notifier)
                 .handleSubmit(destination);
             CustomSnack.success(context, message: "Destination Added");
+            // resetForm();
+            state = DestinationModel();
+            Future.delayed(Duration(milliseconds: 10), () {
+              resetForm();
+            });
           } else {
             final destination =
                 await repository.editDestination(destination: state);

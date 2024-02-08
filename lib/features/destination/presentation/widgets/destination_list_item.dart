@@ -68,7 +68,9 @@ class DestinationListItem extends ConsumerWidget {
                     RatingBar.builder(
                         ignoreGestures: true,
                         itemSize: 17,
-                        initialRating: destination.rating!.toDouble(),
+                        allowHalfRating: true,
+                        initialRating: destination.rating!,
+                        //destination.rating!.toDouble(),
                         itemCount: 5,
                         itemBuilder: (context, _) => Icon(
                               Icons.star,
@@ -77,12 +79,6 @@ class DestinationListItem extends ConsumerWidget {
                                   .secondaryContainer,
                             ),
                         onRatingUpdate: (value) {})
-                    // Text(
-                    //   "Ratings: ${destination.rating}/5",
-                    //   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    //       fontWeight: FontWeight.w600,
-                    //       color: Theme.of(context).colorScheme.background),
-                    // ),
                   ],
                 ),
               ),
@@ -134,6 +130,7 @@ class DestinationListItem extends ConsumerWidget {
                             return AlertBox(
                                 confirmText: "Yes, Delete",
                                 onPressed: () {
+                                  Navigator.pop(context);
                                   ref
                                       .read(destinationListProvider.notifier)
                                       .delete(context, destination);

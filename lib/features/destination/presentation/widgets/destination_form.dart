@@ -13,22 +13,14 @@ class DestinationForm extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bool isAdd = destination == null;
+    final destinationFormProviders = destinationFormProvider(destination);
     final destinationFormController =
-        ref.read(destinationFormProvider(destination).notifier);
-    final destinationFormState =
-        ref.watch(destinationFormProvider(destination));
+        ref.read(destinationFormProviders.notifier);
+    final destinationFormState = ref.watch(destinationFormProviders);
+    print(destinationFormState.toJson());
     final categories = ref.read(categoryListProvider.notifier).usableCategories;
     return SafeArea(
       child: Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Theme.of(context).colorScheme.primary,
-        //   centerTitle: true,
-        //   // actions: [IconButton(onPressed: () {}, icon: Icon(Icons.delete))],
-        //   title: Text(
-        //     isAdd ? "Add Destination" : "Update Destination",
-        //     style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-        //   ),
-        // ),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -169,8 +161,13 @@ class DestinationForm extends ConsumerWidget {
                                 onPressed: () {
                                   Navigator.pop(
                                       context); //So that add button click garesi, alert box close in hos + handleSubmit()
+
                                   destinationFormController
                                       .handleSubmit(context, isAdd: isAdd);
+
+                                  // destinationFormController
+                                  //     .formKey.currentState!
+                                  //     .reset();
                                 },
                                 title: "Are you sure?");
                           });

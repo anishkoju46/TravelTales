@@ -16,7 +16,7 @@ class DestinationReview extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reviewFormController = ref.read(reviewFormProvider(review).notifier);
     final reviewList = ref.watch(reviewListProvider);
-    int? rating = 0;
+    double? rating = 0;
     return SafeArea(
         child: Scaffold(
       body: Column(
@@ -69,14 +69,14 @@ class DestinationReview extends ConsumerWidget {
                                   itemCount: 5,
                                   itemPadding:
                                       EdgeInsets.symmetric(horizontal: 4),
-                                  itemBuilder: (context, _) => Icon(
+                                  itemBuilder: (context, index) => Icon(
                                         Icons.star,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondaryContainer,
                                       ),
                                   onRatingUpdate: (value) {
-                                    rating = value.toInt();
+                                    rating = value;
                                     // update yeta hai
                                     reviewFormController.update(
                                         rating: rating,

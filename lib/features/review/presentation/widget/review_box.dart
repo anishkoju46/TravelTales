@@ -64,6 +64,7 @@ class ReviewBox extends StatelessWidget {
                             padding: EdgeInsets.only(top: 5, bottom: 3),
                             child: RatingBar.builder(
                                 ignoreGestures: true,
+                                allowHalfRating: true,
                                 itemSize: 15,
                                 initialRating: review.rating!.toDouble(),
                                 itemCount: 5,

@@ -38,7 +38,7 @@ class DestinationModel extends Equatable {
   final String? description;
   final List<String>? itinerary;
   final List<String>? imageUrl;
-  final int? rating;
+  final double? rating;
   final List<ReviewModel>? reviews; //review model hai
   final String? region;
   final String? bestSeason;
@@ -79,7 +79,7 @@ class DestinationModel extends Equatable {
     String? description,
     List<String>? itinerary,
     List<String>? imageUrl,
-    int? rating,
+    double? rating,
     List<ReviewModel>? reviews,
     String? region,
     String? bestSeason,
@@ -132,7 +132,7 @@ class DestinationModel extends Equatable {
         imageUrl: json["imageUrl"] == null
             ? []
             : List<String>.from(json["imageUrl"]!.map((x) => x)),
-        rating: json["rating"],
+        rating: json["rating"] == null ? 0.0 : json["rating"].toDouble(),
         reviews: json["reviews"] == null
             ? []
             : List<ReviewModel>.from(

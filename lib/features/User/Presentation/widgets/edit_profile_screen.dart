@@ -14,6 +14,7 @@ class EditProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userFormController = ref.read(userFormProvider(userModel).notifier);
     final userFormState = ref.watch(userFormProvider(userModel));
+    //final isAdmin = ref.read(authNotifierProvider)!.role;
     return SafeArea(
         child: Scaffold(
       body: Column(
@@ -44,6 +45,7 @@ class EditProfileScreen extends ConsumerWidget {
                       onchanged: (value) {
                         userFormController.update(fullName: value);
                       },
+                      //readOnly: isAdmin == true ? true : false
                     ),
                     feild(
                       label: "Email",
@@ -51,6 +53,7 @@ class EditProfileScreen extends ConsumerWidget {
                       onchanged: (value) {
                         userFormController.update(email: value);
                       },
+                      //readOnly: isAdmin == true ? true : false
                     ),
                     feild(
                       label: "Phone Number",
@@ -58,8 +61,17 @@ class EditProfileScreen extends ConsumerWidget {
                       onchanged: (value) {
                         userFormController.update(phoneNumber: value);
                       },
+                      //readOnly: isAdmin == true ? true : false
                     ),
                     //TODO
+                    if (ref.read(authNotifierProvider)!.role == true)
+                      SwitchListTile(
+                          title: Text("Is Admin"),
+                          value: userFormState.role ?? false,
+                          //false,
+                          onChanged: (value) {
+                            userFormController.update(role: value);
+                          })
 
                     // if (ref.read(authNotifierProvider)!.role!) ...[
                     //   Row(
@@ -126,14 +138,17 @@ class EditProfileScreen extends ConsumerWidget {
     ));
   }
 
-  Padding feild(
-      {required String label,
-      required String initialValue,
-      required Function(String) onchanged,
-      String? Function(String?)? validator}) {
+  Padding feild({
+    required String label,
+    required String initialValue,
+    required Function(String) onchanged,
+    String? Function(String?)? validator,
+    //bool readOnly = false
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
+        //readOnly: readOnly,
         onChanged: (value) {
           onchanged(value);
         },
@@ -162,10 +177,11 @@ class EditProfileScreen extends ConsumerWidget {
         label: Text(string));
   }
 
-  Padding customTextFormField(
-      {TextEditingController? textEditingController,
-      required IconData iconData,
-      required String text}) {
+  Padding customTextFormField({
+    TextEditingController? textEditingController,
+    required IconData iconData,
+    required String text,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
