@@ -25,9 +25,9 @@ class AdminDashboard extends ConsumerWidget {
                     children: [
                       AdminHome(),
                       UserList(),
-                      Container(
-                        color: Colors.white,
-                      ),
+                      // Container(
+                      //   color: Colors.white,
+                      // ),
                       ProfileScreen()
                       //AdminProfileScreen()
                     ],
@@ -55,10 +55,10 @@ class AdminDashboard extends ConsumerWidget {
               label: "Users List",
               selectedIcon: Icon(Icons.group),
             ),
-            NavigationDestination(
-                icon: Icon(Icons.manage_accounts_outlined),
-                label: "Manage",
-                selectedIcon: Icon(Icons.manage_accounts)),
+            // NavigationDestination(
+            //     icon: Icon(Icons.manage_accounts_outlined),
+            //     label: "Manage",
+            //     selectedIcon: Icon(Icons.manage_accounts)),
             NavigationDestination(
                 icon: Icon(Icons.person_2_outlined),
                 label: "Profile",

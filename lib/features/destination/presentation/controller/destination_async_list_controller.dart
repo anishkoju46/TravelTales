@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
@@ -13,10 +12,6 @@ import 'package:traveltales/utility/repository.dart';
 class DestinationController extends AsyncListController<DestinationModel> {
   final ScrollController listScrollController = ScrollController();
   DestinationModel? currentDestination;
-
-  @override
-  bool findById(DestinationModel element, DestinationModel current) =>
-      element.id == current.id;
 
   @override
   Widget formWidget(DestinationModel? model) =>
@@ -63,4 +58,20 @@ class DestinationController extends AsyncListController<DestinationModel> {
       CustomSnack.error(context, message: e.toString());
     }
   }
+
+  updateDestinationWithModel() {}
+
+  @override
+  bool findById(DestinationModel element,
+      [DestinationModel? current, String? id]) {
+    return element.id == ((current?.id) ?? id);
+  }
+
+  // setDestination(
+  //   String id,
+  // ) {
+  //   updateWithModel(id, onFoundModel: (foundModel) {
+  //     return foundModel.copyWith(id: id);
+  //   });
+  // }
 }

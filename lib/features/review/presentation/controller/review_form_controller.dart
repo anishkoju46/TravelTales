@@ -42,7 +42,7 @@ class ReviewFormController extends FormController<ReviewModel> {
                     review:
                         state.copyWith(user: ref.read(authNotifierProvider)));
             ref.read(reviewListProvider.notifier).handleSubmit(review);
-            ref.refresh(destinationListProvider);
+            // ref.refresh(destinationListProvider);
             CustomSnack.success(context, message: "Review Added");
           } catch (e, s) {
             CustomSnack.error(context, message: e.toString());

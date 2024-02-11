@@ -44,7 +44,6 @@ class DestinationReview extends ConsumerWidget {
               onPressed: () {
                 //bottom modalsheet
                 showModalBottomSheet(
-                  backgroundColor: Colors.white,
                   useSafeArea: true,
                   context: context,
                   builder: (context) {

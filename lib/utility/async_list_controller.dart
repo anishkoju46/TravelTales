@@ -74,6 +74,19 @@ abstract class AsyncListController<T>
     }
   }
 
+  updateWithModel(String id, {required T Function(T foundModel) onFoundModel}) {
+    if (state.value != null) {
+      final index = state.value!.indexWhere(
+        (element) => findById(element, null, id),
+      );
+      if (index != -1) {
+        final updatedModel = onFoundModel(state.value![index]);
+
+        updateOne(index, model: updatedModel);
+      }
+    }
+  }
+
   removeAt(int index) {
     if (hasData) {
       state = AsyncData([...state.value!..removeAt(index)]);
@@ -91,7 +104,7 @@ abstract class AsyncListController<T>
   }
 
   /// Condition for findById
-  bool findById(T element, T current);
+  bool findById(T element, [T? current, String? id]);
 
   /// Handles add or edit to list based on findById
   handleSubmit(T model) {

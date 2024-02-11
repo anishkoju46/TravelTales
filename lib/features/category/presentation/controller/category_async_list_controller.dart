@@ -15,12 +15,6 @@ final categoryListProvider =
 
 class CategoryController extends AsyncListController<CategoryModel> {
   @override
-  bool findById(CategoryModel element, CategoryModel current) {
-    // TODO: implement findById
-    throw UnimplementedError();
-  }
-
-  @override
   Widget formWidget(CategoryModel? model) {
     // TODO: implement formWidget
     throw UnimplementedError();
@@ -51,4 +45,9 @@ class CategoryController extends AsyncListController<CategoryModel> {
   List<CategoryModel> get usableCategories => hasData
       ? [...state.value!..removeWhere((element) => element.name == "Top Rated")]
       : [];
+
+  @override
+  bool findById(CategoryModel element, [CategoryModel? current, String? id]) {
+    return element.id == ((current?.id) ?? id);
+  }
 }

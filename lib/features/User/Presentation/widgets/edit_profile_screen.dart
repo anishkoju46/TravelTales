@@ -14,7 +14,7 @@ class EditProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userFormController = ref.read(userFormProvider(userModel).notifier);
     final userFormState = ref.watch(userFormProvider(userModel));
-    //final isAdmin = ref.read(authNotifierProvider)!.role;
+    final isCurrentUser = ref.read(authNotifierProvider)!.id != userModel?.id;
     return SafeArea(
         child: Scaffold(
       body: Column(
@@ -42,26 +42,56 @@ class EditProfileScreen extends ConsumerWidget {
                     feild(
                       initialValue: userFormState.fullName!,
                       label: "Full Name",
+                      icondata: Icons.person,
                       onchanged: (value) {
                         userFormController.update(fullName: value);
                       },
-                      //readOnly: isAdmin == true ? true : false
+                      readOnly: isCurrentUser == true ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter your FullName";
+                        } else if (value.length >= 30) {
+                          return "Please enter your name again";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     feild(
                       label: "Email",
+                      icondata: Icons.email,
                       initialValue: userFormState.email!,
                       onchanged: (value) {
                         userFormController.update(email: value);
                       },
-                      //readOnly: isAdmin == true ? true : false
+                      readOnly: isCurrentUser == true ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter an email address";
+                        } else if (!value.endsWith('@gmail.com')) {
+                          return "Please enter a valid Gmail address";
+                        }
+                        return null;
+                      },
                     ),
                     feild(
                       label: "Phone Number",
+                      icondata: Icons.phone,
                       initialValue: userFormState.phoneNumber!,
                       onchanged: (value) {
                         userFormController.update(phoneNumber: value);
                       },
-                      //readOnly: isAdmin == true ? true : false
+                      readOnly: isCurrentUser == true ? true : false,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a phone number";
+                        } else if (value.length != 10) {
+                          return "Please enter a valid phone number";
+                        } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                          return "Phone number should only have numeric characters";
+                        } else
+                          return null;
+                      },
                     ),
                     //TODO
                     if (ref.read(authNotifierProvider)!.role == true)
@@ -138,23 +168,24 @@ class EditProfileScreen extends ConsumerWidget {
     ));
   }
 
-  Padding feild({
-    required String label,
-    required String initialValue,
-    required Function(String) onchanged,
-    String? Function(String?)? validator,
-    //bool readOnly = false
-  }) {
+  Padding feild(
+      {required String label,
+      required IconData icondata,
+      required String initialValue,
+      required Function(String) onchanged,
+      String? Function(String?)? validator,
+      bool readOnly = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
-        //readOnly: readOnly,
+        readOnly: readOnly,
         onChanged: (value) {
           onchanged(value);
         },
         initialValue: initialValue,
         validator: validator,
         decoration: InputDecoration(
+          suffixIcon: Icon(icondata),
           labelText: label,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),

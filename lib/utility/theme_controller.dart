@@ -33,7 +33,7 @@ class ThemeController extends Notifier<ThemeData> {
 
       //Error
       error: Colors.red, //[Badge ko lagi] aka stack wala notification vako wala
-      onError: Colors.white, //[Bagde vitra ko lagi]
+      onError: Colors.red, //[Bagde vitra ko lagi]
 
       //Background
       background: Colors.white, //[Scaffold]

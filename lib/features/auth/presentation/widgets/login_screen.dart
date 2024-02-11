@@ -35,31 +35,65 @@ class LoginScreen extends ConsumerWidget {
                       children: [
                         customTextFormField(
                           controller: loginController.emailController,
-                          // initialValue: loginFormState.email,
                           credentials: "Email",
                           iconData: Icons.email,
                           onchanged: (value) {
                             loginController.update(email: value);
                           },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter an email address";
+                            } else if (!value.endsWith('@gmail.com')) {
+                              return "Invalid Email";
+                            }
+                            return null;
+                          },
+
+                          // validator: (value) {
+                          //   if (value == null || value.isEmpty) {
+                          //     return 'Please enter an email';
+                          //   } else if (!RegExp(
+                          //           r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                          //       .hasMatch(value)) {
+                          //     return 'Invalid Email';
+                          //   }
+                          //   return null;
+                          // },
                         ),
                         customTextFormField(
-                            controller: loginController.passwordController,
-                            obscureText: loginFormState.showPassword,
-                            // initialValue: loginFormState.password,
-                            iconData: loginFormState.showPassword
-                                ? Icons.lock
-                                : Icons.lock_open,
-                            onTapIcon: (value) {
-                              return loginController.update(
-                                  showPassword: value);
-                            },
-                            credentials: "Password",
-                            onchanged: (value) {
-                              loginController.update(password: value);
-                            }),
+                          controller: loginController.passwordController,
+                          obscureText: loginFormState.showPassword,
+                          // initialValue: loginFormState.password,
+                          iconData: loginFormState.showPassword
+                              ? Icons.lock
+                              : Icons.lock_open,
+                          onTapIcon: (value) {
+                            return loginController.update(showPassword: value);
+                          },
+                          credentials: "Password",
+                          onchanged: (value) {
+                            loginController.update(password: value);
+                          },
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter your password";
+                            } else if (value.length < 8 || value.length > 11) {
+                              return "Invalid Credential";
+                            } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[!@#$])')
+                                .hasMatch(value)) {
+                              return "Invalid Credential";
+                            } else {
+                              return null;
+                            }
+                          },
+                        ),
                         ElevatedButton(
                           onPressed: () {
-                            loginController.login(context);
+                            if (loginController.formKey.currentState
+                                    ?.validate() ??
+                                false) {
+                              loginController.login(context);
+                            }
                           },
                           child: Text('LOGIN'),
                         )
@@ -105,18 +139,19 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Padding customTextFormField({
-    required IconData iconData,
-    required String credentials,
-    String? initialValue,
-    required Function(String) onchanged,
-    bool obscureText = false,
-    bool? Function(bool)? onTapIcon,
-    TextEditingController? controller,
-  }) {
+  Padding customTextFormField(
+      {required IconData iconData,
+      required String credentials,
+      String? initialValue,
+      required Function(String) onchanged,
+      bool obscureText = false,
+      bool? Function(bool)? onTapIcon,
+      TextEditingController? controller,
+      String? Function(String?)? validator}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
+        validator: validator,
         controller: controller,
         obscureText: obscureText,
         onChanged: (data) {

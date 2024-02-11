@@ -17,7 +17,7 @@ class DestinationForm extends ConsumerWidget {
     final destinationFormController =
         ref.read(destinationFormProviders.notifier);
     final destinationFormState = ref.watch(destinationFormProviders);
-    print(destinationFormState.toJson());
+    // print(destinationFormState.toJson());
     final categories = ref.read(categoryListProvider.notifier).usableCategories;
     return SafeArea(
       child: Scaffold(
@@ -47,6 +47,14 @@ class DestinationForm extends ConsumerWidget {
                       onChanged: (value) {
                         destinationFormController.update(name: value);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a destination name";
+                        } else if (value.length > 30) {
+                          return "Shorten the destination name";
+                        }
+                        return null;
+                      },
                     ),
                     customTextFormField(
                       initialValue:
@@ -55,12 +63,26 @@ class DestinationForm extends ConsumerWidget {
                       onChanged: (value) {
                         destinationFormController.update(imageUrl: [value]);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter an image URL";
+                        }
+                        return null;
+                      },
                     ),
                     customTextFormField(
                       initialValue: destinationFormState.description,
                       labelText: "Description (in short)",
                       onChanged: (value) {
                         destinationFormController.update(description: value);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a description";
+                        } else if (value.length > 250) {
+                          return "very long description";
+                        }
+                        return null;
                       },
                     ),
                     customTextFormField(
@@ -72,6 +94,24 @@ class DestinationForm extends ConsumerWidget {
                         destinationFormController.update(
                             longitude: double.tryParse(value as String) ?? 0.0);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a longitude";
+                        }
+                        try {
+                          double.parse(value);
+                          if (value.contains('.')) {
+                            // If the value contains a dot, consider it a double
+                            return null;
+                          } else {
+                            int.parse(value); // Try parsing as int
+                            // Add more conditions if needed for integers
+                            return null;
+                          }
+                        } catch (e) {
+                          return "Invalid longitude. Please enter a numeric value.";
+                        }
+                      },
                     ),
                     customTextFormField(
                       initialValue: destinationFormState
@@ -82,12 +122,37 @@ class DestinationForm extends ConsumerWidget {
                         destinationFormController.update(
                             latitude: double.tryParse(value as String) ?? 0.0);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a longitude";
+                        }
+                        try {
+                          double.parse(value);
+                          if (value.contains('.')) {
+                            // If the value contains a dot, consider it a double
+                            return null;
+                          } else {
+                            int.parse(value); // Try parsing as int
+                            // Add more conditions if needed for integers
+                            return null;
+                          }
+                        } catch (e) {
+                          return "Invalid longitude. Please enter a numeric value.";
+                        }
+                      },
                     ),
                     customTextFormField(
                       initialValue: destinationFormState.region,
                       labelText: "Region (example:Jumla)",
                       onChanged: (value) {
                         destinationFormController.update(region: value);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a region";
+                        }
+                        // Add more validation logic if needed
+                        return null;
                       },
                     ),
                     customTextFormField(
@@ -96,12 +161,26 @@ class DestinationForm extends ConsumerWidget {
                       onChanged: (value) {
                         destinationFormController.update(duration: value);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter duration";
+                        }
+                        // Add more validation logic if needed
+                        return null;
+                      },
                     ),
                     customTextFormField(
                       initialValue: destinationFormState.maxHeight,
                       labelText: "Max Height (in Meters)",
                       onChanged: (value) {
                         destinationFormController.update(maxHeight: value);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter height";
+                        }
+                        // Add more validation logic if needed
+                        return null;
                       },
                     ),
                     customTextFormField(
@@ -110,12 +189,26 @@ class DestinationForm extends ConsumerWidget {
                       onChanged: (value) {
                         destinationFormController.update(bestSeason: value);
                       },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter best season";
+                        }
+                        // Add more validation logic if needed
+                        return null;
+                      },
                     ),
                     customTextFormField(
                       initialValue: destinationFormState.itinerary?.first,
                       labelText: "Itinerary (Day to day plans)",
                       onChanged: (value) {
                         destinationFormController.update(itinerary: [value]);
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter itinerary";
+                        }
+                        // Add more validation logic if needed
+                        return null;
                       },
                     ),
                     Container(
@@ -162,8 +255,13 @@ class DestinationForm extends ConsumerWidget {
                                   Navigator.pop(
                                       context); //So that add button click garesi, alert box close in hos + handleSubmit()
 
-                                  destinationFormController
-                                      .handleSubmit(context, isAdd: isAdd);
+                                  if (destinationFormController
+                                          .formKey.currentState
+                                          ?.validate() ??
+                                      false) {
+                                    destinationFormController
+                                        .handleSubmit(context, isAdd: isAdd);
+                                  }
 
                                   // destinationFormController
                                   //     .formKey.currentState!
@@ -195,6 +293,8 @@ class DestinationForm extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       child: TextFormField(
+        validator: validator,
+        maxLines: null,
         initialValue: initialValue,
         onChanged: (value) {
           onChanged(value);

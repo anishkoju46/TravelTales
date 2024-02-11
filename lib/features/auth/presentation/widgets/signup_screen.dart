@@ -32,48 +32,106 @@ class SignupScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   signUpCustomTextFormField(
-                      iconData: Icons.person,
-                      label: "FullName",
-                      onchanged: (value) {
-                        signUpFormController.update(fullName: value);
-                      }),
+                    iconData: Icons.person,
+                    label: "FullName",
+                    onchanged: (value) {
+                      signUpFormController.update(fullName: value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter your FullName";
+                      } else if (value.length >= 30) {
+                        return "Please enter your name again";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                   signUpCustomTextFormField(
-                      iconData: Icons.mail,
-                      label: "Email",
-                      onchanged: (value) {
-                        signUpFormController.update(email: value);
-                      }),
+                    iconData: Icons.mail,
+                    label: "Email",
+                    onchanged: (value) {
+                      signUpFormController.update(email: value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter an email address";
+                      } else if (!value.endsWith('@gmail.com')) {
+                        return "Please enter a valid Gmail address";
+                      }
+                      return null;
+                    },
+                  ),
                   signUpCustomTextFormField(
-                      iconData: Icons.phone,
-                      label: "Phone Number",
-                      onchanged: (value) {
-                        signUpFormController.update(phoneNumber: value);
-                      }),
+                    iconData: Icons.phone,
+                    label: "Phone Number",
+                    onchanged: (value) {
+                      signUpFormController.update(phoneNumber: value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a phone number";
+                      } else if (value.length != 10) {
+                        return "Please enter a valid phone number";
+                      } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                        return "Phone number should only have numeric characters";
+                      } else if (!value.startsWith("98")) {
+                        return "Phone number must start with '98'";
+                      } else
+                        return null;
+                    },
+                  ),
                   signUpCustomTextFormField(
-                      obscureText: signUpFormState.showPassword,
-                      iconData: signUpFormState.showPassword
-                          ? Icons.lock
-                          : Icons.lock_open,
-                      onTapIcon: (value) {
-                        return signUpFormController.update(showPassword: value);
-                      },
-                      label: "Password",
-                      onchanged: (value) {
-                        signUpFormController.update(password: value);
-                      }),
+                    obscureText: signUpFormState.showPassword,
+                    iconData: signUpFormState.showPassword
+                        ? Icons.lock
+                        : Icons.lock_open,
+                    onTapIcon: (value) {
+                      return signUpFormController.update(showPassword: value);
+                    },
+                    label: "Password",
+                    onchanged: (value) {
+                      signUpFormController.update(password: value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a password";
+                      } else if (value.length < 8 || value.length > 11) {
+                        return "Try again";
+                      } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[!@#$])')
+                          .hasMatch(value)) {
+                        return "Must contatin a capital letter and one charecters: !, @, #, \$";
+                      } else {
+                        return null;
+                      }
+                    },
+                  ),
                   signUpCustomTextFormField(
-                      obscureText: signUpFormState.showConfirmPassword,
-                      iconData: signUpFormState.showConfirmPassword
-                          ? Icons.lock
-                          : Icons.lock_open,
-                      onTapIcon: (value) {
-                        return signUpFormController.update(
-                            showConfirmPassword: value);
-                      },
-                      label: "Confirm Password",
-                      onchanged: (value) {
-                        signUpFormController.update(confirmPassword: value);
-                      })
+                    obscureText: signUpFormState.showConfirmPassword,
+                    iconData: signUpFormState.showConfirmPassword
+                        ? Icons.lock
+                        : Icons.lock_open,
+                    onTapIcon: (value) {
+                      return signUpFormController.update(
+                          showConfirmPassword: value);
+                    },
+                    label: "Confirm Password",
+                    onchanged: (value) {
+                      signUpFormController.update(confirmPassword: value);
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Please enter a password";
+                      } else if (value.length < 8 || value.length > 11) {
+                        return "Try again";
+                      } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[!@#$])')
+                          .hasMatch(value)) {
+                        return "Must contatin a capital letter and one charecters: !, @, #, \$";
+                      } else {
+                        return null;
+                      }
+                    },
+                  )
                 ],
               ),
             ),
@@ -137,6 +195,7 @@ class SignupScreen extends ConsumerWidget {
         },
         validator: validator,
         decoration: InputDecoration(
+          //hoverColor: Colors.red,
           labelText: label,
           suffixIcon: InkWell(
             onTap: onTapIcon != null

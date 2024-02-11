@@ -11,26 +11,26 @@ class DestinationDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
         child: Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Column(
-          children: [
-            Expanded(
-              child: details(context, destinationModel: destinationModel),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Column(
+            children: [
+              details(context, destinationModel: destinationModel),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
                 ),
-              ),
-              child: FilledButton.icon(
-                onPressed: () {},
-                icon: Icon(Icons.explore_rounded),
-                label: Text("Directions"),
-              ),
-            )
-          ],
+                child: FilledButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.explore_rounded),
+                  label: Text("Directions"),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     ));

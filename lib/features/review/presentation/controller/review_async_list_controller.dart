@@ -10,10 +10,6 @@ class ReviewController extends AsyncListController<ReviewModel> {
   final ScrollController listScrollController = ScrollController();
 
   @override
-  bool findById(ReviewModel element, ReviewModel current) =>
-      element.id == current.id;
-
-  @override
   Widget formWidget(ReviewModel? model) {
     // TODO: implement formWidget
     throw UnimplementedError();
@@ -38,5 +34,10 @@ class ReviewController extends AsyncListController<ReviewModel> {
     }
     return await ReviewRepository(token: ref.watch(authNotifierProvider)?.token)
         .fetchByDestination(id: destination.id);
+  }
+
+  @override
+  bool findById(ReviewModel element, [ReviewModel? current, String? id]) {
+    return element.id == ((current?.id) ?? id);
   }
 }

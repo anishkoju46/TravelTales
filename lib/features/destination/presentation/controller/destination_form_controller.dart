@@ -76,6 +76,10 @@ class DestinationFormController extends FormController<DestinationModel> {
                 .read(destinationListProvider.notifier)
                 .handleSubmit(destination);
             CustomSnack.success(context, message: "Destination Edited");
+            //Refresh ko lagi use gareko method
+            // ref
+            //     .watch(destinationListProvider.notifier)
+            //     .setDestination(destination.id!);
           }
         } catch (e, s) {
           CustomSnack.error(context, message: e.toString());

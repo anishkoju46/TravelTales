@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
+import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/form_controller.dart';

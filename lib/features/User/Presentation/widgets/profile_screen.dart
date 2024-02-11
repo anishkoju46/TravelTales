@@ -41,6 +41,7 @@ class ProfileScreen extends ConsumerWidget {
                         Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
+                                  fit: BoxFit.cover,
                                   image: AssetImage(
                                       "${user.imageUrl!.isEmpty ? "assets/images/default2.jpeg" : user.imageUrl}")),
                               shape: BoxShape.circle,

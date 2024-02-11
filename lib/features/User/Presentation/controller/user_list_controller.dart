@@ -9,10 +9,6 @@ import 'package:traveltales/utility/repository.dart';
 
 class UserListController extends AsyncListController<UserModel> {
   @override
-  bool findById(UserModel element, UserModel current) =>
-      element.id == element.id;
-
-  @override
   Widget formWidget(UserModel? model) => EditProfileScreen(userModel: model);
 
   @override
@@ -39,5 +35,10 @@ class UserListController extends AsyncListController<UserModel> {
     } catch (e, s) {
       CustomSnack.error(context, message: e.toString());
     }
+  }
+
+  @override
+  bool findById(UserModel element, [UserModel? current, String? id]) {
+    return element.id == ((current?.id) ?? id);
   }
 }
