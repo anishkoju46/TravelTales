@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
+import 'package:traveltales/features/User/Presentation/widgets/change_password_screen.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/alertBox.dart';
+import 'package:traveltales/utility/custom_list_tile.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -41,7 +43,7 @@ class ProfileScreen extends ConsumerWidget {
                         Container(
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  fit: BoxFit.cover,
+                                  //fit: BoxFit.cover,
                                   image: AssetImage(
                                       "${user.imageUrl!.isEmpty ? "assets/images/default2.jpeg" : user.imageUrl}")),
                               shape: BoxShape.circle,
@@ -135,78 +137,92 @@ class ProfileScreen extends ConsumerWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        customProfileButtons(context,
-                            icon: Icons.person,
-                            profileButtonText: "Edit Profile", onTap: () {
+                        customListTile(context,
+                            leadingIcon: Icons.person,
+                            title: "Edit Profile", onTap: () {
                           ref.read(profileProvider.notifier).edit(context);
                         }),
-                        customProfileButtons(context,
-                            icon: Icons.key,
-                            profileButtonText: "Change Password", onTap: () {
-                          // ref
-                          //     .read(profileProvider.notifier)
-                          //     .navigateToChangePasswordPage(context);
+                        customListTile(context,
+                            leadingIcon: Icons.key,
+                            title: "Change Password", onTap: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return ChangePasswordScreen();
+                            },
+                          ));
                         }),
-                        customProfileButtons(context,
-                            icon: Icons.phone,
-                            profileButtonText: "Emergency Contacts",
+                        customListTile(context,
+                            leadingIcon: Icons.phone,
+                            title: "Emergency Contacts",
                             onTap: () {}),
-                        customProfileButtons(context,
-                            icon: Icons.info,
-                            profileButtonText: "About Us",
+                        customListTile(context,
+                            leadingIcon: Icons.info,
+                            title: "About Us",
                             onTap: () {}),
-                        customProfileButtons(context,
-                            icon: Icons.exit_to_app,
-                            profileButtonText: "Sign Out",
+                        customListTile(context,
+                            leadingIcon: Icons.exit_to_app,
+                            title: "Sign Out",
                             color: Theme.of(context)
                                 .colorScheme
-                                .secondaryContainer, onTap: () async {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertBox(
-                                    confirmText: "Logout",
-                                    onPressed: () {
-                                      ref
-                                          .watch(authNotifierProvider.notifier)
-                                          .logout(context);
-                                    },
-                                    title: "Logout?");
-                              });
-                          // ref
-                          //     .read(authNotifierProvider.notifier)
-                          //     .logout(context);
-                        }),
-
-                        // Text("Edit Profile"),
-                        // Text("Change Password"),
-                        // GestureDetector(
-                        //     onTap: () {
-                        //       ref
-                        //           .read(authNotifierProvider.notifier)
-                        //           .signOut(context);
+                                .secondaryContainer, onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertBox(
+                                  confirmText: "Sign Out",
+                                  onPressed: () {
+                                    ref
+                                        .watch(authNotifierProvider.notifier)
+                                        .logout(context);
+                                  },
+                                  title: "Sign Out?");
+                            },
+                          );
+                        })
+                        // customProfileButtons(context,
+                        //     icon: Icons.person,
+                        //     profileButtonText: "Edit Profile", onTap: () {
+                        //   ref.read(profileProvider.notifier).edit(context);
+                        // }),
+                        // customProfileButtons(context,
+                        //     icon: Icons.key,
+                        //     profileButtonText: "Change Password", onTap: () {
+                        //   Navigator.push(context, MaterialPageRoute(
+                        //     builder: (context) {
+                        //       return ChangePasswordScreen();
                         //     },
-                        //     child: Text("SignOut"))
-
-                        // FilledButton.icon(
-                        //   style: ButtonStyle(
-                        //     backgroundColor: MaterialStatePropertyAll(
-                        //         Theme.of(context).colorScheme.primary),
-                        //   ),
-                        //   onPressed: () {
-                        //     ref
-                        //         .read(authNotifierProvider.notifier)
-                        //         .signOut(context);
-                        //   },
-                        //   icon: (Icon(
-                        //     Icons.person,
-                        //     color: Colors.red,
-                        //   )),
-                        //   label: Text(
-                        //     "Sign Out",
-                        //     style: TextStyle(color: Colors.amber),
-                        //   ),
-                        // ),
+                        //   ));
+                        //   // ref
+                        //   //     .read(profileProvider.notifier)
+                        //   //     .navigateToChangePasswordPage(context);
+                        // }),
+                        // customProfileButtons(context,
+                        //     icon: Icons.phone,
+                        //     profileButtonText: "Emergency Contacts",
+                        //     onTap: () {}),
+                        // customProfileButtons(context,
+                        //     icon: Icons.info,
+                        //     profileButtonText: "About Us",
+                        //     onTap: () {}),
+                        // customProfileButtons(context,
+                        //     icon: Icons.exit_to_app,
+                        //     profileButtonText: "Sign Out",
+                        //     color: Theme.of(context)
+                        //         .colorScheme
+                        //         .secondaryContainer, onTap: () async {
+                        //   await showDialog(
+                        //       context: context,
+                        //       builder: (BuildContext context) {
+                        //         return AlertBox(
+                        //             confirmText: "Logout",
+                        //             onPressed: () {
+                        //               ref
+                        //                   .watch(authNotifierProvider.notifier)
+                        //                   .logout(context);
+                        //             },
+                        //             title: "Logout?");
+                        //       });
+                        // }),
                       ],
                     ),
                   ),
@@ -220,58 +236,58 @@ class ProfileScreen extends ConsumerWidget {
     });
   }
 
-  Padding customProfileButtons(BuildContext context,
-      {required IconData icon,
-      required String profileButtonText,
-      Color? color,
-      required Function onTap}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-      child: InkWell(
-        onTap: () {
-          onTap();
-        },
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          decoration: BoxDecoration(
-            color: color ?? Theme.of(context).colorScheme.onBackground,
-            borderRadius: BorderRadius.all(
-              Radius.circular(25),
-            ),
-          ),
-          alignment: Alignment.center,
-          child: Container(
-            //color: Colors.red,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              //mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(width: 10),
-                Expanded(
-                  flex: 1,
-                  child: Icon(
-                    icon,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: Text(
-                    profileButtonText,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.background),
-                  ),
-                ),
-              ],
-            ),
-            //  FilledButton.icon(
-            //   onPressed: () {},
-            //   icon: Icon(Icons.person),
-            //   label: Text("EditProfile"),
-            // ),
-          ),
-        ),
-      ),
-    );
-  }
+  // Padding customProfileButtons(BuildContext context,
+  //     {required IconData icon,
+  //     required String profileButtonText,
+  //     Color? color,
+  //     required Function onTap}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+  //     child: InkWell(
+  //       onTap: () {
+  //         onTap();
+  //       },
+  //       child: Container(
+  //         padding: EdgeInsets.symmetric(vertical: 12),
+  //         decoration: BoxDecoration(
+  //           color: color ?? Theme.of(context).colorScheme.onBackground,
+  //           borderRadius: BorderRadius.all(
+  //             Radius.circular(25),
+  //           ),
+  //         ),
+  //         alignment: Alignment.center,
+  //         child: Container(
+  //           //color: Colors.red,
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.start,
+  //             //mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               SizedBox(width: 10),
+  //               Expanded(
+  //                 flex: 1,
+  //                 child: Icon(
+  //                   icon,
+  //                   color: Theme.of(context).colorScheme.onPrimary,
+  //                 ),
+  //               ),
+  //               Expanded(
+  //                 flex: 7,
+  //                 child: Text(
+  //                   profileButtonText,
+  //                   style: TextStyle(
+  //                       color: Theme.of(context).colorScheme.background),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //           //  FilledButton.icon(
+  //           //   onPressed: () {},
+  //           //   icon: Icon(Icons.person),
+  //           //   label: Text("EditProfile"),
+  //           // ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

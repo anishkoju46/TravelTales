@@ -175,10 +175,10 @@ class DestinationModel extends Equatable {
         "maxHeight": maxHeight,
         "category": category?.toJson(),
         "views": views,
-        "favouriteCount": favouriteCount,
-        "createdAt": createdAt?.toIso8601String(),
-        "updatedAt": updatedAt?.toIso8601String(),
-        "__v": v,
+        // "favouriteCount": favouriteCount,
+        // "createdAt": createdAt?.toIso8601String(),
+        // "updatedAt": updatedAt?.toIso8601String(),
+        // "__v": v,
       };
 }
 
@@ -218,7 +218,7 @@ class Coordinates {
       );
 
   Map<String, dynamic> toJson() => {
-        "type": type,
+        "type": type ?? "Point",
         "coordinates": coordinates == null
             ? []
             : List<dynamic>.from(coordinates!.map((x) => x)),

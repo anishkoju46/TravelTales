@@ -6,6 +6,7 @@ import 'package:traveltales/features/review/domain/review_model_new.dart';
 import 'package:traveltales/features/review/presentation/state/review_state.dart';
 import 'package:traveltales/features/review/presentation/widget/review_box.dart';
 import 'package:traveltales/utility/custom_textform_feild.dart';
+import 'package:traveltales/utility/validator.dart';
 
 class DestinationReview extends ConsumerWidget {
   const DestinationReview({super.key, required this.destination, this.review});
@@ -55,10 +56,12 @@ class DestinationReview extends ConsumerWidget {
                           Form(
                             key: reviewFormController.formKey,
                             child: CustomTextFormFeild(
-                                credentials: "Write a Review...",
-                                onchanged: (value) {
-                                  reviewFormController.update(review: value);
-                                }),
+                              validator: reviewValidator,
+                              credentials: "Write a Review...",
+                              onchanged: (value) {
+                                reviewFormController.update(review: value);
+                              },
+                            ),
                           ),
                           Column(
                             children: [

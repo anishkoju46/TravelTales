@@ -12,6 +12,12 @@ class UserList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userListController = ref.read(userListProvider.notifier);
     final userList = ref.watch(userListProvider);
+
+    final filteredUsers = userList.maybeWhen(
+      data: (data) => data.where((e) => e.role == false).toList(),
+      orElse: () => [],
+    );
+
     return Column(
       children: [
         Container(
@@ -30,9 +36,9 @@ class UserList extends ConsumerWidget {
         Expanded(
             child: userList.when(
                 data: (data) => ListView.builder(
-                      itemCount: data.length,
+                      itemCount: filteredUsers.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final user = data[index];
+                        final user = filteredUsers[index];
                         return InkWell(
                           onTap: () {
                             userListController.showForm(context, model: user);

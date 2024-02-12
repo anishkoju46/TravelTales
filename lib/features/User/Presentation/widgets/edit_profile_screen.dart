@@ -5,6 +5,7 @@ import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/validator.dart';
 
 class EditProfileScreen extends ConsumerWidget {
   const EditProfileScreen({super.key, required this.userModel});
@@ -40,59 +41,32 @@ class EditProfileScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     feild(
-                      initialValue: userFormState.fullName!,
-                      label: "Full Name",
-                      icondata: Icons.person,
-                      onchanged: (value) {
-                        userFormController.update(fullName: value);
-                      },
-                      readOnly: isCurrentUser == true ? true : false,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter your FullName";
-                        } else if (value.length >= 30) {
-                          return "Please enter your name again";
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
+                        initialValue: userFormState.fullName!,
+                        label: "Full Name",
+                        icondata: Icons.person,
+                        onchanged: (value) {
+                          userFormController.update(fullName: value);
+                        },
+                        readOnly: isCurrentUser == true ? true : false,
+                        validator: fullNameValidator),
                     feild(
-                      label: "Email",
-                      icondata: Icons.email,
-                      initialValue: userFormState.email!,
-                      onchanged: (value) {
-                        userFormController.update(email: value);
-                      },
-                      readOnly: isCurrentUser == true ? true : false,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter an email address";
-                        } else if (!value.endsWith('@gmail.com')) {
-                          return "Please enter a valid Gmail address";
-                        }
-                        return null;
-                      },
-                    ),
+                        label: "Email",
+                        icondata: Icons.email,
+                        initialValue: userFormState.email!,
+                        onchanged: (value) {
+                          userFormController.update(email: value);
+                        },
+                        readOnly: isCurrentUser == true ? true : false,
+                        validator: emailValidator),
                     feild(
-                      label: "Phone Number",
-                      icondata: Icons.phone,
-                      initialValue: userFormState.phoneNumber!,
-                      onchanged: (value) {
-                        userFormController.update(phoneNumber: value);
-                      },
-                      readOnly: isCurrentUser == true ? true : false,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a phone number";
-                        } else if (value.length != 10) {
-                          return "Please enter a valid phone number";
-                        } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                          return "Phone number should only have numeric characters";
-                        } else
-                          return null;
-                      },
-                    ),
+                        label: "Phone Number",
+                        icondata: Icons.phone,
+                        initialValue: userFormState.phoneNumber!,
+                        onchanged: (value) {
+                          userFormController.update(phoneNumber: value);
+                        },
+                        readOnly: isCurrentUser == true ? true : false,
+                        validator: phoneNumberValidator),
                     //TODO
                     if (ref.read(authNotifierProvider)!.role == true)
                       SwitchListTile(

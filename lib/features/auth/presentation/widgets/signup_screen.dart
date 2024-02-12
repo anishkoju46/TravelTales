@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/validator.dart';
 
 class SignupScreen extends ConsumerWidget {
   const SignupScreen({super.key, this.user});
@@ -32,106 +33,53 @@ class SignupScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   signUpCustomTextFormField(
-                    iconData: Icons.person,
-                    label: "FullName",
-                    onchanged: (value) {
-                      signUpFormController.update(fullName: value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter your FullName";
-                      } else if (value.length >= 30) {
-                        return "Please enter your name again";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
+                      iconData: Icons.person,
+                      label: "FullName",
+                      onchanged: (value) {
+                        signUpFormController.update(fullName: value);
+                      },
+                      validator: fullNameValidator),
                   signUpCustomTextFormField(
-                    iconData: Icons.mail,
-                    label: "Email",
-                    onchanged: (value) {
-                      signUpFormController.update(email: value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter an email address";
-                      } else if (!value.endsWith('@gmail.com')) {
-                        return "Please enter a valid Gmail address";
-                      }
-                      return null;
-                    },
-                  ),
+                      iconData: Icons.mail,
+                      label: "Email",
+                      onchanged: (value) {
+                        signUpFormController.update(email: value);
+                      },
+                      validator: emailValidator),
                   signUpCustomTextFormField(
-                    iconData: Icons.phone,
-                    label: "Phone Number",
-                    onchanged: (value) {
-                      signUpFormController.update(phoneNumber: value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a phone number";
-                      } else if (value.length != 10) {
-                        return "Please enter a valid phone number";
-                      } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                        return "Phone number should only have numeric characters";
-                      } else if (!value.startsWith("98")) {
-                        return "Phone number must start with '98'";
-                      } else
-                        return null;
-                    },
-                  ),
+                      iconData: Icons.phone,
+                      label: "Phone Number",
+                      onchanged: (value) {
+                        signUpFormController.update(phoneNumber: value);
+                      },
+                      validator: phoneNumberValidator),
                   signUpCustomTextFormField(
-                    obscureText: signUpFormState.showPassword,
-                    iconData: signUpFormState.showPassword
-                        ? Icons.lock
-                        : Icons.lock_open,
-                    onTapIcon: (value) {
-                      return signUpFormController.update(showPassword: value);
-                    },
-                    label: "Password",
-                    onchanged: (value) {
-                      signUpFormController.update(password: value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a password";
-                      } else if (value.length < 8 || value.length > 11) {
-                        return "Try again";
-                      } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[!@#$])')
-                          .hasMatch(value)) {
-                        return "Must contatin a capital letter and one charecters: !, @, #, \$";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
+                      obscureText: signUpFormState.showPassword,
+                      iconData: signUpFormState.showPassword
+                          ? Icons.lock
+                          : Icons.lock_open,
+                      onTapIcon: (value) {
+                        return signUpFormController.update(showPassword: value);
+                      },
+                      label: "Password",
+                      onchanged: (value) {
+                        signUpFormController.update(password: value);
+                      },
+                      validator: passwordValidator),
                   signUpCustomTextFormField(
-                    obscureText: signUpFormState.showConfirmPassword,
-                    iconData: signUpFormState.showConfirmPassword
-                        ? Icons.lock
-                        : Icons.lock_open,
-                    onTapIcon: (value) {
-                      return signUpFormController.update(
-                          showConfirmPassword: value);
-                    },
-                    label: "Confirm Password",
-                    onchanged: (value) {
-                      signUpFormController.update(confirmPassword: value);
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Please enter a password";
-                      } else if (value.length < 8 || value.length > 11) {
-                        return "Try again";
-                      } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[!@#$])')
-                          .hasMatch(value)) {
-                        return "Must contatin a capital letter and one charecters: !, @, #, \$";
-                      } else {
-                        return null;
-                      }
-                    },
-                  )
+                      obscureText: signUpFormState.showConfirmPassword,
+                      iconData: signUpFormState.showConfirmPassword
+                          ? Icons.lock
+                          : Icons.lock_open,
+                      onTapIcon: (value) {
+                        return signUpFormController.update(
+                            showConfirmPassword: value);
+                      },
+                      label: "Confirm Password",
+                      onchanged: (value) {
+                        signUpFormController.update(confirmPassword: value);
+                      },
+                      validator: passwordValidator)
                 ],
               ),
             ),

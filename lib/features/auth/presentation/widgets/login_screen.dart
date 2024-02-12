@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/auth/presentation/widgets/signup_screen.dart';
+import 'package:traveltales/utility/validator.dart';
 
 class LoginScreen extends ConsumerWidget {
   LoginScreen({super.key});
@@ -34,59 +35,29 @@ class LoginScreen extends ConsumerWidget {
                     child: Column(
                       children: [
                         customTextFormField(
-                          controller: loginController.emailController,
-                          credentials: "Email",
-                          iconData: Icons.email,
-                          onchanged: (value) {
-                            loginController.update(email: value);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter an email address";
-                            } else if (!value.endsWith('@gmail.com')) {
-                              return "Invalid Email";
-                            }
-                            return null;
-                          },
-
-                          // validator: (value) {
-                          //   if (value == null || value.isEmpty) {
-                          //     return 'Please enter an email';
-                          //   } else if (!RegExp(
-                          //           r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                          //       .hasMatch(value)) {
-                          //     return 'Invalid Email';
-                          //   }
-                          //   return null;
-                          // },
-                        ),
+                            controller: loginController.emailController,
+                            credentials: "Email",
+                            iconData: Icons.email,
+                            onchanged: (value) {
+                              loginController.update(email: value);
+                            },
+                            validator: emailValidator),
                         customTextFormField(
-                          controller: loginController.passwordController,
-                          obscureText: loginFormState.showPassword,
-                          // initialValue: loginFormState.password,
-                          iconData: loginFormState.showPassword
-                              ? Icons.lock
-                              : Icons.lock_open,
-                          onTapIcon: (value) {
-                            return loginController.update(showPassword: value);
-                          },
-                          credentials: "Password",
-                          onchanged: (value) {
-                            loginController.update(password: value);
-                          },
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter your password";
-                            } else if (value.length < 8 || value.length > 11) {
-                              return "Invalid Credential";
-                            } else if (!RegExp(r'^(?=.*[A-Z])(?=.*[!@#$])')
-                                .hasMatch(value)) {
-                              return "Invalid Credential";
-                            } else {
-                              return null;
-                            }
-                          },
-                        ),
+                            controller: loginController.passwordController,
+                            obscureText: loginFormState.showPassword,
+                            // initialValue: loginFormState.password,
+                            iconData: loginFormState.showPassword
+                                ? Icons.lock
+                                : Icons.lock_open,
+                            onTapIcon: (value) {
+                              return loginController.update(
+                                  showPassword: value);
+                            },
+                            credentials: "Password",
+                            onchanged: (value) {
+                              loginController.update(password: value);
+                            },
+                            validator: passwordValidator),
                         ElevatedButton(
                           onPressed: () {
                             if (loginController.formKey.currentState

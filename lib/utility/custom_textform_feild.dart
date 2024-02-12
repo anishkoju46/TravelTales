@@ -9,7 +9,8 @@ class CustomTextFormFeild extends StatelessWidget {
       this.iconData,
       this.initialValue,
       this.onTapIcon,
-      required this.onchanged});
+      required this.onchanged,
+      required this.validator});
   final IconData? iconData;
   final String credentials;
   final String? initialValue;
@@ -17,6 +18,7 @@ class CustomTextFormFeild extends StatelessWidget {
   final bool obscureText = false;
   final bool? Function(bool)? onTapIcon;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class CustomTextFormFeild extends StatelessWidget {
         iconData: iconData,
         initialValue: initialValue,
         onTapIcon: onTapIcon,
-        obscureText: obscureText);
+        obscureText: obscureText,
+        validator: validator);
   }
 
   Padding form(
@@ -39,10 +42,12 @@ class CustomTextFormFeild extends StatelessWidget {
     bool obscureText = false,
     bool? Function(bool)? onTapIcon,
     TextEditingController? controller,
+    String? Function(String?)? validator,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
+        validator: validator,
         maxLines: null,
         inputFormatters: [LengthLimitingTextInputFormatter(200)],
         controller: controller,

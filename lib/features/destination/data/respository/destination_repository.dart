@@ -35,7 +35,7 @@ class DestinationRepository extends Repository<DestinationModel> {
       "bestSeason": destination.bestSeason,
       "duration": destination.duration,
       "maxHeight": destination.maxHeight,
-      "category": destination.category!.id
+      "category": destination.category?.id
     });
   }
 

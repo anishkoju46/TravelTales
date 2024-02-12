@@ -5,6 +5,7 @@ import 'package:traveltales/features/destination/domain/destination_model_new.da
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/validator.dart';
 
 class DestinationForm extends ConsumerWidget {
   const DestinationForm({super.key, this.destination});
@@ -42,175 +43,84 @@ class DestinationForm extends ConsumerWidget {
                 child: Column(
                   children: [
                     customTextFormField(
-                      initialValue: destinationFormState.name,
-                      labelText: "Destination Name",
-                      onChanged: (value) {
-                        destinationFormController.update(name: value);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a destination name";
-                        } else if (value.length > 30) {
-                          return "Shorten the destination name";
-                        }
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.name,
+                        labelText: "Destination Name",
+                        onChanged: (value) {
+                          destinationFormController.update(name: value);
+                        },
+                        validator: destinationNameValidator),
                     customTextFormField(
-                      initialValue:
-                          (destinationFormState.imageUrl?.first), //TODO
-                      labelText: "IMAGE URL HAI",
-                      onChanged: (value) {
-                        destinationFormController.update(imageUrl: [value]);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter an image URL";
-                        }
-                        return null;
-                      },
-                    ),
+                        initialValue:
+                            (destinationFormState.imageUrl?.first), //TODO
+                        labelText: "IMAGE URL HAI",
+                        onChanged: (value) {
+                          destinationFormController.update(imageUrl: [value]);
+                        },
+                        validator: imageValidator),
                     customTextFormField(
-                      initialValue: destinationFormState.description,
-                      labelText: "Description (in short)",
-                      onChanged: (value) {
-                        destinationFormController.update(description: value);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a description";
-                        } else if (value.length > 250) {
-                          return "very long description";
-                        }
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.description,
+                        labelText: "Description (in short)",
+                        onChanged: (value) {
+                          destinationFormController.update(description: value);
+                        },
+                        validator: descriptionValidate),
                     customTextFormField(
-                      initialValue: destinationFormState
-                          .coordinates?.coordinates!.first
-                          .toString(),
-                      labelText: "Longitude",
-                      onChanged: (value) {
-                        destinationFormController.update(
-                            longitude: double.tryParse(value as String) ?? 0.0);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a longitude";
-                        }
-                        try {
-                          double.parse(value);
-                          if (value.contains('.')) {
-                            // If the value contains a dot, consider it a double
-                            return null;
-                          } else {
-                            int.parse(value); // Try parsing as int
-                            // Add more conditions if needed for integers
-                            return null;
-                          }
-                        } catch (e) {
-                          return "Invalid longitude. Please enter a numeric value.";
-                        }
-                      },
-                    ),
+                        initialValue: destinationFormState
+                            .coordinates?.coordinates!.first
+                            .toString(),
+                        labelText: "Longitude",
+                        onChanged: (value) {
+                          destinationFormController.update(
+                              longitude:
+                                  double.tryParse(value as String) ?? 0.0);
+                        },
+                        validator: longitudeValidate),
                     customTextFormField(
-                      initialValue: destinationFormState
-                          .coordinates?.coordinates!.last
-                          .toString(),
-                      labelText: "Latitude",
-                      onChanged: (value) {
-                        destinationFormController.update(
-                            latitude: double.tryParse(value as String) ?? 0.0);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a longitude";
-                        }
-                        try {
-                          double.parse(value);
-                          if (value.contains('.')) {
-                            // If the value contains a dot, consider it a double
-                            return null;
-                          } else {
-                            int.parse(value); // Try parsing as int
-                            // Add more conditions if needed for integers
-                            return null;
-                          }
-                        } catch (e) {
-                          return "Invalid longitude. Please enter a numeric value.";
-                        }
-                      },
-                    ),
+                        initialValue: destinationFormState
+                            .coordinates?.coordinates!.last
+                            .toString(),
+                        labelText: "Latitude",
+                        onChanged: (value) {
+                          destinationFormController.update(
+                              latitude:
+                                  double.tryParse(value as String) ?? 0.0);
+                        },
+                        validator: latitudeValidate),
                     customTextFormField(
-                      initialValue: destinationFormState.region,
-                      labelText: "Region (example:Jumla)",
-                      onChanged: (value) {
-                        destinationFormController.update(region: value);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter a region";
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.region,
+                        labelText: "Region (example:Jumla)",
+                        onChanged: (value) {
+                          destinationFormController.update(region: value);
+                        },
+                        validator: regionValidator),
                     customTextFormField(
-                      initialValue: destinationFormState.duration,
-                      labelText: "Duration (In days)",
-                      onChanged: (value) {
-                        destinationFormController.update(duration: value);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter duration";
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.duration,
+                        labelText: "Duration (In days)",
+                        onChanged: (value) {
+                          destinationFormController.update(duration: value);
+                        },
+                        validator: durationValidator),
                     customTextFormField(
-                      initialValue: destinationFormState.maxHeight,
-                      labelText: "Max Height (in Meters)",
-                      onChanged: (value) {
-                        destinationFormController.update(maxHeight: value);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter height";
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.maxHeight,
+                        labelText: "Max Height (in Meters)",
+                        onChanged: (value) {
+                          destinationFormController.update(maxHeight: value);
+                        },
+                        validator: maxHeightValidator),
                     customTextFormField(
-                      initialValue: destinationFormState.bestSeason,
-                      labelText: "Best Season (example:Months)",
-                      onChanged: (value) {
-                        destinationFormController.update(bestSeason: value);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter best season";
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.bestSeason,
+                        labelText: "Best Season (example:Months)",
+                        onChanged: (value) {
+                          destinationFormController.update(bestSeason: value);
+                        },
+                        validator: bestSeasonValidator),
                     customTextFormField(
-                      initialValue: destinationFormState.itinerary?.first,
-                      labelText: "Itinerary (Day to day plans)",
-                      onChanged: (value) {
-                        destinationFormController.update(itinerary: [value]);
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please enter itinerary";
-                        }
-                        // Add more validation logic if needed
-                        return null;
-                      },
-                    ),
+                        initialValue: destinationFormState.itinerary?.first,
+                        labelText: "Itinerary (Day to day plans)",
+                        onChanged: (value) {
+                          destinationFormController.update(itinerary: [value]);
+                        },
+                        validator: itineraryValidator),
                     Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(
@@ -255,13 +165,15 @@ class DestinationForm extends ConsumerWidget {
                                   Navigator.pop(
                                       context); //So that add button click garesi, alert box close in hos + handleSubmit()
 
-                                  if (destinationFormController
-                                          .formKey.currentState
-                                          ?.validate() ??
-                                      false) {
-                                    destinationFormController
-                                        .handleSubmit(context, isAdd: isAdd);
-                                  }
+                                  destinationFormController
+                                      .handleSubmit(context, isAdd: isAdd);
+                                  // if (destinationFormController
+                                  //         .formKey.currentState
+                                  //         ?.validate() ??
+                                  //     false) {
+                                  //   destinationFormController
+                                  //       .handleSubmit(context, isAdd: isAdd);
+                                  // }
 
                                   // destinationFormController
                                   //     .formKey.currentState!
