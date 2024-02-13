@@ -29,7 +29,8 @@ class DestinationModel extends Equatable {
         maxHeight,
         category,
         views,
-        favouriteCount
+        favouriteCount,
+        emergencyContact
       ];
 
   final String? id;
@@ -47,6 +48,7 @@ class DestinationModel extends Equatable {
   final CategoryModel? category; //category model hai
   final int? views;
   final int? favouriteCount;
+  final List<String>? emergencyContact;
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final int? v;
@@ -67,6 +69,7 @@ class DestinationModel extends Equatable {
     this.category,
     this.views,
     this.favouriteCount,
+    this.emergencyContact,
     this.createdAt,
     this.updatedAt,
     this.v,
@@ -88,6 +91,7 @@ class DestinationModel extends Equatable {
     CategoryModel? category,
     int? views,
     int? favouriteCount,
+    List<String>? emergencyContact,
     DateTime? createdAt,
     DateTime? updatedAt,
     int? v,
@@ -108,6 +112,7 @@ class DestinationModel extends Equatable {
         category: category ?? this.category,
         views: views ?? this.views,
         favouriteCount: favouriteCount ?? this.favouriteCount,
+        emergencyContact: emergencyContact ?? this.emergencyContact,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt,
         v: v ?? this.v,
@@ -146,6 +151,9 @@ class DestinationModel extends Equatable {
             : CategoryModel.fromJson(json["category"]),
         views: json["views"],
         favouriteCount: json["favouriteCount"],
+        emergencyContact: json["emergencyContact"] == null
+            ? []
+            : List<String>.from(json["emergencyContact"]!.map((x) => x)),
         createdAt: json["createdAt"] == null
             ? null
             : DateTime.parse(json["createdAt"]),
@@ -175,6 +183,9 @@ class DestinationModel extends Equatable {
         "maxHeight": maxHeight,
         "category": category?.toJson(),
         "views": views,
+        "emergencyContact": emergencyContact == null
+            ? []
+            : List<dynamic>.from(emergencyContact!.map((x) => x)),
         // "favouriteCount": favouriteCount,
         // "createdAt": createdAt?.toIso8601String(),
         // "updatedAt": updatedAt?.toIso8601String(),

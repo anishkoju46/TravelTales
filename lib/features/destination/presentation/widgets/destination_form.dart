@@ -121,6 +121,15 @@ class DestinationForm extends ConsumerWidget {
                           destinationFormController.update(itinerary: [value]);
                         },
                         validator: itineraryValidator),
+                    customTextFormField(
+                        initialValue:
+                            destinationFormState.emergencyContact?.first,
+                        labelText: "Emergency Contacts",
+                        onChanged: (value) {
+                          destinationFormController
+                              .update(emergencyContact: [value]);
+                        },
+                        validator: phoneNumberValidator),
                     Container(
                       padding: EdgeInsets.all(10),
                       decoration: BoxDecoration(

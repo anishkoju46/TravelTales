@@ -29,24 +29,25 @@ class DestinationFormController extends FormController<DestinationModel> {
     double? latitude,
     double? longitude,
     CategoryModel? category,
+    List<String>? emergencyContact,
   }) {
     state = state.copyWith(
-      name: name ?? state.name,
-      description: description ?? state.description,
-      itinerary: itinerary ?? state.itinerary,
-      imageUrl: imageUrl ?? state.imageUrl,
-      region: region ?? state.region,
-      duration: duration ?? state.duration,
-      maxHeight: maxHeight ?? state.maxHeight,
-      bestSeason: bestSeason ?? state.bestSeason,
-      coordinates: state.coordinates != null
-          ? state.coordinates?.copyWith(coordinates: [
-              longitude ?? state.coordinates!.coordinates!.first,
-              latitude ?? state.coordinates!.coordinates!.last
-            ])
-          : Coordinates(coordinates: [longitude ?? 0.0, latitude ?? 0.0]),
-      category: category ?? state.category,
-    );
+        name: name ?? state.name,
+        description: description ?? state.description,
+        itinerary: itinerary ?? state.itinerary,
+        imageUrl: imageUrl ?? state.imageUrl,
+        region: region ?? state.region,
+        duration: duration ?? state.duration,
+        maxHeight: maxHeight ?? state.maxHeight,
+        bestSeason: bestSeason ?? state.bestSeason,
+        coordinates: state.coordinates != null
+            ? state.coordinates?.copyWith(coordinates: [
+                longitude ?? state.coordinates!.coordinates!.first,
+                latitude ?? state.coordinates!.coordinates!.last
+              ])
+            : Coordinates(coordinates: [longitude ?? 0.0, latitude ?? 0.0]),
+        category: category ?? state.category,
+        emergencyContact: emergencyContact ?? state.emergencyContact);
   }
 
   @override

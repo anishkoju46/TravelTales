@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:latlng/latlng.dart';
+import 'package:map/map.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/interactiveMap.dart';
+import 'package:traveltales/utility/interactive_map_stateful.dart';
+import 'package:traveltales/utility/map.dart';
+import 'package:traveltales/utility/map_screen_riverpod.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
   const DestinationDetailScreen({super.key, required this.destinationModel});
@@ -10,13 +17,14 @@ class DestinationDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
-        child: Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Scaffold(
+        body: SingleChildScrollView(
           child: Column(
             children: [
-              details(context, destinationModel: destinationModel),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: details(context, destinationModel: destinationModel),
+              ),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
@@ -24,7 +32,38 @@ class DestinationDetailScreen extends ConsumerWidget {
                   ),
                 ),
                 child: FilledButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        final destinationPin = LatLng(
+                          Angle.degree(
+                              destinationModel.coordinates!.coordinates!.last),
+                          Angle.degree(
+                              destinationModel.coordinates!.coordinates!.first),
+                        );
+                        return MapScreenNew(
+                          pin: destinationPin,
+                          controller: MapController(
+                            location: LatLng(
+                              Angle.degree(destinationModel
+                                  .coordinates!.coordinates!.last),
+                              Angle.degree(destinationModel
+                                  .coordinates!.coordinates!.first),
+                            ),
+                          ),
+                        );
+                        // return MapScreen(
+                        //     controller: MapController(
+                        //   location: LatLng(
+                        //       Angle.degree(destinationModel
+                        //           .coordinates!.coordinates!.last),
+                        //       Angle.degree(destinationModel
+                        //           .coordinates!.coordinates!.first)),
+                        //   // zoom: 3
+                        // ));
+                      },
+                    ));
+                  },
                   icon: Icon(Icons.explore_rounded),
                   label: Text("Directions"),
                 ),
@@ -33,7 +72,7 @@ class DestinationDetailScreen extends ConsumerWidget {
           ),
         ),
       ),
-    ));
+    );
   }
 
   Positioned iconMethods(
@@ -58,52 +97,107 @@ class DestinationDetailScreen extends ConsumerWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(destinationModel.name!,
           style: Theme.of(context).textTheme.displaySmall),
+
       Container(
-        padding: EdgeInsets.symmetric(vertical: 5),
-        child: Column(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: infoMethod(
-                    destinationModel: destinationModel,
-                    icon: Icons.landscape,
-                    infoTitle: "Max Height",
-                    information: destinationModel.maxHeight!,
-                  ),
-                ),
-                Expanded(
-                    child: infoMethod(
-                        destinationModel: destinationModel,
-                        infoTitle: "Best Season",
-                        information: destinationModel.bestSeason!,
-                        icon: Icons.foggy)),
-              ],
+            Expanded(
+              child: Container(
+                color: Colors.blue,
+              ),
             ),
-            SizedBox(
-              height: 10,
+            Expanded(
+              flex: 5,
+              child: Column(
+                children: [
+                  infoMethod(context,
+                      infoTitle: "Max Height",
+                      information: destinationModel.maxHeight!,
+                      icon: Icons.landscape),
+                  infoMethod(context,
+                      infoTitle: "Duration",
+                      information: destinationModel.duration!,
+                      icon: Icons.timelapse)
+                ],
+              ),
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: infoMethod(
-                    destinationModel: destinationModel,
-                    icon: Icons.calendar_month,
-                    infoTitle: "Duration",
-                    information: destinationModel.duration!,
-                  ),
-                ),
-                Expanded(
-                    child: infoMethod(
-                        destinationModel: destinationModel,
-                        infoTitle: "Region",
-                        information: destinationModel.region!,
-                        icon: Icons.map)),
-              ],
+            Expanded(
+              child: Container(
+                color: Colors.grey,
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: Container(
+                  // color: Colors.amber,
+                  child: Column(
+                children: [
+                  infoMethod(context,
+                      infoTitle: "Best Season",
+                      information: destinationModel.bestSeason!,
+                      icon: Icons.foggy),
+                  infoMethod(context,
+                      infoTitle: "Region",
+                      information: destinationModel.region!,
+                      icon: Icons.place)
+                ],
+              )),
+            ),
+            Expanded(
+              child: Container(
+                color: Colors.orange,
+              ),
             ),
           ],
         ),
       ),
+      // Container(
+      //   padding: EdgeInsets.symmetric(vertical: 5),
+      //   child: Column(
+      //     children: [
+      //       Row(
+      //         children: [
+      //           Expanded(
+      //             child: infoMethod(
+      //               destinationModel: destinationModel,
+      //               icon: Icons.landscape,
+      //               infoTitle: "Max Height",
+      //               information: destinationModel.maxHeight!,
+      //             ),
+      //           ),
+      //           Expanded(
+      //               child: infoMethod(
+      //                   destinationModel: destinationModel,
+      //                   infoTitle: "Best Season",
+      //                   information: destinationModel.bestSeason!,
+      //                   icon: Icons.foggy)),
+      //         ],
+      //       ),
+      //       SizedBox(
+      //         height: 10,
+      //       ),
+      //       Row(
+      //         children: [
+      //           Expanded(
+      //             child: infoMethod(
+      //               destinationModel: destinationModel,
+      //               icon: Icons.calendar_month,
+      //               infoTitle: "Duration",
+      //               information: destinationModel.duration!,
+      //             ),
+      //           ),
+      //           Expanded(
+      //               child: infoMethod(
+      //                   destinationModel: destinationModel,
+      //                   infoTitle: "Region",
+      //                   information: destinationModel.region!,
+      //                   icon: Icons.map)),
+      //         ],
+      //       ),
+      //     ],
+      //   ),
+      // ),
       Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(
@@ -125,48 +219,51 @@ class DestinationDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
+      Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Emergency Contacts",
+                style: Theme.of(context).textTheme.headlineSmall),
+            Consumer(builder: (context, ref, child) {
+              return FilledButton(
+                  onPressed: () {
+                    ref.read(destinationListProvider.notifier).emergencyContact(
+                        destinationModel.emergencyContact!.first);
+                  },
+                  child: Text(destinationModel.emergencyContact!.first));
+            })
+          ],
+        ),
+      ),
     ]);
   }
 
-  Row infoMethod({
-    required DestinationModel destinationModel,
+  Container infoMethod(
+    BuildContext context, {
     required String infoTitle,
     required String information,
     required IconData icon,
   }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon),
-        Column(
-          children: [
-            Text(infoTitle),
-            Text(information),
-          ],
-        )
-      ],
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                infoTitle,
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              Text(information),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
-
-
-//  InkWell(
-//           onTap: () {
-//             if (onTap == null) {
-//               Navigator.pop(context);
-//             } else {
-//               onTap();
-//             }
-//           },
-//           child: Container(
-//               padding: EdgeInsets.all(5),
-//               decoration: BoxDecoration(
-//                 color: Theme.of(context).colorScheme.primary,
-//                 borderRadius: BorderRadius.all(
-//                   Radius.circular(12),
-//                 ),
-//               ),
-//               child:
-//                   Icon(icon, color: Theme.of(context).colorScheme.background)),
-//         )

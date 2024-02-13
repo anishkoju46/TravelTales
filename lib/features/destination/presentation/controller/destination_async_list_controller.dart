@@ -8,6 +8,7 @@ import 'package:traveltales/features/destination/presentation/widgets/destinatio
 import 'package:traveltales/utility/async_list_controller.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DestinationController extends AsyncListController<DestinationModel> {
   final ScrollController listScrollController = ScrollController();
@@ -65,6 +66,17 @@ class DestinationController extends AsyncListController<DestinationModel> {
   bool findById(DestinationModel element,
       [DestinationModel? current, String? id]) {
     return element.id == ((current?.id) ?? id);
+  }
+
+  Future<void> emergencyContact(String phoneNumber) async {
+    final String phoneNumberWithCountryCode = "+977$phoneNumber";
+    final Uri phoneLaunchUri =
+        Uri(scheme: 'tel', path: phoneNumberWithCountryCode);
+    if (await canLaunchUrl(phoneLaunchUri)) {
+      await launchUrl(phoneLaunchUri);
+    } else {
+      throw 'Could not launch $phoneLaunchUri';
+    }
   }
 
   // setDestination(

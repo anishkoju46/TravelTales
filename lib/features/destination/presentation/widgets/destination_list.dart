@@ -12,18 +12,22 @@ class DestinationList extends ConsumerWidget {
     //final scrollController = ref.read(destinationListProvider.notifier);
     final destinationList = ref.watch(destinationListProvider);
     return destinationList.when(
-        data: (data) => ListView.builder(
-            //controller: scrollController.listScrollController,
-            itemCount: data.length,
-            itemBuilder: (BuildContext context, int index) {
-              return DestinationListItem(
-                  destination: data[index],
-                  onPressed: () {
-                    ref
-                        .read(destinationListProvider.notifier)
-                        .showDestinationDetails(context, data[index]);
-                  });
-            }),
+        data: (data) => data.isEmpty
+            ? Center(
+                child: Text("No Destination Available"),
+              )
+            : ListView.builder(
+                //controller: scrollController.listScrollController,
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return DestinationListItem(
+                      destination: data[index],
+                      onPressed: () {
+                        ref
+                            .read(destinationListProvider.notifier)
+                            .showDestinationDetails(context, data[index]);
+                      });
+                }),
         error: ((error, stackTrace) => Center(
               child: Text(error.toString()),
             )),

@@ -4,8 +4,8 @@ import 'package:http/http.dart';
 
 abstract class Repository<T> {
   Repository({this.token, this.client});
-  final baseUrl = "http://localhost:8000/";
-  //final baseUrl = "http://10.0.2.2:8000/";
+  // final baseUrl = "http://localhost:8000/";
+  final baseUrl = "http://10.0.2.2:8000/";
   final endPoint = "api";
 
   late final Map<String, String> headers = {
