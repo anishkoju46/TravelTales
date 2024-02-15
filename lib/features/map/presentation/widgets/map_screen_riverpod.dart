@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:map/map.dart';
-import 'package:traveltales/utility/map_state.dart';
+import 'package:traveltales/features/map/presentation/state/map_state.dart';
 
 class MapScreenNew extends ConsumerWidget {
   const MapScreenNew({super.key, required this.controller, required this.pin});
@@ -14,16 +14,22 @@ class MapScreenNew extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final mapState = ref.watch(mapProvider(controller));
-    final mapController = ref.watch(mapProvider(controller).notifier);
+    final mapProviderController = mapProvider(controller);
+    final mapState = ref.watch(mapProviderController);
+    final mapController = ref.read(mapProviderController.notifier);
+
+    // print(mapController.arg.hasListeners);
     // print(controller.zoom);
+    // print(mapState.hashCode);
+    print(mapProviderController.hashCode);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Interactive Map'),
       ),
       body: MapLayout(
-        controller: controller,
+        controller: mapController.controller,
         builder: (context, transformer) {
+          // print(controller.hasListeners);
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onDoubleTapDown: (details) => mapController.onDoubleTap(
@@ -49,8 +55,8 @@ class MapScreenNew extends ConsumerWidget {
               onPointerSignal: (event) {
                 if (event is PointerScrollEvent) {
                   final delta = event.scrollDelta.dy / -1000.0;
-                  final zoom =
-                      mapController.clamp(controller.zoom + delta, 2, 18);
+                  final zoom = mapController.clamp(
+                      mapController.arg.zoom + delta, 2, 18);
 
                   transformer.setZoomInPlace(zoom, event.localPosition);
                 }

@@ -46,7 +46,7 @@ class DestinationListItem extends ConsumerWidget {
                 ),
                 // boxShadow: [
                 //   BoxShadow(
-                //       offset: Offset(4, 4), color: Colors.black, blurRadius: 23)
+                //       offset: Offset(4, 4), color: Colors.grey, blurRadius: 1)
                 // ],
               ),
               child: Container(

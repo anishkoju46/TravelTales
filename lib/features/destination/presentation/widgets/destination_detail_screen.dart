@@ -4,11 +4,8 @@ import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
+import 'package:traveltales/features/map/presentation/widgets/map_screen_riverpod.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
-import 'package:traveltales/utility/interactiveMap.dart';
-import 'package:traveltales/utility/interactive_map_stateful.dart';
-import 'package:traveltales/utility/map.dart';
-import 'package:traveltales/utility/map_screen_riverpod.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
   const DestinationDetailScreen({super.key, required this.destinationModel});

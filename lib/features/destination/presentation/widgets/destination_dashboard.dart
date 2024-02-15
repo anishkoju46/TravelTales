@@ -59,7 +59,7 @@ class DestinationDashboard extends ConsumerWidget {
             ),
             Container(
               child: Card(
-                margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 7),
+                margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 7),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),

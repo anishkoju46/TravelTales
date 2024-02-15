@@ -2,18 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:traveltales/features/map/domain/map_model.dart';
 
-class MapState {
-  final Offset? dragStart;
-  final double scaleStart;
-  MapState({this.dragStart, required this.scaleStart});
-}
-
-final mapProvider =
-    NotifierProvider.family<MapStateContoller, MapState, MapController>(
-        MapStateContoller.new);
-
-class MapStateContoller extends FamilyNotifier<MapState, MapController> {
+class MapStateContoller
+    extends AutoDisposeFamilyNotifier<MapState, MapController> {
   @override
   MapState build(MapController arg) {
     return MapState(scaleStart: 1.0);
@@ -42,26 +34,32 @@ class MapStateContoller extends FamilyNotifier<MapState, MapController> {
     final zoom = clamp(controller.zoom + delta, 2, 18);
 
     transformer.setZoomInPlace(zoom, position);
+    setState();
   }
 
-  Offset? _dragStart;
-  double _scaleStart = 1.0;
   void onScaleStart(ScaleStartDetails details) =>
       update(dragStart: details.focalPoint, scaleStart: 1.0);
+
+  //Defining min and max zoom of map
+  final minZoom = 12;
+  final maxZoom = 19;
 
   void onScaleUpdate(ScaleUpdateDetails details, MapTransformer transformer) {
     final scaleDiff = details.scale - state.scaleStart;
     update(scaleStart: details.scale);
 
-    if (scaleDiff > 0) {
+    if (scaleDiff > 0 && controller.zoom < maxZoom) {
       controller.zoom += 0.02;
-    } else if (scaleDiff < 0) {
+      setState();
+    } else if (scaleDiff < 0 && controller.zoom > minZoom) {
       controller.zoom -= 0.02;
+      setState();
     } else {
       final now = details.focalPoint;
       final diff = now - state.dragStart!;
       update(dragStart: now);
       transformer.drag(diff.dx, diff.dy);
+      setState();
     }
   }
 

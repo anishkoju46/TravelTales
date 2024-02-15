@@ -88,13 +88,6 @@ class ProfileScreen extends ConsumerWidget {
                               .bodyLarge
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
-                        // Text(
-                        //   "${authController?.phoneNumber}",
-                        //   style: Theme.of(context)
-                        //       .textTheme
-                        //       .bodyLarge
-                        //       ?.copyWith(fontWeight: FontWeight.w600),
-                        // )
                       ],
                     );
                   }),
@@ -102,21 +95,6 @@ class ProfileScreen extends ConsumerWidget {
               ],
             ),
           ),
-          // Positioned(
-          //   top: 10,
-          //   left: 10,
-          //   child: Container(
-          //     decoration: BoxDecoration(
-          //         color: Color(0xff333C4B),
-          //         borderRadius: BorderRadius.all(Radius.circular(15))),
-          //     child: IconButton(
-          //         onPressed: () {},
-          //         icon: Icon(
-          //           Icons.arrow_back,
-          //           color: Colors.white,
-          //         )),
-          //   ),
-          // ),
         ),
         //Profile Part 2
         Expanded(
@@ -179,50 +157,6 @@ class ProfileScreen extends ConsumerWidget {
                             },
                           );
                         })
-                        // customProfileButtons(context,
-                        //     icon: Icons.person,
-                        //     profileButtonText: "Edit Profile", onTap: () {
-                        //   ref.read(profileProvider.notifier).edit(context);
-                        // }),
-                        // customProfileButtons(context,
-                        //     icon: Icons.key,
-                        //     profileButtonText: "Change Password", onTap: () {
-                        //   Navigator.push(context, MaterialPageRoute(
-                        //     builder: (context) {
-                        //       return ChangePasswordScreen();
-                        //     },
-                        //   ));
-                        //   // ref
-                        //   //     .read(profileProvider.notifier)
-                        //   //     .navigateToChangePasswordPage(context);
-                        // }),
-                        // customProfileButtons(context,
-                        //     icon: Icons.phone,
-                        //     profileButtonText: "Emergency Contacts",
-                        //     onTap: () {}),
-                        // customProfileButtons(context,
-                        //     icon: Icons.info,
-                        //     profileButtonText: "About Us",
-                        //     onTap: () {}),
-                        // customProfileButtons(context,
-                        //     icon: Icons.exit_to_app,
-                        //     profileButtonText: "Sign Out",
-                        //     color: Theme.of(context)
-                        //         .colorScheme
-                        //         .secondaryContainer, onTap: () async {
-                        //   await showDialog(
-                        //       context: context,
-                        //       builder: (BuildContext context) {
-                        //         return AlertBox(
-                        //             confirmText: "Logout",
-                        //             onPressed: () {
-                        //               ref
-                        //                   .watch(authNotifierProvider.notifier)
-                        //                   .logout(context);
-                        //             },
-                        //             title: "Logout?");
-                        //       });
-                        // }),
                       ],
                     ),
                   ),
@@ -235,59 +169,4 @@ class ProfileScreen extends ConsumerWidget {
       ]);
     });
   }
-
-  // Padding customProfileButtons(BuildContext context,
-  //     {required IconData icon,
-  //     required String profileButtonText,
-  //     Color? color,
-  //     required Function onTap}) {
-  //   return Padding(
-  //     padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-  //     child: InkWell(
-  //       onTap: () {
-  //         onTap();
-  //       },
-  //       child: Container(
-  //         padding: EdgeInsets.symmetric(vertical: 12),
-  //         decoration: BoxDecoration(
-  //           color: color ?? Theme.of(context).colorScheme.onBackground,
-  //           borderRadius: BorderRadius.all(
-  //             Radius.circular(25),
-  //           ),
-  //         ),
-  //         alignment: Alignment.center,
-  //         child: Container(
-  //           //color: Colors.red,
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.start,
-  //             //mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               SizedBox(width: 10),
-  //               Expanded(
-  //                 flex: 1,
-  //                 child: Icon(
-  //                   icon,
-  //                   color: Theme.of(context).colorScheme.onPrimary,
-  //                 ),
-  //               ),
-  //               Expanded(
-  //                 flex: 7,
-  //                 child: Text(
-  //                   profileButtonText,
-  //                   style: TextStyle(
-  //                       color: Theme.of(context).colorScheme.background),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //           //  FilledButton.icon(
-  //           //   onPressed: () {},
-  //           //   icon: Icon(Icons.person),
-  //           //   label: Text("EditProfile"),
-  //           // ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 }

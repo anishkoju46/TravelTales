@@ -7,7 +7,7 @@ Container customListTile(BuildContext context,
     // Color? color,
     Color? color}) {
   return Container(
-    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+    margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         // color: Theme.of(context).colorScheme.primaryContainer,
