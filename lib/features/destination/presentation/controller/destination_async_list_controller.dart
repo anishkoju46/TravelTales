@@ -79,6 +79,16 @@ class DestinationController extends AsyncListController<DestinationModel> {
     }
   }
 
+  searchDestination(BuildContext context, {required String query}) async {
+    try {
+      await DestinationRepository(token: ref.watch(authNotifierProvider)?.token)
+          .search(query: query);
+      CustomSnack.success(context, message: "Filtered Destination");
+    } catch (e, s) {
+      CustomSnack.error(context, message: e.toString());
+    }
+  }
+
   // setDestination(
   //   String id,
   // ) {

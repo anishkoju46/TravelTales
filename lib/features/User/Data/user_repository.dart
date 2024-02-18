@@ -39,4 +39,8 @@ class UserRepository extends Repository<UserModel> {
       id: id,
     );
   }
+
+  Future<UserModel> addToFavourites({required String id}) async {
+    return await addToFavourite(id: id);
+  }
 }

@@ -4,41 +4,58 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
-import 'package:traveltales/features/map/presentation/state/map_state.dart';
+import 'package:traveltales/features/map/presentation/controller/new_map_controller.dart';
 
-class MapScreenNew extends ConsumerWidget {
-  const MapScreenNew({super.key, required this.controller, required this.pin});
+class TheMap extends ConsumerStatefulWidget {
+  TheMap({super.key, required this.controller, required this.pin});
   final MapController controller;
-  final pin;
+  final LatLng pin;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final mapProviderController = mapProvider(controller);
-    final mapState = ref.watch(mapProviderController);
-    final mapController = ref.read(mapProviderController.notifier);
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewMapScreen();
+}
 
-    // print(mapController.arg.hasListeners);
+class _NewMapScreen extends ConsumerState<TheMap> {
+  late final NewMapStateContoller mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    mapController = NewMapStateContoller(setStateFn: () {
+      setState(() {});
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final mapProviderController = mapController;
+
+    // final mapState = ref.watch(mapProviderController);
+
+    // final mapController = ref.read(mapProviderController.notifier);
+
     // print(controller.zoom);
     // print(mapState.hashCode);
     // print(mapProviderController.hashCode);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Interactive Map'),
+        title: const Text('Maps'),
       ),
       body: MapLayout(
-        controller: mapController.controller,
+        controller: widget.controller,
         builder: (context, transformer) {
           // print(controller.hasListeners);
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onDoubleTapDown: (details) => mapController.onDoubleTap(
-              transformer,
-              details.localPosition,
-            ),
+                transformer, details.localPosition,
+                controller: widget.controller),
             onScaleStart: mapController.onScaleStart,
-            onScaleUpdate: (details) =>
-                mapController.onScaleUpdate(details, transformer),
+            onScaleUpdate: (details) => mapController.onScaleUpdate(
+                details, transformer,
+                controller: widget.controller),
             onTapUp: (details) {
               final location = transformer.toLatLng(details.localPosition);
 
@@ -56,7 +73,7 @@ class MapScreenNew extends ConsumerWidget {
                 if (event is PointerScrollEvent) {
                   final delta = event.scrollDelta.dy / -1000.0;
                   final zoom = mapController.clamp(
-                      mapController.arg.zoom + delta, 2, 18);
+                      widget.controller.zoom + delta, 2, 18);
 
                   transformer.setZoomInPlace(zoom, event.localPosition);
                 }
@@ -85,7 +102,7 @@ class MapScreenNew extends ConsumerWidget {
                   ),
                   Builder(
                     builder: (context) {
-                      final offSet = transformer.toOffset(pin);
+                      final offSet = transformer.toOffset(widget.pin);
                       return Positioned(
                         left: offSet.dx,
                         top: offSet.dy,
@@ -109,7 +126,9 @@ class MapScreenNew extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: mapController.gotoDefault,
+        onPressed: () {
+          mapController.gotoDefault(widget.controller);
+        },
         tooltip: 'My Location',
         child: const Icon(
           Icons.my_location,

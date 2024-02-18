@@ -3,6 +3,8 @@ import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/widgets/edit_profile_screen.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/async_list_controller.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/repository.dart';
@@ -41,4 +43,16 @@ class UserListController extends AsyncListController<UserModel> {
   bool findById(UserModel element, [UserModel? current, String? id]) {
     return element.id == ((current?.id) ?? id);
   }
+
+  // addToFavourites(BuildContext context, DestinationModel destination) async {
+  //   // final destination =
+  //   //     ref.read(destinationListProvider.notifier).currentDestination;
+  //   try {
+  //     await UserRepository(token: ref.watch(authNotifierProvider)?.token)
+  //         .addToFavourites(id: destination.id!);
+  //     CustomSnack.success(context, message: "Added to Favourites");
+  //   } catch (e, s) {
+  //     CustomSnack.error(context, message: e.toString());
+  //   }
+  // }
 }

@@ -4,7 +4,7 @@ import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
-import 'package:traveltales/features/map/presentation/widgets/map_screen_riverpod.dart';
+import 'package:traveltales/features/map/presentation/widgets/new_map_Screen.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
@@ -38,28 +38,49 @@ class DestinationDetailScreen extends ConsumerWidget {
                           Angle.degree(
                               destinationModel.coordinates!.coordinates!.first),
                         );
-                        return MapScreenNew(
+                        return TheMap(
                           pin: destinationPin,
                           controller: MapController(
-                            location: LatLng(
-                              Angle.degree(destinationModel
-                                  .coordinates!.coordinates!.last),
-                              Angle.degree(destinationModel
-                                  .coordinates!.coordinates!.first),
-                            ),
-                          ),
+                              location: LatLng(
+                            Angle.degree(destinationModel
+                                .coordinates!.coordinates!.last),
+                            Angle.degree(destinationModel
+                                .coordinates!.coordinates!.first),
+                          )),
                         );
-                        // return MapScreen(
-                        //     controller: MapController(
-                        //   location: LatLng(
-                        //       Angle.degree(destinationModel
-                        //           .coordinates!.coordinates!.last),
-                        //       Angle.degree(destinationModel
-                        //           .coordinates!.coordinates!.first)),
-                        //   // zoom: 3
-                        // ));
                       },
                     ));
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   builder: (context) {
+                    //     final destinationPin = LatLng(
+                    //       Angle.degree(
+                    //           destinationModel.coordinates!.coordinates!.last),
+                    //       Angle.degree(
+                    //           destinationModel.coordinates!.coordinates!.first),
+                    //     );
+                    //     return NewMapScreen(
+                    //       pin: destinationPin,
+                    //       controller: MapController(
+                    //         location: LatLng(
+                    //           Angle.degree(destinationModel
+                    //               .coordinates!.coordinates!.last),
+                    //           Angle.degree(destinationModel
+                    //               .coordinates!.coordinates!.first),
+                    //         ),
+                    //       ),
+                    //       provider: newMapProvider,
+                    //     );
+                    //     // return MapScreen(
+                    //     //     controller: MapController(
+                    //     //   location: LatLng(
+                    //     //       Angle.degree(destinationModel
+                    //     //           .coordinates!.coordinates!.last),
+                    //     //       Angle.degree(destinationModel
+                    //     //           .coordinates!.coordinates!.first)),
+                    //     //   // zoom: 3
+                    //     // ));
+                    //   },
+                    // ));
                   },
                   icon: Icon(Icons.explore_rounded),
                   label: Text("Directions"),

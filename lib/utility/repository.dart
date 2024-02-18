@@ -30,12 +30,24 @@ abstract class Repository<T> {
     return listfromJson(_handleStatusCode(response).body);
   }
 
+  // Future<List<T>> search({Client? client, required String query}) async {
+  //   client ??= Client();
+
+  //   final response = await client.get(
+  //       Uri.parse(
+  //         "$baseUrl$endPoint/search?query=$query",
+  //       ),
+  //       headers: headers);
+
+  //   return listfromJson(_handleStatusCode(response).body);
+  // }
+
   Future<List<T>> search({Client? client, required String query}) async {
     client ??= Client();
 
-    final response = await client.get(
+    final response = await client.post(
         Uri.parse(
-          "$baseUrl$endPoint/search?query=$query",
+          "{$baseUrl$endPoint}search?q=$query",
         ),
         headers: headers);
 
@@ -86,6 +98,18 @@ abstract class Repository<T> {
     // if (response.statusCode == 201)
     return fromJson(_handleStatusCode(response, code: 201).body);
   }
+
+  Future<T> addToFavourite({required String id}) async {
+    final response = await (client ?? Client()).post(
+      // Uri.parse("$baseUrl$endPoint{addToFavourites/}$id"),
+      Uri.parse(baseUrl + endPoint + "addToFavourites/" + id),
+      headers: headers,
+      // body: jsonEncode(data),
+    );
+    // if (response.statusCode == 201)
+    return fromJson(_handleStatusCode(response).body);
+  }
+  //required Map<String, dynamic> data,
 
   Response _handleStatusCode(
     Response response, {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/favourite/presentation/controller/favourite_async_list_controller.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 
 class FavouriteButton extends ConsumerWidget {
@@ -11,9 +13,14 @@ class FavouriteButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final favourites = ref.watch(favouriteProvider);
     final isFavourite = favourites.containsKey(destination.id);
+    final favouriteList = ref.watch(favouriteListProvider.notifier);
     return InkWell(
       onTap: () {
-        ref.read(favouriteProvider.notifier).handleFavourite(destination);
+        favouriteList.addToFavourites(context, destination);
+        // ref
+        //     .read(userListProvider.notifier)
+        //     .addToFavourites(context, destination);
+        // ref.read(favouriteProvider.notifier).handleFavourite(destination);
       },
       child: Container(
         padding: EdgeInsets.all(7),
