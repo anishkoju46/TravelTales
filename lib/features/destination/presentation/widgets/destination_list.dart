@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_async_list_controller.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list_item.dart';
 
 class DestinationList extends ConsumerWidget {
-  const DestinationList({super.key});
+  const DestinationList({super.key, this.searchResult});
+  final AsyncValue<List<DestinationModel>>? searchResult;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //final scrollController = ref.read(destinationListProvider.notifier);
-    final destinationList = ref.watch(destinationListProvider);
+    final destinationList = searchResult ?? ref.watch(destinationListProvider);
 
-    return destinationList.when(
+    return destinationList!.when(
         data: (data) => data.isEmpty
             ? Center(
                 child: Text("No Destination Available"),

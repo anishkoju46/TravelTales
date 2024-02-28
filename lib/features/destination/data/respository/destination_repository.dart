@@ -63,7 +63,8 @@ class DestinationRepository extends Repository<DestinationModel> {
     );
   }
 
-  Future<List<DestinationModel>> searchDestination(String query) async {
+  Future<List<DestinationModel>> searchDestination(
+      {required String query}) async {
     return await search(query: query);
   }
 }

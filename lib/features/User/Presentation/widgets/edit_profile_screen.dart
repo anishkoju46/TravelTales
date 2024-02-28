@@ -50,9 +50,9 @@ class EditProfileScreen extends ConsumerWidget {
                         readOnly: isCurrentUser == true ? true : false,
                         validator: fullNameValidator),
                     feild(
+                        initialValue: userFormState.email!,
                         label: "Email",
                         icondata: Icons.email,
-                        initialValue: userFormState.email!,
                         onchanged: (value) {
                           userFormController.update(email: value);
                         },

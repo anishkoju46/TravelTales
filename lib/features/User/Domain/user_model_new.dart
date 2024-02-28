@@ -12,8 +12,17 @@ String userModelToJson(List<UserModel> data) =>
 
 class UserModel extends Equatable {
   @override
-  List<Object?> get props =>
-      [id, fullName, phoneNumber, imageUrl, role, block, favourites, gallery];
+  List<Object?> get props => [
+        id,
+        fullName,
+        email,
+        phoneNumber,
+        imageUrl,
+        role,
+        block,
+        favourites,
+        gallery
+      ];
 
   final String? id;
   final String? fullName;

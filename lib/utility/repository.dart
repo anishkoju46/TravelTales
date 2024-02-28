@@ -46,9 +46,9 @@ abstract class Repository<T> {
     client ??= Client();
 
     final response = await client.post(
-        Uri.parse(
-          "{$baseUrl$endPoint}search?q=$query",
-        ),
+        Uri.parse(baseUrl + endPoint + "search?q=" + query
+            // "$baseUrl$endPoint"search"?q=$query",
+            ),
         headers: headers);
 
     return listfromJson(_handleStatusCode(response).body);
@@ -88,6 +88,17 @@ abstract class Repository<T> {
     return fromJson(_handleStatusCode(response).body);
   }
 
+  Future<T> removeFavourite({Client? client, String id = ""}) async {
+    client ??= Client();
+
+    final response = await client.delete(
+        Uri.parse(baseUrl + endPoint + "removeFromFavourites/" + id),
+        headers: headers);
+
+    // if (response.statusCode == 200)
+    return fromJson(_handleStatusCode(response).body);
+  }
+
   Future<T> add({required Map<String, dynamic> data, String path = ""}) async {
     final response = await (client ?? Client()).post(
       Uri.parse(baseUrl + endPoint + path),
@@ -100,9 +111,9 @@ abstract class Repository<T> {
   }
 
   Future<T> addToFavourite({required String id}) async {
-    final response = await (client ?? Client()).post(
+    final response = await (client ?? Client()).put(
       // Uri.parse("$baseUrl$endPoint{addToFavourites/}$id"),
-      Uri.parse(baseUrl + endPoint + "addToFavourites/" + id),
+      Uri.parse(baseUrl + endPoint + "toggleFavourite/" + id),
       headers: headers,
       // body: jsonEncode(data),
     );

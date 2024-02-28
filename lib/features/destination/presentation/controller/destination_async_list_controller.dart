@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
 import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
@@ -81,13 +82,26 @@ class DestinationController extends AsyncListController<DestinationModel> {
 
   searchDestination(BuildContext context, {required String query}) async {
     try {
-      await DestinationRepository(token: ref.watch(authNotifierProvider)?.token)
-          .search(query: query);
+      final List<DestinationModel> searchResult = await DestinationRepository(
+              token: ref.watch(authNotifierProvider)?.token)
+          .searchDestination(query: query);
+
+      state = AsyncValue.data(searchResult);
       CustomSnack.success(context, message: "Filtered Destination");
     } catch (e, s) {
       CustomSnack.error(context, message: e.toString());
     }
   }
+
+  // searchDestination(BuildContext context, {required String query}) async {
+  //   try {
+  //     await DestinationRepository(token: ref.watch(authNotifierProvider)?.token)
+  //         .searchDestination(query: query);
+  //     CustomSnack.success(context, message: "Filtered Destination");
+  //   } catch (e, s) {
+  //     CustomSnack.error(context, message: e.toString());
+  //   }
+  // }
 
   // setDestination(
   //   String id,

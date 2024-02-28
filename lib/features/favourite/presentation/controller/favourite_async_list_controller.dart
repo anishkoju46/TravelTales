@@ -1,14 +1,16 @@
 // class FavouriteController extends Async
 
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Data/user_repository.dart';
-import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/utility/async_list_controller.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/repository.dart';
+
+final Storage = GetStorage;
 
 final favouriteListProvider = AsyncNotifierProvider.autoDispose<
     FavouriteAsyncListController,
@@ -45,12 +47,10 @@ class FavouriteAsyncListController
     throw UnimplementedError();
   }
 
-  addToFavourites(BuildContext context, DestinationModel destination) async {
-    // final destination =
-    //     ref.read(destinationListProvider.notifier).currentDestination;
+  toggleFavourites(BuildContext context, DestinationModel destination) async {
     try {
       await UserRepository(token: ref.watch(authNotifierProvider)?.token)
-          .addToFavourites(id: destination.id!);
+          .toggleFavourites(id: destination.id!);
       CustomSnack.success(context, message: "Added to Favourites");
     } catch (e, s) {
       // print("E for Error: $e");
@@ -59,5 +59,29 @@ class FavouriteAsyncListController
     }
   }
 
-  removeFromFavourites() {}
+  // removeFromFavourites(
+  //     BuildContext context, DestinationModel destination) async {
+  //   try {
+  //     await UserRepository(token: ref.watch(authNotifierProvider)?.token)
+  //         .removeFromFavourites(id: destination.id!);
+  //     CustomSnack.success(context, message: "Removed from Favourites");
+  //   } catch (e, s) {
+  //     CustomSnack.error(context, message: e.toString());
+  //   }
+  // }
+
+  // toggleFavourites(BuildContext context, DestinationModel destination) async {
+  //   final currentUser = ref.watch(authNotifierProvider);
+  //   // print(currentUser?.favourites);
+  //   // print(currentUser?.fullName);
+  //   try {
+  //     if (currentUser!.favourites!.any((fav) => fav.id == destination.id)) {
+  //       await removeFromFavourites(context, destination);
+  //     } else {
+  //       await addToFavourites(context, destination);
+  //     }
+  //   } catch (e, s) {
+  //     CustomSnack.error(context, message: e.toString());
+  //   }
+  // }
 }

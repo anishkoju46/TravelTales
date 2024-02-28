@@ -53,7 +53,7 @@ class UserDashboard extends ConsumerWidget {
             ),
             NavigationDestination(
                 icon: Icon(Icons.favorite_outline),
-                label: "favorite",
+                label: "favourite",
                 selectedIcon: Icon(Icons.favorite)),
             NavigationDestination(
                 icon: Icon(Icons.person_2_outlined),
