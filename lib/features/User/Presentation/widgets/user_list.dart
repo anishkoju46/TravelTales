@@ -62,7 +62,7 @@ class UserList extends ConsumerWidget {
                                           border: Border.all(
                                               color: Theme.of(context)
                                                   .colorScheme
-                                                  .secondaryContainer),
+                                                  .tertiaryContainer),
                                           shape: BoxShape.circle,
                                           image: DecorationImage(
                                             fit: BoxFit.cover,

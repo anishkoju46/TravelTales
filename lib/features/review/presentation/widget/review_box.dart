@@ -33,7 +33,7 @@ class ReviewBox extends StatelessWidget {
                 width: 50,
                 decoration: BoxDecoration(
                   border: Border.all(
-                      color: Theme.of(context).colorScheme.secondaryContainer),
+                      color: Theme.of(context).colorScheme.tertiaryContainer),
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     fit: BoxFit.cover,
@@ -72,7 +72,7 @@ class ReviewBox extends StatelessWidget {
                                       Icons.star,
                                       color: Theme.of(context)
                                           .colorScheme
-                                          .secondaryContainer,
+                                          .tertiaryContainer,
                                     ),
                                 onRatingUpdate: (value) {}),
                           ),

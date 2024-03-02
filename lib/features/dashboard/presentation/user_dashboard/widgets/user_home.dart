@@ -14,8 +14,23 @@ class UserHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     TextEditingController searchController = TextEditingController();
 
+    final destinationController = ref.read(destinationListProvider.notifier);
+
+    // final debouncer = Debouncer(Duration(milliseconds: 500));
+
+    //  Timer? debounceTimer;
+
+    // void onSearchChanged(String value) {
+    //   if (debounceTimer != null) {
+    //     debounceTimer!.cancel();
+    //   }
+    //   debounceTimer = Timer(Duration(microseconds: 500), () async {
+    //     await destinationController.searchDestination(context, query: value);
+    //   });
+    // }
+
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      // padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           Container(
@@ -44,6 +59,12 @@ class UserHome extends ConsumerWidget {
                       showSearch(
                           context: context, delegate: UserSearchDelegate());
                     },
+                    // onChanged: (value) async {
+                    //   if (value.isNotEmpty) {
+                    //     await destinationController.searchDestination(context,
+                    //         query: value);
+                    //   }
+                    // },
                     leading: Icon(Icons.search),
                     hintText: "Search for a place",
                   ),
@@ -62,11 +83,19 @@ class UserHome extends ConsumerWidget {
                 // Category Navigator Bar
                 Container(
                     padding: EdgeInsets.symmetric(vertical: 6),
-                    child: SizedBox(height: 30, child: CategoryList())),
+                    child: SizedBox(height: 38, child: CategoryList())),
               ],
             ),
           ),
           Expanded(child: DestinationList())
+          // Expanded(
+          //     child: searchController.text.isEmpty
+          //         ? DestinationList()
+          //         : DestinationList(
+          //             searchResult: destinationController.searchDestination(
+          //                 context,
+          //                 query: searchController.text),
+          //           ))
         ],
       ),
     );

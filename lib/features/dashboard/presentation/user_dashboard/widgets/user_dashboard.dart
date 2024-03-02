@@ -32,34 +32,44 @@ class UserDashboard extends ConsumerWidget {
             }),
           ],
         ),
-        bottomNavigationBar: NavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          indicatorShape: CircleBorder(),
-          selectedIndex: ref.watch(userNavigationProvider),
-          //labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-          onDestinationSelected: (index) {
-            navigationIndex.state = index;
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home_outlined),
-              label: "Home",
-              selectedIcon: Icon(Icons.home),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.add_a_photo_outlined),
-              label: "Photo",
-              selectedIcon: Icon(Icons.add_a_photo),
-            ),
-            NavigationDestination(
-                icon: Icon(Icons.favorite_outline),
-                label: "favourite",
-                selectedIcon: Icon(Icons.favorite)),
-            NavigationDestination(
-                icon: Icon(Icons.person_2_outlined),
-                label: "Profile",
-                selectedIcon: Icon(Icons.person))
-          ],
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              //Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.all(Radius.circular(25))),
+          child: NavigationBar(
+            height: 55,
+            backgroundColor: Colors.transparent,
+            // indicatorShape:
+            //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            // CircleBorder(),
+            selectedIndex: ref.watch(userNavigationProvider),
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            onDestinationSelected: (index) {
+              navigationIndex.state = index;
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                label: "Home",
+                selectedIcon: Icon(Icons.home),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.add_a_photo_outlined),
+                label: "Photo",
+                selectedIcon: Icon(Icons.add_a_photo),
+              ),
+              NavigationDestination(
+                  icon: Icon(Icons.favorite_outline),
+                  label: "favourite",
+                  selectedIcon: Icon(Icons.favorite)),
+              NavigationDestination(
+                  icon: Icon(Icons.person_2_outlined),
+                  label: "Profile",
+                  selectedIcon: Icon(Icons.person))
+            ],
+          ),
         ),
       ),
     );

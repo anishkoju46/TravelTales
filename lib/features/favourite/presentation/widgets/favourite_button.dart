@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/favourite/presentation/controller/favourite_async_list_controller.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 
 class FavouriteButton extends ConsumerWidget {
@@ -31,7 +29,7 @@ class FavouriteButton extends ConsumerWidget {
         child: Icon(
           isFavourite ? Icons.star : Icons.star_outline,
           color: isFavourite
-              ? Theme.of(context).colorScheme.secondaryContainer
+              ? Theme.of(context).colorScheme.tertiaryContainer
               : Theme.of(context).colorScheme.background,
         ),
       ),

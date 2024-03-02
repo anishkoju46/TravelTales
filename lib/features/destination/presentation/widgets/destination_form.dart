@@ -22,22 +22,31 @@ class DestinationForm extends ConsumerWidget {
     final categories = ref.read(categoryListProvider.notifier).usableCategories;
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(
+            isAdd ? "Add Destination" : "Update Destination",
+            style: TextStyle(color: Theme.of(context).colorScheme.background),
+          ),
+          iconTheme:
+              IconThemeData(color: Theme.of(context).colorScheme.background),
+        ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      ArrowBackWidget(),
-                      Text(
-                        isAdd ? "Add Destination" : "Update Destination",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      )
-                    ],
-                  )),
+              // Container(
+              //     color: Theme.of(context).colorScheme.primary,
+              //     width: double.infinity,
+              //     child: Row(
+              //       children: [
+              //         ArrowBackWidget(),
+              //         Text(
+              //           isAdd ? "Add Destination" : "Update Destination",
+              //           style: TextStyle(
+              //               color: Theme.of(context).colorScheme.onPrimary),
+              //         )
+              //       ],
+              //     )),
               Form(
                 key: destinationFormController.formKey,
                 child: Column(

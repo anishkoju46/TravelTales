@@ -37,33 +37,42 @@ class AdminDashboard extends ConsumerWidget {
             ),
           ],
         ),
-        bottomNavigationBar: NavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          indicatorShape: CircleBorder(),
-          selectedIndex: ref.watch(adminNavigationProvider),
-          onDestinationSelected: (index) {
-            navigationIndex.state = index;
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.landscape_outlined),
-              label: "Destination",
-              selectedIcon: Icon(Icons.landscape),
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.group_add_outlined),
-              label: "Users List",
-              selectedIcon: Icon(Icons.group),
-            ),
-            // NavigationDestination(
-            //     icon: Icon(Icons.manage_accounts_outlined),
-            //     label: "Manage",
-            //     selectedIcon: Icon(Icons.manage_accounts)),
-            NavigationDestination(
-                icon: Icon(Icons.person_2_outlined),
-                label: "Profile",
-                selectedIcon: Icon(Icons.person))
-          ],
+        bottomNavigationBar: Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          decoration: BoxDecoration(
+              color: Colors.grey,
+              //Theme.of(context).colorScheme.primary,
+              borderRadius: BorderRadius.all(Radius.circular(25))),
+          child: NavigationBar(
+            height: 55,
+            backgroundColor: Colors.transparent,
+            // indicatorShape: CircleBorder(),
+            selectedIndex: ref.watch(adminNavigationProvider),
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            onDestinationSelected: (index) {
+              navigationIndex.state = index;
+            },
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.landscape_outlined),
+                label: "Destination",
+                selectedIcon: Icon(Icons.landscape),
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.groups_outlined),
+                label: "Users List",
+                selectedIcon: Icon(Icons.groups),
+              ),
+              // NavigationDestination(
+              //     icon: Icon(Icons.manage_accounts_outlined),
+              //     label: "Manage",
+              //     selectedIcon: Icon(Icons.manage_accounts)),
+              NavigationDestination(
+                  icon: Icon(Icons.person_2_outlined),
+                  label: "Profile",
+                  selectedIcon: Icon(Icons.person))
+            ],
+          ),
         ),
       ),
     );

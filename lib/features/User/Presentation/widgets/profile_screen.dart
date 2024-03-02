@@ -148,7 +148,7 @@ class ProfileScreen extends ConsumerWidget {
                             title: "Sign Out",
                             color: Theme.of(context)
                                 .colorScheme
-                                .secondaryContainer, onTap: () {
+                                .tertiaryContainer, onTap: () {
                           showDialog(
                             context: context,
                             builder: (context) {

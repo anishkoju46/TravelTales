@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/User/Controller/user_search_delegate.dart';
 import 'package:traveltales/features/category/presentation/widgets/category_list.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
@@ -43,9 +44,8 @@ class AdminHome extends ConsumerWidget {
                           },
                           icon: Icon(
                             Icons.add_link,
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondaryContainer,
+                            color:
+                                Theme.of(context).colorScheme.tertiaryContainer,
                           ),
                         )
                       ],
@@ -55,7 +55,10 @@ class AdminHome extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: SearchBar(
-                      onTap: () {},
+                      onTap: () {
+                        showSearch(
+                            context: context, delegate: UserSearchDelegate());
+                      },
                       leading: Icon(Icons.search),
                       hintText: "Search for a place",
                     ),
@@ -63,7 +66,7 @@ class AdminHome extends ConsumerWidget {
                   Container(
                       //color: Colors.red,
                       padding: EdgeInsets.symmetric(vertical: 6),
-                      child: SizedBox(height: 30, child: CategoryList())),
+                      child: SizedBox(height: 38, child: CategoryList())),
                 ],
               ),
             ),

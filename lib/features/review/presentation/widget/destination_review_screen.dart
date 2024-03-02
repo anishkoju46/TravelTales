@@ -75,7 +75,7 @@ class DestinationReview extends ConsumerWidget {
                                         Icons.star,
                                         color: Theme.of(context)
                                             .colorScheme
-                                            .secondaryContainer,
+                                            .tertiaryContainer,
                                       ),
                                   onRatingUpdate: (value) {
                                     rating = value;

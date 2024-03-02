@@ -28,7 +28,8 @@ class ThemeController extends Notifier<ThemeData> {
       //Secondary
       secondary: Colors.cyan,
       onSecondary: Colors.black,
-      secondaryContainer: Color(0xffD4A056), //[selected kura ko BG]
+      secondaryContainer: Colors.transparent,
+      //Color(0xffD4A056), //[selected kura ko BG]
       onSecondaryContainer: Colors.white, //[select kura]A3A3A3
 
       //Error
@@ -52,7 +53,8 @@ class ThemeController extends Notifier<ThemeData> {
       //tertiary
       tertiary: Colors.blueAccent,
       onTertiary: Colors.blueGrey,
-      tertiaryContainer: Colors.indigoAccent,
+      tertiaryContainer: Color(0xffD4A056),
+      //Colors.indigoAccent,
       onTertiaryContainer: Colors.pink,
     ),
   );

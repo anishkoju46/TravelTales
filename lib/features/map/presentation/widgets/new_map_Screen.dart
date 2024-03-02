@@ -41,7 +41,13 @@ class _NewMapScreen extends ConsumerState<TheMap> {
     // print(mapProviderController.hashCode);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Maps'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(
+          "Maps",
+          style: TextStyle(color: Theme.of(context).colorScheme.background),
+        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).colorScheme.background),
       ),
       body: MapLayout(
         controller: widget.controller,

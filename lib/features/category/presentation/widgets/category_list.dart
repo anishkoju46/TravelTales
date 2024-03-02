@@ -50,12 +50,15 @@ class CategoryList extends ConsumerWidget {
               .selectCategory(categoryOption);
         },
         child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 14),
+            alignment: Alignment.center,
+            margin: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               color: isSelected
                   ? Theme.of(context).colorScheme.primary
-                  : Color(0xffD9D9D9),
+                  :
+                  // Colors.red,
+                  Color(0xffD9D9D9),
               borderRadius: BorderRadius.all(
                 Radius.circular(30),
               ),

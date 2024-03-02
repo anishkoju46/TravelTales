@@ -8,7 +8,7 @@ class FavouriteScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10),
+      // padding: EdgeInsets.symmetric(vertical: 10),
       child: Column(
         children: [
           Container(
@@ -18,7 +18,7 @@ class FavouriteScreen extends ConsumerWidget {
                 //For Tile Travel Tales
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     "Favourite",
                     style: Theme.of(context)
@@ -28,14 +28,14 @@ class FavouriteScreen extends ConsumerWidget {
                   ),
                 ),
                 //Search bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: SearchBar(
-                    onTap: () {},
-                    leading: Icon(Icons.search),
-                    hintText: "Search for a place",
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(vertical: 10),
+                //   child: SearchBar(
+                //     onTap: () {},
+                //     leading: Icon(Icons.search),
+                //     hintText: "Search for a place",
+                //   ),
+                // ),
                 //Title: Category
                 // Container(
                 //   alignment: Alignment.topLeft,

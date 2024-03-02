@@ -79,7 +79,7 @@ class DestinationListItem extends ConsumerWidget {
                               Icons.star,
                               color: Theme.of(context)
                                   .colorScheme
-                                  .secondaryContainer,
+                                  .tertiaryContainer,
                             ),
                         onRatingUpdate: (value) {})
                   ],
@@ -142,9 +142,7 @@ class DestinationListItem extends ConsumerWidget {
                           },
                         );
                       },
-                      icon: Icon(Icons.delete, color: Color(0xff798CAB)
-                          //Theme.of(context).colorScheme.secondaryContainer,
-                          ),
+                      icon: Icon(Icons.delete, color: Color(0xff798CAB)),
                     )),
               ),
             //using if condition for frontend - role true hunda matra yo edit button dekhaune
