@@ -12,12 +12,14 @@ class FavouriteButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favourites = ref.watch(favouriteProvider);
+    // print(favourites.length);
     final isFavourite = favourites.containsKey(destination.id);
+    // print(destination.toJson());
 
-    final favouriteController = ref.read(favouriteListProvider.notifier);
+    final favouriteController = ref.read(favouriteProvider.notifier);
     return InkWell(
       onTap: () {
-        favouriteController.toggleFavourites(context, destination);
+        favouriteController.toggleFavourites(context, destination, isFavourite);
         // favouriteList.removeFromFavourites(context, destination);
         // ref
         //     .read(userListProvider.notifier)

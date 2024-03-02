@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 import 'package:traveltales/features/User/Presentation/widgets/change_password_screen.dart';
+import 'package:traveltales/features/User/Presentation/widgets/emergency_contacts_screen.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/custom_list_tile.dart';
@@ -131,8 +132,13 @@ class ProfileScreen extends ConsumerWidget {
                         }),
                         customListTile(context,
                             leadingIcon: Icons.phone,
-                            title: "Emergency Contacts",
-                            onTap: () {}),
+                            title: "Emergency Contacts", onTap: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return EmergencyContactsScreen();
+                            },
+                          ));
+                        }),
                         customListTile(context,
                             leadingIcon: Icons.info,
                             title: "About Us",

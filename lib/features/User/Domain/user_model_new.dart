@@ -88,7 +88,7 @@ class UserModel extends Equatable {
   factory UserModel.fromRawJson(String str) =>
       UserModel.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
+  String toRawJson([bool fromServer = true]) => json.encode(toJson(fromServer));
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["_id"],
@@ -100,8 +100,10 @@ class UserModel extends Equatable {
         block: json["block"],
         favourites: json["favourites"] == null
             ? []
-            : List<DestinationModel>.from(
-                json["favourites"]!.map((x) => DestinationModel.fromJson(x))),
+            : List<DestinationModel>.from(json["favourites"]!.map((x) =>
+                x is String
+                    ? DestinationModel(id: x)
+                    : DestinationModel.fromJson(x))),
         gallery: json["gallery"] == null
             ? []
             : List<String>.from(json["gallery"]!.map((x) => x)),
@@ -115,7 +117,7 @@ class UserModel extends Equatable {
         token: json["token"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson([bool fromServer = true]) => {
         "_id": id,
         "fullName": fullName,
         "email": email,
@@ -125,7 +127,7 @@ class UserModel extends Equatable {
         "block": block,
         "favourites": favourites == null
             ? []
-            : List<dynamic>.from(favourites!.map((x) => x.toJson())),
+            : List<dynamic>.from(favourites!.map((x) => x.toJson(fromServer))),
         "gallery":
             gallery == null ? [] : List<dynamic>.from(gallery!.map((x) => x)),
         "createdAt": createdAt?.toIso8601String(),

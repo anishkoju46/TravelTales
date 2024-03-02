@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/src/client.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 
@@ -50,5 +52,12 @@ class UserRepository extends Repository<UserModel> {
 
   Future<UserModel> toggleFavourites({required String id}) async {
     return await addToFavourite(id: id);
+    // final favourites = await addToFavourite(id: id);
+    // final decodedFavourite = jsonDecode(favourites);
+
+    // final bool added = decodedFavourite['added'];
+    // print(decodedFavourite['favourites'][0]);
+
+    // return added;
   }
 }

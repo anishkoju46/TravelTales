@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:traveltales/features/User/Domain/user_model_new.dart';
 
 abstract class Repository<T> {
   Repository({this.token, this.client});
@@ -30,25 +32,11 @@ abstract class Repository<T> {
     return listfromJson(_handleStatusCode(response).body);
   }
 
-  // Future<List<T>> search({Client? client, required String query}) async {
-  //   client ??= Client();
-
-  //   final response = await client.get(
-  //       Uri.parse(
-  //         "$baseUrl$endPoint/search?query=$query",
-  //       ),
-  //       headers: headers);
-
-  //   return listfromJson(_handleStatusCode(response).body);
-  // }
-
   Future<List<T>> search({Client? client, required String query}) async {
     client ??= Client();
 
     final response = await client.post(
-        Uri.parse(baseUrl + endPoint + "search?q=" + query
-            // "$baseUrl$endPoint"search"?q=$query",
-            ),
+        Uri.parse(baseUrl + endPoint + "search?q=" + query),
         headers: headers);
 
     return listfromJson(_handleStatusCode(response).body);
@@ -105,6 +93,7 @@ abstract class Repository<T> {
       headers: headers,
       body: jsonEncode(data),
     );
+    // print(response.body);
 
     // if (response.statusCode == 201)
     return fromJson(_handleStatusCode(response, code: 201).body);
@@ -112,15 +101,41 @@ abstract class Repository<T> {
 
   Future<T> addToFavourite({required String id}) async {
     final response = await (client ?? Client()).put(
-      // Uri.parse("$baseUrl$endPoint{addToFavourites/}$id"),
       Uri.parse(baseUrl + endPoint + "toggleFavourite/" + id),
       headers: headers,
-      // body: jsonEncode(data),
     );
-    // if (response.statusCode == 201)
     return fromJson(_handleStatusCode(response).body);
+    // return _handleStatusCode(response).body;
   }
   //required Map<String, dynamic> data,
+
+  Future<void> changePassword(
+      {required String currentPassword, required String newPassword}) async {
+    try {
+      final Map<String, dynamic> data = {
+        'currentPassword': currentPassword,
+        'newPassword': newPassword
+      };
+
+      final response = await (client ?? Client()).put(
+          Uri.parse("$baseUrl${endPoint}changePassword"),
+          headers: headers,
+          body: jsonEncode(data));
+      _handleStatusCode(response, code: 200);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  // Future<T> changePassword(
+  //     {required String oldPassword, required String newPassword}) async {
+  //   final response = await (client ?? Client()).put(
+  //     Uri.parse(baseUrl + endPoint + "changePassword/"),
+  //     headers: headers,
+  //     body: jsonEncode(newPassword),
+  //   );
+  //   return fromJson(_handleStatusCode(response).body);
+  // }
 
   Response _handleStatusCode(
     Response response, {

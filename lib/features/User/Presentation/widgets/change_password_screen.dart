@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 import 'package:traveltales/utility/custom_textform_feild.dart';
 import 'package:traveltales/utility/validator.dart';
 
 class ChangePasswordScreen extends ConsumerWidget {
-  const ChangePasswordScreen({super.key, this.userModel});
+  // const
+  ChangePasswordScreen({super.key, this.userModel});
   final UserModel? userModel;
+
+  final TextEditingController currentPasswordController =
+      TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmNewPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,22 +26,31 @@ class ChangePasswordScreen extends ConsumerWidget {
     // final userFormState = ref.watch(userFormProvider(userModel));
     return SafeArea(
         child: Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(
+          "Change Password",
+          style: TextStyle(color: Theme.of(context).colorScheme.background),
+        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).colorScheme.background),
+      ),
       body: Column(
         children: [
-          Container(
-            color: Theme.of(context).colorScheme.primary,
-            width: double.infinity,
-            child: Row(
-              children: [
-                ArrowBackWidget(),
-                Text(
-                  "Change Password",
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                )
-              ],
-            ),
-          ),
+          // Container(
+          //   color: Theme.of(context).colorScheme.primary,
+          //   width: double.infinity,
+          //   child: Row(
+          //     children: [
+          //       ArrowBackWidget(),
+          //       Text(
+          //         "Change Password",
+          //         style:
+          //             TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          //       )
+          //     ],
+          //   ),
+          // ),
           Column(
             children: [
               Form(
@@ -40,17 +58,21 @@ class ChangePasswordScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     CustomTextFormFeild(
-                        credentials: "Old Password",
+                        credentials: "Current Password",
+                        controller: currentPasswordController,
                         onchanged: (value) {},
                         validator: passwordValidator),
                     CustomTextFormFeild(
                         credentials: "New Password",
+                        controller: newPasswordController,
                         onchanged: (value) {},
                         validator: passwordValidator),
                     CustomTextFormFeild(
-                        credentials: "Confirm Password",
-                        onchanged: (value) {},
-                        validator: passwordValidator),
+                      credentials: "Confirm Password",
+                      controller: confirmNewPasswordController,
+                      onchanged: (value) {},
+                      validator: passwordValidator,
+                    ),
                   ]
                       .map((e) => Container(
                             margin: EdgeInsets.symmetric(
@@ -70,7 +92,23 @@ class ChangePasswordScreen extends ConsumerWidget {
                     return AlertBox(
                         confirmText: "Confirm",
                         onPressed: () {
+                          ref.read(userListProvider.notifier).changePassword(
+                              context,
+                              currentPassword: currentPasswordController.text,
+                              newPassword: newPasswordController.text,
+                              confirmPassword:
+                                  confirmNewPasswordController.text);
+
                           Navigator.pop(context);
+
+                          // AlertBox(
+                          //     confirmText: "Logout",
+                          //     onPressed: () {
+                          //       ref
+                          //           .watch(authNotifierProvider.notifier)
+                          //           .logout(context);
+                          //     },
+                          //     title: "Do you want to Logout?");
                         },
                         title: "Save Changes");
                   },

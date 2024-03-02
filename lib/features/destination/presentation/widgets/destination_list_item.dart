@@ -15,6 +15,7 @@ class DestinationListItem extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // print(destination.toJson());
     return destinationShowCase(context, ref,
         destination: destination, onPressed: onPressed);
   }
@@ -42,7 +43,9 @@ class DestinationListItem extends ConsumerWidget {
                 ),
                 image: DecorationImage(
                   fit: BoxFit.fitWidth,
-                  image: AssetImage(destination.imageUrl!.first), //TODO
+                  image: destination.imageUrl!.isEmpty
+                      ? AssetImage("assets/images/aa.jpg")
+                      : AssetImage(destination.imageUrl!.first), //TODO
                 ),
                 // boxShadow: [
                 //   BoxShadow(

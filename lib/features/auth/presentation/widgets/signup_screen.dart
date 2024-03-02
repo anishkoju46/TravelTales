@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/custom_textform_feild.dart';
 import 'package:traveltales/utility/validator.dart';
 
 class SignupScreen extends ConsumerWidget {
@@ -32,28 +33,28 @@ class SignupScreen extends ConsumerWidget {
               key: signUpFormController.formKey,
               child: Column(
                 children: [
-                  signUpCustomTextFormField(
+                  CustomTextFormFeild(
                       iconData: Icons.person,
-                      label: "FullName",
+                      credentials: "FullName",
                       onchanged: (value) {
                         signUpFormController.update(fullName: value);
                       },
                       validator: fullNameValidator),
-                  signUpCustomTextFormField(
+                  CustomTextFormFeild(
                       iconData: Icons.mail,
-                      label: "Email",
+                      credentials: "Email",
                       onchanged: (value) {
                         signUpFormController.update(email: value);
                       },
                       validator: emailValidator),
-                  signUpCustomTextFormField(
+                  CustomTextFormFeild(
                       iconData: Icons.phone,
-                      label: "Phone Number",
+                      credentials: "Phone Number",
                       onchanged: (value) {
                         signUpFormController.update(phoneNumber: value);
                       },
                       validator: phoneNumberValidator),
-                  signUpCustomTextFormField(
+                  CustomTextFormFeild(
                       obscureText: signUpFormState.showPassword,
                       iconData: signUpFormState.showPassword
                           ? Icons.lock
@@ -61,12 +62,12 @@ class SignupScreen extends ConsumerWidget {
                       onTapIcon: (value) {
                         return signUpFormController.update(showPassword: value);
                       },
-                      label: "Password",
+                      credentials: "Password",
                       onchanged: (value) {
                         signUpFormController.update(password: value);
                       },
                       validator: passwordValidator),
-                  signUpCustomTextFormField(
+                  CustomTextFormFeild(
                       obscureText: signUpFormState.showConfirmPassword,
                       iconData: signUpFormState.showConfirmPassword
                           ? Icons.lock
@@ -75,12 +76,16 @@ class SignupScreen extends ConsumerWidget {
                         return signUpFormController.update(
                             showConfirmPassword: value);
                       },
-                      label: "Confirm Password",
+                      credentials: "Confirm Password",
                       onchanged: (value) {
                         signUpFormController.update(confirmPassword: value);
                       },
                       validator: passwordValidator)
-                ],
+                ]
+                    .map((e) => Container(
+                          child: e,
+                        ))
+                    .toList(),
               ),
             ),
             Padding(
@@ -126,38 +131,38 @@ class SignupScreen extends ConsumerWidget {
     ));
   }
 
-  Padding signUpCustomTextFormField({
-    required String label,
-    required IconData iconData,
-    required Function(String) onchanged,
-    String? Function(String?)? validator,
-    bool obscureText = false,
-    bool? Function(bool)? onTapIcon,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-      child: TextFormField(
-        obscureText: obscureText,
-        onChanged: (value) {
-          onchanged(value);
-        },
-        validator: validator,
-        decoration: InputDecoration(
-          //hoverColor: Colors.red,
-          labelText: label,
-          suffixIcon: InkWell(
-            onTap: onTapIcon != null
-                ? () {
-                    onTapIcon(!obscureText);
-                  }
-                : null,
-            child: Icon(iconData),
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-        ),
-      ),
-    );
-  }
+  // Padding signUpCustomTextFormField({
+  //   required String label,
+  //   required IconData iconData,
+  //   required Function(String) onchanged,
+  //   String? Function(String?)? validator,
+  //   bool obscureText = false,
+  //   bool? Function(bool)? onTapIcon,
+  // }) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+  //     child: TextFormField(
+  //       obscureText: obscureText,
+  //       onChanged: (value) {
+  //         onchanged(value);
+  //       },
+  //       validator: validator,
+  //       decoration: InputDecoration(
+  //         //hoverColor: Colors.red,
+  //         labelText: label,
+  //         suffixIcon: InkWell(
+  //           onTap: onTapIcon != null
+  //               ? () {
+  //                   onTapIcon(!obscureText);
+  //                 }
+  //               : null,
+  //           child: Icon(iconData),
+  //         ),
+  //         border: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(25),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

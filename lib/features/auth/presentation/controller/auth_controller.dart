@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +9,7 @@ import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/auth/presentation/widgets/login_screen.dart';
 import 'package:traveltales/features/dashboard/presentation/admin_dashboard/widgets/admin_dashboard.dart';
 import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_dashboard.dart';
+import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 import 'package:traveltales/utility/async_list_controller.dart';
 
 final storage = GetStorage();
@@ -55,10 +58,19 @@ class AuthController extends Notifier<UserModel?> {
   login(BuildContext context,
       {required String email, required String password}) async {
     final client = await ref.getDebouncedHttpClient();
-    state = await AuthRepository(client: client)
+
+    // state =
+    final user = await AuthRepository(client: client)
         .login(email: email, password: password);
 
+    // print(user.toJson());
+
+    state = user;
+
+    // print(state!.toJson());
+
     storage.write(key, state?.toRawJson());
+    // print(state!.toJson());
 
     Future.delayed(Duration(milliseconds: 100), () {
       Navigator.pushReplacement(
@@ -109,6 +121,7 @@ class AuthController extends Notifier<UserModel?> {
   }
 
   logout(BuildContext context) {
+    ref.read(favouriteProvider.notifier).clearFavourites();
     storage.remove(key);
     state = null;
     Navigator.pushReplacement(
@@ -119,8 +132,9 @@ class AuthController extends Notifier<UserModel?> {
     state = state!.copyWith(
         fullName: user.fullName,
         email: user.email,
-        phoneNumber: user.phoneNumber);
-    storage.write(key, state?.toRawJson());
+        phoneNumber: user.phoneNumber,
+        favourites: user.favourites);
+    storage.write(key, state?.toRawJson(false));
   }
 
   // login([UserModel? user]) {

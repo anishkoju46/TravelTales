@@ -21,17 +21,13 @@ class UserList extends ConsumerWidget {
     return Column(
       children: [
         Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.symmetric(vertical: 15),
             color: Theme.of(context).colorScheme.primary,
-            width: double.infinity,
-            child: Row(
-              children: [
-                // ArrowBackWidget(),
-                Text(
-                  "User List",
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                )
-              ],
+            // width: double.infinity,
+            child: Text(
+              "User List",
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             )),
         Expanded(
             child: userList.when(

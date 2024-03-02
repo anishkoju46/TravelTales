@@ -163,7 +163,7 @@ class DestinationModel extends Equatable {
         v: json["__v"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson([bool forServer = true]) => {
         "_id": id,
         "name": name,
         "coordinates": coordinates?.toJson(),

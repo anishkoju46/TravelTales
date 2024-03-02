@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/auth/presentation/widgets/signup_screen.dart';
+import 'package:traveltales/utility/custom_textform_feild.dart';
 import 'package:traveltales/utility/validator.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -34,7 +35,7 @@ class LoginScreen extends ConsumerWidget {
                     key: loginController.formKey,
                     child: Column(
                       children: [
-                        customTextFormField(
+                        CustomTextFormFeild(
                             controller: loginController.emailController,
                             credentials: "Email",
                             iconData: Icons.email,
@@ -42,7 +43,7 @@ class LoginScreen extends ConsumerWidget {
                               loginController.update(email: value);
                             },
                             validator: emailValidator),
-                        customTextFormField(
+                        CustomTextFormFeild(
                             controller: loginController.passwordController,
                             obscureText: loginFormState.showPassword,
                             // initialValue: loginFormState.password,
@@ -68,7 +69,11 @@ class LoginScreen extends ConsumerWidget {
                           },
                           child: Text('LOGIN'),
                         )
-                      ],
+                      ]
+                          .map((e) => Container(
+                                child: e,
+                              ))
+                          .toList(),
                     ),
                   ),
                 ],
@@ -110,41 +115,41 @@ class LoginScreen extends ConsumerWidget {
     );
   }
 
-  Padding customTextFormField(
-      {required IconData iconData,
-      required String credentials,
-      String? initialValue,
-      required Function(String) onchanged,
-      bool obscureText = false,
-      bool? Function(bool)? onTapIcon,
-      TextEditingController? controller,
-      String? Function(String?)? validator}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
-      child: TextFormField(
-        validator: validator,
-        controller: controller,
-        obscureText: obscureText,
-        onChanged: (data) {
-          onchanged(data);
-        },
-        initialValue: initialValue,
-        decoration: InputDecoration(
-          suffixIcon: InkWell(
-            onTap: onTapIcon != null
-                ? () {
-                    onTapIcon(!obscureText);
-                  }
-                : null,
-            child: Icon(iconData),
-          ),
-          labelText: credentials,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(25),
-            borderSide: BorderSide(color: Colors.red),
-          ),
-        ),
-      ),
-    );
-  }
+  // Padding customTextFormField(
+  //     {required IconData iconData,
+  //     required String credentials,
+  //     String? initialValue,
+  //     required Function(String) onchanged,
+  //     bool obscureText = false,
+  //     bool? Function(bool)? onTapIcon,
+  //     TextEditingController? controller,
+  //     String? Function(String?)? validator}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
+  //     child: TextFormField(
+  //       validator: validator,
+  //       controller: controller,
+  //       obscureText: obscureText,
+  //       onChanged: (data) {
+  //         onchanged(data);
+  //       },
+  //       initialValue: initialValue,
+  //       decoration: InputDecoration(
+  //         suffixIcon: InkWell(
+  //           onTap: onTapIcon != null
+  //               ? () {
+  //                   onTapIcon(!obscureText);
+  //                 }
+  //               : null,
+  //           child: Icon(iconData),
+  //         ),
+  //         labelText: credentials,
+  //         border: OutlineInputBorder(
+  //           borderRadius: BorderRadius.circular(25),
+  //           borderSide: BorderSide(color: Colors.red),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }

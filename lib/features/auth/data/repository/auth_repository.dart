@@ -33,5 +33,5 @@ class AuthRepository extends Repository<UserModel> {
 
   forgotPassword() {}
 
-  changePassword() {}
+  // changePassword() {}
 }

@@ -3,8 +3,6 @@ import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/widgets/edit_profile_screen.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
-import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/async_list_controller.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/repository.dart';
@@ -42,6 +40,31 @@ class UserListController extends AsyncListController<UserModel> {
   @override
   bool findById(UserModel element, [UserModel? current, String? id]) {
     return element.id == ((current?.id) ?? id);
+  }
+
+  changePassword(BuildContext context,
+      {required String currentPassword,
+      required String newPassword,
+      required String confirmPassword}) async {
+    try {
+      if (currentPassword.isNotEmpty &&
+          newPassword.isNotEmpty &&
+          confirmPassword.isNotEmpty) {
+        if (newPassword == confirmPassword) {
+          await UserRepository(token: ref.watch(authNotifierProvider)?.token)
+              .changePassword(
+                  currentPassword: currentPassword, newPassword: newPassword);
+          CustomSnack.success(context, message: "Password Changed");
+        } else {
+          CustomSnack.info(context, message: "Incorrect new Password");
+        }
+      } else {
+        CustomSnack.info(context, message: "Fields are Empty. Try Again");
+      }
+    } catch (e, s) {
+      // print("$e $s");
+      CustomSnack.error(context, message: e.toString());
+    }
   }
 
   // addToFavourites(BuildContext context, DestinationModel destination) async {

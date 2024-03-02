@@ -10,15 +10,18 @@ class CustomTextFormFeild extends StatelessWidget {
       this.initialValue,
       this.onTapIcon,
       required this.onchanged,
-      required this.validator});
+      required this.validator,
+      this.obscureText = false,
+      this.readOnly = false});
   final IconData? iconData;
   final String credentials;
   final String? initialValue;
   final Function(String) onchanged;
-  final bool obscureText = false;
+  final bool obscureText;
   final bool? Function(bool)? onTapIcon;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
+  final bool readOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +33,26 @@ class CustomTextFormFeild extends StatelessWidget {
         initialValue: initialValue,
         onTapIcon: onTapIcon,
         obscureText: obscureText,
-        validator: validator);
+        validator: validator,
+        readOnly: readOnly);
   }
 
-  Padding form(
-    BuildContext context, {
-    IconData? iconData,
-    required String credentials,
-    String? initialValue,
-    required Function(String) onchanged,
-    bool obscureText = false,
-    bool? Function(bool)? onTapIcon,
-    TextEditingController? controller,
-    String? Function(String?)? validator,
-  }) {
+  Padding form(BuildContext context,
+      {IconData? iconData,
+      required String credentials,
+      String? initialValue,
+      required Function(String) onchanged,
+      bool obscureText = false,
+      bool? Function(bool)? onTapIcon,
+      TextEditingController? controller,
+      String? Function(String?)? validator,
+      bool readOnly = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 12),
       child: TextFormField(
+        readOnly: readOnly,
         validator: validator,
-        maxLines: null,
+        // maxLines: null,
         inputFormatters: [LengthLimitingTextInputFormatter(200)],
         controller: controller,
         obscureText: obscureText,

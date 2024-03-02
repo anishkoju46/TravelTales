@@ -29,6 +29,7 @@ class LoginController extends AutoDisposeNotifier<
           .read(authNotifierProvider.notifier)
           .login(context, email: state.email, password: state.password);
     } catch (e, s) {
+      // print("$e $s");
       CustomSnack.error(context, message: e.toString());
     }
   }
