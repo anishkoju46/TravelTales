@@ -68,7 +68,7 @@ class UserSearchDelegate extends SearchDelegate {
                 : data.isEmpty
                     ? Text("Not Found Related to $query")
                     : ListView.builder(
-                        key: UniqueKey(),
+                        // key: UniqueKey(),
                         itemCount: data.length,
                         itemBuilder: (context, index) {
                           return DestinationListItem(

@@ -33,9 +33,13 @@ class FavouriteController
     //state persistance, so that like gareko kura reload garda ni basos
     final user = ref.watch(authNotifierProvider);
     // print(user!.toRawJson());
-    final favMap = {for (var e in user!.favourites!) e.id!: e};
+    if (user != null) {
+      final favMap = {for (var e in user.favourites!) e.id!: e};
+      return favMap;
+    } else {
+      return {};
+    }
     // print(favMap);
-    return favMap;
   }
 
   addToFavourite(DestinationModel destination) {
