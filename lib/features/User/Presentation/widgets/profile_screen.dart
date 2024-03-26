@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 import 'package:traveltales/features/User/Presentation/widgets/change_password_screen.dart';
 import 'package:traveltales/features/User/Presentation/widgets/emergency_contacts_screen.dart';
@@ -12,8 +13,16 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    String baseUrl = "http://10.0.2.2:8000/";
     return Consumer(builder: (context, ref, child) {
       final user = ref.watch(authNotifierProvider);
+
+      // String userProfilePath = user!.imageUrl!;
+
+      // if (userProfilePath.isNotEmpty && userProfilePath.contains('\\')) {
+      //   userProfilePath = userProfilePath.replaceAll('\\', '/');
+      // }
+
       return Column(children: [
         //Profile Part 1
         Expanded(
@@ -40,17 +49,20 @@ class ProfileScreen extends ConsumerWidget {
                   flex: 5,
                   child: Stack(
                     children: [
-                      if (user != null)
-                        Container(
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  //fit: BoxFit.cover,
-                                  image: AssetImage(
-                                      "${user.imageUrl!.isEmpty ? "assets/images/default2.jpeg" : user.imageUrl}")),
-                              shape: BoxShape.circle,
-                              color: Colors.amber,
-                              border: Border.all()),
-                        ),
+                      // if (user != null)
+                      Container(
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: user!.imageUrl!.isEmpty
+                                  ? AssetImage("assets/images/default2.jpeg")
+                                  : NetworkImage(
+                                          "${baseUrl}${user.imageUrl!.replaceAll('\\', '/')}")
+                                      as ImageProvider<Object>,
+                            ),
+                            shape: BoxShape.circle,
+                            color: Colors.amber,
+                            border: Border.all()),
+                      ),
                       Positioned(
                           bottom: 10,
                           right: 125,

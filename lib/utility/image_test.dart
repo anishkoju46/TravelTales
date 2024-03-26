@@ -6,8 +6,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 
-class PhotoScreen extends ConsumerWidget {
-  PhotoScreen({super.key});
+class ImageTest extends StatefulWidget {
+  const ImageTest({super.key});
+
+  @override
+  State<ImageTest> createState() => _ImageTestState();
+}
+
+class _ImageTestState extends State<ImageTest> {
   File? image;
   final _picker = ImagePicker();
   bool showspinner = false;
@@ -17,7 +23,7 @@ class PhotoScreen extends ConsumerWidget {
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (pickedFile != null) {
       image = File(pickedFile.path);
-      //set state garekoxa
+      setState(() {});
     } else {
       print("no image selected");
     }
@@ -27,8 +33,9 @@ class PhotoScreen extends ConsumerWidget {
     var stream = http.ByteStream(image!.openRead());
     stream.cast();
     var length = await image!.length();
-    // var uri = Uri.parse('http://localhost:8000/users');
     var uri = Uri.parse('http://10.0.2.2:8000/users/uploadPicture');
+    // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
+
     var request = http.MultipartRequest('POST', uri);
 
     request.headers['x-access-token'] = token;
@@ -38,57 +45,19 @@ class PhotoScreen extends ConsumerWidget {
         contentType: MediaType.parse('image/jpg'));
     request.files.add(multiport);
     var response = await request.send();
-    if (response.statusCode == 200) {
-      print('image uploaded');
-    } else {
-      print('image upload failed');
+    try {
+      if (response.statusCode == 200) {
+        print('image uploaded');
+      } else {
+        print('image upload failed');
+      }
+    } catch (e, s) {
+      print("${e} ${s}");
     }
   }
 
-  // @override
-  // Widget build(BuildContext context, WidgetRef ref) {
-  //   return Container(
-  //     // padding: EdgeInsets.symmetric(vertical: 10),
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           padding: EdgeInsets.symmetric(horizontal: 20),
-  //           child: Column(
-  //             children: [
-  //               Container(
-  //                 padding: EdgeInsets.symmetric(vertical: 10),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Text(
-  //                       "Gallery",
-  //                       style: Theme.of(context)
-  //                           .textTheme
-  //                           .headlineLarge
-  //                           ?.copyWith(fontWeight: FontWeight.w800),
-  //                     ),
-  //                     IconButton(
-  //                         onPressed: () {
-  //                           getImage();
-  //                           //uploadImage("test", File('assets/images/aa.jpg'));
-  //                         },
-  //                         icon: Icon(
-  //                           Icons.add_photo_alternate,
-  //                           size: 30,
-  //                         ))
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -117,8 +86,7 @@ class PhotoScreen extends ConsumerWidget {
               Consumer(builder: (context, ref, child) {
                 String? token = ref.watch(authNotifierProvider)?.token;
                 return GestureDetector(
-                  onTap: () async {
-                    // print(token);
+                  onTap: () {
                     uploadImage(token: token!);
                   },
                   child: Container(
@@ -134,25 +102,46 @@ class PhotoScreen extends ConsumerWidget {
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Container(
+  //     // padding: EdgeInsets.symmetric(vertical: 10),
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           padding: EdgeInsets.symmetric(horizontal: 20),
+  //           child: Column(
+  //             children: [
+  //               Container(
+  //                 padding: EdgeInsets.symmetric(vertical: 10),
+  //                 child: Row(
+  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                   children: [
+  //                     Text(
+  //                       "Gallery",
+  //                       style: Theme.of(context)
+  //                           .textTheme
+  //                           .headlineLarge
+  //                           ?.copyWith(fontWeight: FontWeight.w800),
+  //                     ),
+  //                     IconButton(
+  //                         onPressed: () {
+  //                           // getImage();
+  //                           //uploadImage("test", File('assets/images/aa.jpg'));
+  //                         },
+  //                         icon: Icon(
+  //                           Icons.add_photo_alternate,
+  //                           size: 30,
+  //                         ))
+  //                   ],
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }
-
-// uploadImage(String title, File file) async {
-//   var request = http.MultipartRequest(
-//       "POST", Uri.parse("http://localhost:8000/" + "image"));
-
-//   request.fields['title'] = "testImage";
-
-//   var picture = http.MultipartFile.fromBytes('image',
-//       (await rootBundle.load('assets/images/aa.jpg')).buffer.asInt8List(),
-//       filename: 'aa.png');
-
-//   request.files.add(picture);
-
-//   var response = await request.send();
-
-//   var responseData = await response.stream.toBytes();
-
-//   var result = String.fromCharCodes(responseData);
-
-//   print(result);
-// }

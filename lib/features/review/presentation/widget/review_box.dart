@@ -37,9 +37,15 @@ class ReviewBox extends StatelessWidget {
                   shape: BoxShape.circle,
                   image: DecorationImage(
                     fit: BoxFit.cover,
-                    image: AssetImage(review.user!.imageUrl!.isEmpty
-                        ? "assets/images/default2.jpeg"
-                        : "${review.user?.imageUrl}"),
+                    image: review.user!.imageUrl!.isEmpty
+                        ? AssetImage("assets/images/default2.jpeg")
+                        : NetworkImage(
+                                "http://10.0.2.2:8000/${review.user?.imageUrl?.replaceAll('\\', '/')}")
+                            as ImageProvider<Object>
+                    // image: AssetImage(review.user!.imageUrl!.isEmpty
+                    //     ? "assets/images/default2.jpeg"
+                    //     : "${review.user?.imageUrl}")
+                    ,
                   ),
                 ),
               ),

@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -6,8 +10,8 @@ import 'package:traveltales/features/User/Domain/user_model_new.dart';
 
 abstract class Repository<T> {
   Repository({this.token, this.client});
-  final baseUrl = "http://localhost:8000/";
-  // final baseUrl = "http://10.0.2.2:8000/";
+  // final baseUrl = "http://localhost:8000/";
+  final baseUrl = "http://10.0.2.2:8000/";
   final endPoint = "api";
 
   late final Map<String, String> headers = {
@@ -125,6 +129,26 @@ abstract class Repository<T> {
     } catch (e) {
       throw e;
     }
+  }
+
+  uploadImage(String title, File file) async {
+    var request = http.MultipartRequest("POST", Uri.parse(baseUrl + "/image"));
+
+    request.fields['title'] = "testImage";
+
+    var picture = http.MultipartFile.fromBytes('image',
+        (await rootBundle.load('assets/images/aa.jpg')).buffer.asInt8List(),
+        filename: 'aa.png');
+
+    request.files.add(picture);
+
+    var response = await request.send();
+
+    var responseData = await response.stream.toBytes();
+
+    var result = String.fromCharCodes(responseData);
+
+    print(result);
   }
 
   // Future<T> changePassword(

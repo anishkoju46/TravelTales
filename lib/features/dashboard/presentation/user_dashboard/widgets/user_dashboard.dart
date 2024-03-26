@@ -5,6 +5,7 @@ import 'package:traveltales/features/dashboard/presentation/controller/navigatio
 import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_home.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_screen.dart';
 import 'package:traveltales/features/photo/presentation/photo_screen.dart';
+import 'package:traveltales/utility/image_test.dart';
 
 class UserDashboard extends ConsumerWidget {
   const UserDashboard({super.key});
@@ -23,7 +24,8 @@ class UserDashboard extends ConsumerWidget {
                   index: currentIndex,
                   children: [
                     UserHome(),
-                    PhotoScreen(),
+                    // PhotoScreen(),
+                    ImageTest(),
                     FavouriteScreen(),
                     ProfileScreen()
                   ],
