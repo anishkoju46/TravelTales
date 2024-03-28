@@ -1,13 +1,19 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/customImageViewer.dart';
 
 class PhotoScreen extends ConsumerWidget {
   PhotoScreen({super.key});
+
   File? image;
   final _picker = ImagePicker();
   bool showspinner = false;
@@ -17,18 +23,19 @@ class PhotoScreen extends ConsumerWidget {
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (pickedFile != null) {
       image = File(pickedFile.path);
-      //set state garekoxa
+      // setState(() {});
     } else {
       print("no image selected");
     }
   }
 
-  Future<void> uploadImage({required String token}) async {
+  Future<String?> uploadImage({required String token}) async {
     var stream = http.ByteStream(image!.openRead());
     stream.cast();
     var length = await image!.length();
-    // var uri = Uri.parse('http://localhost:8000/users');
-    var uri = Uri.parse('http://10.0.2.2:8000/users/uploadPicture');
+    var uri = Uri.parse('http://10.0.2.2:8000/users/uploadGallery');
+    // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
+
     var request = http.MultipartRequest('POST', uri);
 
     request.headers['x-access-token'] = token;
@@ -38,121 +45,193 @@ class PhotoScreen extends ConsumerWidget {
         contentType: MediaType.parse('image/jpg'));
     request.files.add(multiport);
     var response = await request.send();
-    if (response.statusCode == 200) {
-      print('image uploaded');
-    } else {
-      print('image upload failed');
+    try {
+      if (response.statusCode == 200) {
+        print('image uploaded');
+
+        String responseBody = await response.stream.bytesToString();
+
+        Map<String, dynamic> decodedResponse = json.decode(responseBody);
+        return decodedResponse['filePath'].toString();
+      } else {
+        print('image upload failed');
+        return null;
+      }
+    } catch (e, s) {
+      print("${e} ${s}");
+      return null;
     }
   }
 
-  // @override
-  // Widget build(BuildContext context, WidgetRef ref) {
-  //   return Container(
-  //     // padding: EdgeInsets.symmetric(vertical: 10),
-  //     child: Column(
-  //       children: [
-  //         Container(
-  //           padding: EdgeInsets.symmetric(horizontal: 20),
-  //           child: Column(
-  //             children: [
-  //               Container(
-  //                 padding: EdgeInsets.symmetric(vertical: 10),
-  //                 child: Row(
-  //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //                   children: [
-  //                     Text(
-  //                       "Gallery",
-  //                       style: Theme.of(context)
-  //                           .textTheme
-  //                           .headlineLarge
-  //                           ?.copyWith(fontWeight: FontWeight.w800),
-  //                     ),
-  //                     IconButton(
-  //                         onPressed: () {
-  //                           getImage();
-  //                           //uploadImage("test", File('assets/images/aa.jpg'));
-  //                         },
-  //                         icon: Icon(
-  //                           Icons.add_photo_alternate,
-  //                           size: 30,
-  //                         ))
-  //                   ],
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  getImage();
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.rectangle, color: Colors.yellow),
-                  child: const Text("Pick an image"),
+    String baseUrl = "http://10.0.2.2:8000/";
+    final user = ref.watch(authNotifierProvider);
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Gallery",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineLarge
+                      ?.copyWith(fontWeight: FontWeight.w800),
                 ),
-              ),
-              Container(
-                child: image == null
-                    ? const Text('Pick an image')
-                    : Image.file(
-                        File(image!.path).absolute,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      ),
-              ),
-              Consumer(builder: (context, ref, child) {
-                String? token = ref.watch(authNotifierProvider)?.token;
-                return GestureDetector(
-                  onTap: () async {
-                    // print(token);
-                    uploadImage(token: token!);
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.rectangle, color: Colors.green),
-                    child: Text('Upload'),
-                  ),
-                );
-              })
-            ],
+                IconButton(
+                    onPressed: () async {
+                      await getImage();
+
+                      if (image != null) {
+                        customShowDialog(context, ref);
+                      }
+                    },
+                    icon: Icon(
+                      Icons.add_photo_alternate,
+                      size: 30,
+                    ))
+              ],
+            ),
           ),
         ),
-      ),
+        Expanded(
+          child: MyGridView(user: user, baseUrl: baseUrl),
+        ),
+      ],
+    );
+  }
+
+  Future<dynamic> customShowDialog(BuildContext context, WidgetRef ref) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            'Confirm Image',
+            textAlign: TextAlign.center,
+          ),
+          content: Container(
+            height: 100,
+            width: 100,
+            decoration: BoxDecoration(
+              // shape: BoxShape.circle,
+              border: Border.all(),
+              image: DecorationImage(
+                image: FileImage(image!), // Use FileImage for File
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text("Discard"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    // Upload image
+
+                    var imageValue = await uploadImage(
+                      token: ref.watch(authNotifierProvider)!.token.toString(),
+                    );
+                    if (imageValue != null) {
+                      final currentuser = ref.read(authNotifierProvider);
+
+                      List<String> newGallery =
+                          List.from(currentuser!.gallery ?? [])
+                            ..add(imageValue);
+
+                      // Update the user's gallery using copyWith
+                      ref
+                          .read(authNotifierProvider.notifier)
+                          .update(currentuser.copyWith(gallery: newGallery));
+                    }
+                    // print(imageValue);
+                    Navigator.pop(context); // Close the dialog
+                  },
+                  child: Text('Confirm'),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
-// uploadImage(String title, File file) async {
-//   var request = http.MultipartRequest(
-//       "POST", Uri.parse("http://localhost:8000/" + "image"));
+class MyGridView extends ConsumerWidget {
+  const MyGridView({
+    super.key,
+    required this.user,
+    required this.baseUrl,
+  });
 
-//   request.fields['title'] = "testImage";
+  final UserModel? user;
+  final String baseUrl;
 
-//   var picture = http.MultipartFile.fromBytes('image',
-//       (await rootBundle.load('assets/images/aa.jpg')).buffer.asInt8List(),
-//       filename: 'aa.png');
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GridView.builder(
+      padding: EdgeInsets.all(20),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      itemCount: user?.gallery?.length ?? 0,
+      itemBuilder: (context, index) {
+        if (user?.gallery != null && index < user!.gallery!.length) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CustomImageViewer(
+                    url:
+                        "${baseUrl}${user?.gallery![index].replaceAll('\\', '/')}",
+                  ),
+                ),
+              );
+            },
+            child: Container(
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.black26)),
+              child: MyNetworkImage(
+                  imageUrl: ref
+                      .read(authNotifierProvider.notifier)
+                      .getGalleryImageUrls(index)),
+            ),
+          );
+        } else {
+          return SizedBox(); // Return an empty widget or handle it differently
+        }
+      },
+    );
+  }
+}
 
-//   request.files.add(picture);
+class MyNetworkImage extends StatelessWidget {
+  const MyNetworkImage({super.key, required this.imageUrl});
 
-//   var response = await request.send();
+  final String imageUrl;
 
-//   var responseData = await response.stream.toBytes();
-
-//   var result = String.fromCharCodes(responseData);
-
-//   print(result);
-// }
+  @override
+  Widget build(BuildContext context) {
+    return CachedNetworkImage(
+      imageUrl: imageUrl,
+      placeholder: (context, url) => CircularProgressIndicator(),
+      errorWidget: (context, url, error) => Icon(Icons.error),
+      fit: BoxFit.cover,
+    );
+  }
+}

@@ -24,8 +24,8 @@ class UserDashboard extends ConsumerWidget {
                   index: currentIndex,
                   children: [
                     UserHome(),
-                    // PhotoScreen(),
-                    ImageTest(),
+                    PhotoScreen(),
+                    // ImageTest(),
                     FavouriteScreen(),
                     ProfileScreen()
                   ],

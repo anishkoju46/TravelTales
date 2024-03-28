@@ -11,6 +11,7 @@ import 'package:traveltales/features/dashboard/presentation/admin_dashboard/widg
 import 'package:traveltales/features/dashboard/presentation/user_dashboard/widgets/user_dashboard.dart';
 import 'package:traveltales/features/favourite/presentation/controller/favourite_controller.dart';
 import 'package:traveltales/utility/async_list_controller.dart';
+import 'package:traveltales/utility/repository.dart';
 
 final storage = GetStorage();
 
@@ -133,9 +134,37 @@ class AuthController extends Notifier<UserModel?> {
         fullName: user.fullName,
         email: user.email,
         phoneNumber: user.phoneNumber,
-        favourites: user.favourites);
+        favourites: user.favourites,
+        imageUrl: user.imageUrl,
+        gallery: user.gallery);
     storage.write(key, state?.toRawJson(false));
   }
+
+  String getImageUrl() {
+    final baseUrl = AuthRepository().baseUrl;
+    return "${baseUrl}${state?.imageUrl!.replaceAll('\\', '/')}";
+  }
+
+  String getGalleryImageUrls(int index) {
+    final baseUrl = AuthRepository().baseUrl;
+    return "${baseUrl}${state?.gallery![index].replaceAll('\\', '/')}";
+  }
+
+  // List<String> getGalleryImageUrls() {
+  //   final baseUrl = AuthRepository().baseUrl;
+  //   List<String> imageUrls = [];
+
+  //   Check if state and gallery are not null
+  //   if (state != null && state!.gallery != null) {
+  //   Iterate through the gallery list
+  //   for (String imagePath in state!.gallery!) {
+  //     Concatenate the base URL with each image path, replacing backslashes if any
+  //     imageUrls.add("${baseUrl}${imagePath.replaceAll('\\', '/')}");
+  //   }
+  //   }
+
+  //   return imageUrls;
+  // }
 
   // login([UserModel? user]) {
   //   //to do: check if the user model is null or not
