@@ -1,11 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/review/domain/review_model_new.dart';
+import 'package:traveltales/features/review/presentation/state/review_state.dart';
 
 //eutaboxko code yesma
 //reviewko model ni
-class ReviewBox extends StatelessWidget {
+class ReviewBox extends ConsumerWidget {
   const ReviewBox({
     super.key,
     required this.review,
@@ -13,7 +17,7 @@ class ReviewBox extends StatelessWidget {
   final ReviewModel review;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       children: [
         Container(
@@ -48,6 +52,17 @@ class ReviewBox extends StatelessWidget {
                     ,
                   ),
                 ),
+                // child: Consumer(builder: (context, ref, child) {
+                //   final assetImage = Image.asset("assets/images/default2.jpeg");
+                //   return ClipRRect(
+                //     borderRadius: BorderRadius.circular(100),
+                //     child: CachedNetworkImage(
+                //       imageUrl: ref.read(reviewFormProvider(user)),
+                //       errorWidget: (context, url, error) => assetImage,
+                //       // placeholder: (context, url) => ,
+                //     ),
+                //   );
+                // }),
               ),
               Expanded(
                 child: Column(
@@ -95,7 +110,9 @@ class ReviewBox extends StatelessWidget {
                     Text("${review.review}"),
                   ],
                 ),
-              )
+              ),
+              if (ref.read(authNotifierProvider)!.role == true)
+                IconButton(onPressed: () {}, icon: Icon(Icons.delete))
             ],
           ),
         )

@@ -1,3 +1,4 @@
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/review/domain/review_model_new.dart';
 import 'package:traveltales/utility/repository.dart';
 

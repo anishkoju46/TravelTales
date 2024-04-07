@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/photo/presentation/photo_screen.dart';
 import 'package:traveltales/utility/alertBox.dart';
 
 class CustomImageViewer extends StatefulWidget {
-  const CustomImageViewer({super.key, required this.url});
+  const CustomImageViewer({super.key, required this.url, this.index});
   final String url;
+  final int? index;
 
   @override
   State<CustomImageViewer> createState() => _CustomImageViewerState();
@@ -21,9 +23,7 @@ class _CustomImageViewerState extends State<CustomImageViewer> {
       backgroundColor: Colors.black,
       body: Stack(children: [
         Center(
-          child: Consumer(builder: (context, ref, child) {
-            return MyNetworkImage(imageUrl: widget.url);
-          }),
+          child: MyNetworkImage(imageUrl: widget.url),
         ),
         IconButton(
             onPressed: () {
@@ -36,18 +36,36 @@ class _CustomImageViewerState extends State<CustomImageViewer> {
         Positioned(
           right: 0,
           top: 0,
-          child: IconButton(
-              onPressed: () {
-                AlertBox(
-                    confirmText: "Delete",
-                    onPressed: () {},
-                    title: "Delete Image");
-                // Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.delete,
-                color: Colors.white,
-              )),
+          child: Consumer(builder: (context, ref, child) {
+            return IconButton(
+                onPressed: () async {
+                  final index = widget.index;
+                  final urll = ref
+                      .read(authNotifierProvider.notifier)
+                      .getGalleryImageUrlForDeletion(index!);
+                  // print(urll);
+
+                  //var imageValue =
+                  await UserRepository(
+                          token: ref.watch(authNotifierProvider)?.token)
+                      .deleteImageFromGallery(imageUrl: urll);
+
+                  // final currentUser = ref.watch(authNotifierProvider);
+                  // await ref.read(authNotifierProvider.notifier).update(
+                  //     currentUser!.copyWith(gallery: imageValue.gallery));
+
+                  // AlertBox(
+                  //     confirmText: "Delete",
+                  //     onPressed: () async {
+                  //     },
+                  //     title: "Delete Photo");
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                ));
+          }),
         )
       ]),
     ));

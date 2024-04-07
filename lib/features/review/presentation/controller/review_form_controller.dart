@@ -1,5 +1,6 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
@@ -56,6 +57,11 @@ class ReviewFormController extends FormController<ReviewModel> {
         CustomSnack.info(context, message: "No changes Made");
       }
     }
+  }
+
+  String getReviewersUrl() {
+    final baseUrl = AuthRepository().baseUrl;
+    return "${baseUrl}${state.user?.imageUrl?.replaceAll('\\', '/')}";
   }
 
   // @override

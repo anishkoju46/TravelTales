@@ -39,19 +39,17 @@ class DestinationReview extends ConsumerWidget {
               ),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: FilledButton(
-              onPressed: () {
-                //bottom modalsheet
-                showModalBottomSheet(
-                  useSafeArea: true,
-                  context: context,
-                  builder: (context) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(vertical: 20),
+          FilledButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    content: SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Form(
                             key: reviewFormController.formKey,
@@ -63,58 +61,144 @@ class DestinationReview extends ConsumerWidget {
                               },
                             ),
                           ),
-                          Column(
-                            children: [
-                              RatingBar.builder(
-                                  updateOnDrag: true,
-                                  initialRating: rating!.toDouble(),
-                                  itemCount: 5,
-                                  itemPadding:
-                                      EdgeInsets.symmetric(horizontal: 4),
-                                  itemBuilder: (context, index) => Icon(
-                                        Icons.star,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .tertiaryContainer,
-                                      ),
-                                  onRatingUpdate: (value) {
-                                    rating = value;
-                                    // update yeta hai
-                                    reviewFormController.update(
-                                        rating: rating,
-                                        destination: destination);
-                                  }),
-                            ],
-                          ),
-                          Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    reviewFormController.handleSubmit(context);
-                                  },
-                                  child: Text("Submit"))),
+                          RatingBar.builder(
+                              updateOnDrag: true,
+                              initialRating: rating!.toDouble(),
+                              itemCount: 5,
+                              itemPadding: EdgeInsets.symmetric(horizontal: 4),
+                              itemBuilder: (context, index) => Icon(
+                                    Icons.star,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
+                                  ),
+                              onRatingUpdate: (value) {
+                                rating = value;
+                                // update yeta hai
+                                reviewFormController.update(
+                                    rating: rating, destination: destination);
+                              }),
                         ],
                       ),
-                    );
-                  },
-                );
-              },
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("Write a Review...  "),
-                    Icon(Icons.notes),
-                  ],
-                ),
+                    ),
+                    actions: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              'Cancel',
+                            ),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              reviewFormController.handleSubmit(context);
+                            },
+                            child: Text(
+                              'Submit',
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text("Write a Review...  "),
+                  Icon(Icons.notes),
+                ],
               ),
             ),
           ),
+
+          // Container(
+          //   margin: const EdgeInsets.symmetric(vertical: 10),
+          //   child: FilledButton(
+          //     onPressed: () {
+          //       //bottom modalsheet
+          //       showModalBottomSheet(
+          //         useSafeArea: true,
+          //         context: context,
+          //         builder: (context) {
+          //           return Container(
+          //             margin: const EdgeInsets.symmetric(vertical: 20),
+          //             child: Column(
+          //               mainAxisSize: MainAxisSize.min,
+          //               children: [
+          //                 Form(
+          //                   key: reviewFormController.formKey,
+          //                   child: CustomTextFormFeild(
+          //                     validator: reviewValidator,
+          //                     credentials: "Write a Review...",
+          //                     onchanged: (value) {
+          //                       reviewFormController.update(review: value);
+          //                     },
+          //                   ),
+          //                 ),
+          //                 Column(
+          //                   children: [
+          //                     RatingBar.builder(
+          //                         updateOnDrag: true,
+          //                         initialRating: rating!.toDouble(),
+          //                         itemCount: 5,
+          //                         itemPadding:
+          //                             EdgeInsets.symmetric(horizontal: 4),
+          //                         itemBuilder: (context, index) => Icon(
+          //                               Icons.star,
+          //                               color: Theme.of(context)
+          //                                   .colorScheme
+          //                                   .tertiaryContainer,
+          //                             ),
+          //                         onRatingUpdate: (value) {
+          //                           rating = value;
+          //                           // update yeta hai
+          //                           reviewFormController.update(
+          //                               rating: rating,
+          //                               destination: destination);
+          //                         }),
+          //                   ],
+          //                 ),
+          //                 Container(
+          //                     margin: const EdgeInsets.symmetric(vertical: 10),
+          //                     child: ElevatedButton(
+          //                         onPressed: () {
+          //                           Navigator.pop(context);
+          //                           reviewFormController.handleSubmit(context);
+          //                         },
+          //                         child: Text("Submit"))),
+          //               ],
+          //             ),
+          //           );
+          //         },
+          //       );
+          //     },
+          //     child: Padding(
+          //       padding:
+          //           const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+          //       child: const Row(
+          //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //         crossAxisAlignment: CrossAxisAlignment.start,
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: [
+          //           Text("Write a Review...  "),
+          //           Icon(Icons.notes),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     ));

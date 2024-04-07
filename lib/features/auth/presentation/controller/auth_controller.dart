@@ -150,6 +150,10 @@ class AuthController extends Notifier<UserModel?> {
     return "${baseUrl}${state?.gallery![index].replaceAll('\\', '/')}";
   }
 
+  String getGalleryImageUrlForDeletion(int index) {
+    return "${state?.gallery![index]}";
+  }
+
   // List<String> getGalleryImageUrls() {
   //   final baseUrl = AuthRepository().baseUrl;
   //   List<String> imageUrls = [];

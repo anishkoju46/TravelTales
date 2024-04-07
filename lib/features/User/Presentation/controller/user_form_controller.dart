@@ -45,9 +45,10 @@ class UserFormController extends FormController<UserModel> {
           final user = await UserRepository(
                   token: ref.watch(authNotifierProvider)?.token)
               .editProfile(
-                  fullName: state.fullName!,
-                  email: state.email!,
-                  phoneNumber: state.phoneNumber!);
+            fullName: state.fullName!,
+            email: state.email!,
+            phoneNumber: state.phoneNumber!,
+          );
           ref.read(authNotifierProvider.notifier).update(user);
           CustomSnack.success(context, message: "Profile Updated");
         } catch (e, s) {

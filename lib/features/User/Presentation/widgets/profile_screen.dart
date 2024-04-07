@@ -10,6 +10,7 @@ import 'package:traveltales/features/User/Presentation/controller/profile_contro
 import 'package:traveltales/features/User/Presentation/widgets/change_password_screen.dart';
 import 'package:traveltales/features/User/Presentation/widgets/emergency_contacts_screen.dart';
 import 'package:traveltales/features/User/Presentation/widgets/imageViewer.dart';
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/custom_list_tile.dart';
@@ -26,7 +27,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // String baseUrl = "http://10.0.2.2:8000/";
     return Consumer(builder: (context, ref, child) {
-      // final user = ref.watch(authNotifierProvider);
+      final user = ref.watch(authNotifierProvider);
 
       // String userProfilePath = user!.imageUrl!;
 
@@ -271,8 +272,9 @@ class ProfileScreen extends ConsumerWidget {
                     var imageValue = await uploadImage(
                       token: ref.watch(authNotifierProvider)!.token.toString(),
                     );
+                    // print(imageValue);
                     if (imageValue != null) {
-                      final currentUser = ref.read(authNotifierProvider);
+                      final currentUser = ref.watch(authNotifierProvider);
                       ref
                           .read(authNotifierProvider.notifier)
                           .update(currentUser!.copyWith(imageUrl: imageValue));
@@ -319,7 +321,8 @@ class ProfileScreen extends ConsumerWidget {
     var stream = http.ByteStream(image!.openRead());
     stream.cast();
     var length = await image!.length();
-    var uri = Uri.parse('http://10.0.2.2:8000/users/uploadPicture');
+    final baseUrl = AuthRepository().baseUrl;
+    var uri = Uri.parse('${baseUrl}users/uploadPicture');
     // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
 
     var request = http.MultipartRequest('POST', uri);

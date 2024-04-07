@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/customImageViewer.dart';
 
@@ -33,14 +34,15 @@ class PhotoScreen extends ConsumerWidget {
     var stream = http.ByteStream(image!.openRead());
     stream.cast();
     var length = await image!.length();
-    var uri = Uri.parse('http://10.0.2.2:8000/users/uploadGallery');
+    final baseUrl = AuthRepository().baseUrl;
+    var uri = Uri.parse('${baseUrl}/users/uploadGallery');
     // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
 
     var request = http.MultipartRequest('POST', uri);
 
     request.headers['x-access-token'] = token;
 
-    request.fields['image'] = 'image';
+    request.fields['image'] = 'gallery';
     var multiport = http.MultipartFile('image', stream, length,
         contentType: MediaType.parse('image/jpg'));
     request.files.add(multiport);
@@ -144,8 +146,9 @@ class PhotoScreen extends ConsumerWidget {
                     var imageValue = await uploadImage(
                       token: ref.watch(authNotifierProvider)!.token.toString(),
                     );
+                    // print(imageValue);
                     if (imageValue != null) {
-                      final currentuser = ref.read(authNotifierProvider);
+                      final currentuser = ref.watch(authNotifierProvider);
 
                       List<String> newGallery =
                           List.from(currentuser!.gallery ?? [])
@@ -192,24 +195,14 @@ class MyGridView extends ConsumerWidget {
       itemCount: user?.gallery?.length ?? 0,
       itemBuilder: (context, index) {
         if (user?.gallery != null && index < user!.gallery!.length) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CustomImageViewer(
-                    url:
-                        "${baseUrl}${user?.gallery![index].replaceAll('\\', '/')}",
-                  ),
-                ),
-              );
-            },
-            child: Container(
-              decoration:
-                  BoxDecoration(border: Border.all(color: Colors.black26)),
-              child: MyNetworkImage(
-                  imageUrl: ref
-                      .read(authNotifierProvider.notifier)
-                      .getGalleryImageUrls(index)),
+          return Container(
+            decoration:
+                BoxDecoration(border: Border.all(color: Colors.black26)),
+            child: MyNetworkImage(
+              imageUrl: ref
+                  .read(authNotifierProvider.notifier)
+                  .getGalleryImageUrls(index),
+              imageIndex: index,
             ),
           );
         } else {
@@ -221,17 +214,33 @@ class MyGridView extends ConsumerWidget {
 }
 
 class MyNetworkImage extends StatelessWidget {
-  const MyNetworkImage({super.key, required this.imageUrl});
+  const MyNetworkImage({super.key, required this.imageUrl, this.imageIndex});
 
   final String imageUrl;
+  final int? imageIndex;
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      placeholder: (context, url) => CircularProgressIndicator(),
-      errorWidget: (context, url, error) => Icon(Icons.error),
-      fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CustomImageViewer(
+              url: imageUrl,
+              index: imageIndex,
+              // ref
+              //     .read(authNotifierProvider.notifier)
+              //     .getGalleryImageUrls(index)
+            ),
+          ),
+        );
+      },
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        // placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+        fit: BoxFit.cover,
+      ),
     );
   }
 }

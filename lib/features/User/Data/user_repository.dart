@@ -20,10 +20,11 @@ class UserRepository extends Repository<UserModel> {
   @override
   String get endPoint => "users/";
 
-  Future<UserModel> editProfile(
-      {required String fullName,
-      required String email,
-      required String phoneNumber}) async {
+  Future<UserModel> editProfile({
+    required String fullName,
+    required String email,
+    required String phoneNumber,
+  }) async {
     return await updateOne(data: {
       "fullName": fullName,
       "email": email,

@@ -1,11 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/alertBox.dart';
-import 'package:traveltales/utility/arrowBackWidget.dart';
 import 'package:traveltales/utility/validator.dart';
+
+import 'dart:io';
+import 'package:http/http.dart' as http;
+
+import 'package:http_parser/http_parser.dart';
 
 class DestinationForm extends ConsumerWidget {
   const DestinationForm({super.key, this.destination});
@@ -13,6 +21,76 @@ class DestinationForm extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //Method for picking uploading Image
+
+    File? image;
+    final _picker = ImagePicker();
+    bool showspinner = false;
+
+    Future getImage() async {
+      final pickedFile = await _picker.pickImage(
+          source: ImageSource.gallery, imageQuality: 100);
+      if (pickedFile != null) {
+        image = File(pickedFile.path);
+
+        final pickedSize = await pickedFile.length();
+        print("pickedFile: ${pickedSize} bytes");
+        // print(pickedSize)
+
+        // Uint8List apple;
+
+        final size = await image!.length();
+        print("Image: ${size} bytes");
+
+        // setState(() {});
+      } else {
+        print("no image selected");
+      }
+    }
+
+    Future<String?> uploadImage({required String token}) async {
+      var stream = http.ByteStream(image!.openRead());
+      stream.cast();
+      var length = await image!.length();
+      final baseUrl = AuthRepository().baseUrl;
+      var uri = Uri.parse('${baseUrl}/users/uploadPicture');
+      // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
+
+      var request = http.MultipartRequest('POST', uri);
+
+      request.headers['x-access-token'] = token;
+
+      //extracting extension of the uploaded image
+      // String extension = image!.path.split('.').last;
+
+      request.fields['image'] = 'image';
+      var multiport = http.MultipartFile('image', stream, length,
+          contentType: MediaType.parse('image/jpg'));
+      request.files.add(multiport);
+      var response = await request.send();
+      try {
+        if (response.statusCode == 200) {
+          print('image uploaded');
+
+          String responseBody = await response.stream.bytesToString();
+
+          Map<String, dynamic> decodedResponse = json.decode(responseBody);
+          // print(decodedResponse);
+          return decodedResponse['filePath'].toString();
+
+          // Map<String, dynamic> decodedResponse = json.decode(response as String);
+          // print(decodedResponse);
+          // return decodedResponse;
+        } else {
+          print('image upload failed');
+          return null;
+        }
+      } catch (e, s) {
+        print("${e} ${s}");
+        return null;
+      }
+    }
+
     final bool isAdd = destination == null;
     final destinationFormProviders = destinationFormProvider(destination);
     final destinationFormController =

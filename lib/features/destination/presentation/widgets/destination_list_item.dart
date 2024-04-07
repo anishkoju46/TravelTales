@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -47,45 +48,55 @@ class DestinationListItem extends ConsumerWidget {
                       ? AssetImage("assets/images/aa.jpg")
                       : AssetImage(destination.imageUrl!.first), //TODO
                 ),
-                // boxShadow: [
-                //   BoxShadow(
-                //       offset: Offset(4, 4), color: Colors.grey, blurRadius: 1)
-                // ],
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(4, 4), color: Colors.grey, blurRadius: 1)
+                ],
               ),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.22),
-                    borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(25),
-                        bottomRight: Radius.circular(25))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      destination.name!,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).colorScheme.background),
-                    ),
-                    RatingBar.builder(
-                        ignoreGestures: true,
-                        itemSize: 17,
-                        allowHalfRating: true,
-                        initialRating: destination.rating!,
-                        //destination.rating!.toDouble(),
-                        itemCount: 5,
-                        itemBuilder: (context, _) => Icon(
-                              Icons.star,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiaryContainer,
-                            ),
-                        onRatingUpdate: (value) {})
-                  ],
-                ),
-              ),
+              // child: Image(
+              //   image: CachedNetworkImageProvider(
+              //       "http://10.0.2.2:8000/uploads/5f99a4646969ff4f0dc6e8101.jpg"),
+              //   fit: BoxFit.cover,
+              // ),
             ),
+
+            Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.22),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25))),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        destination.name!,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: Theme.of(context).colorScheme.background),
+                      ),
+                      RatingBar.builder(
+                          ignoreGestures: true,
+                          itemSize: 17,
+                          allowHalfRating: true,
+                          initialRating: destination.rating!,
+                          //destination.rating!.toDouble(),
+                          itemCount: 5,
+                          itemBuilder: (context, _) => Icon(
+                                Icons.star,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .tertiaryContainer,
+                              ),
+                          onRatingUpdate: (value) {})
+                    ],
+                  ),
+                )),
             //Icon Button
             Positioned(
               top: 15,

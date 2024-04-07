@@ -80,6 +80,46 @@ abstract class Repository<T> {
     return fromJson(_handleStatusCode(response).body);
   }
 
+  Future<T> deleteProfileUrl({Client? client}) async {
+    client ??= Client();
+    final response = await client
+        .put(Uri.parse(baseUrl + endPoint + "deletePicture"), headers: headers);
+    // if (response.statusCode == 200)
+    return fromJson(_handleStatusCode(response).body);
+  }
+
+  Future<T> deleteImageFromGallery(
+      {Client? client, required String imageUrl}) async {
+    client ??= Client();
+
+    final Map<String, dynamic> data = {
+      'imageUrl': imageUrl,
+    };
+
+    final response = await client.put(
+        Uri.parse(baseUrl + endPoint + "deleteImageFromGallery"),
+        body: jsonEncode(data),
+        headers: headers);
+    // if (response.statusCode == 200)
+    return fromJson(_handleStatusCode(response).body);
+  }
+
+  // Future<void> deleteImageFromGallery({required String imageUrl}) async {
+  //   try {
+  //     final Map<String, dynamic> data = {
+  //       'currentPassword': imageUrl,
+  //     };
+
+  //     final response = await (client ?? Client()).put(
+  //         Uri.parse("$baseUrl${endPoint}deleteImageFromGallery"),
+  //         headers: headers,
+  //         body: jsonEncode(data));
+  //     _handleStatusCode(response, code: 200);
+  //   } catch (e) {
+  //     throw e;
+  //   }
+  // }
+
   Future<T> removeFavourite({Client? client, String id = ""}) async {
     client ??= Client();
 
