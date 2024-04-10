@@ -104,6 +104,22 @@ abstract class Repository<T> {
     return fromJson(_handleStatusCode(response).body);
   }
 
+  Future<T> deleteDestinationImage(
+      {Client? client, required String imageUrl, required String id}) async {
+    client ??= Client();
+
+    final Map<String, dynamic> data = {
+      'imageUrl': imageUrl,
+    };
+
+    final response = await client.put(
+        Uri.parse(baseUrl + endPoint + "deleteDestinationImage/" + id),
+        body: jsonEncode(data),
+        headers: headers);
+    // if (response.statusCode == 200)
+    return fromJson(_handleStatusCode(response).body);
+  }
+
   // Future<void> deleteImageFromGallery({required String imageUrl}) async {
   //   try {
   //     final Map<String, dynamic> data = {

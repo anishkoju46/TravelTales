@@ -35,7 +35,7 @@ class PhotoScreen extends ConsumerWidget {
     stream.cast();
     var length = await image!.length();
     final baseUrl = AuthRepository().baseUrl;
-    var uri = Uri.parse('${baseUrl}/users/uploadGallery');
+    var uri = Uri.parse('${baseUrl}users/uploadGallery');
     // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
 
     var request = http.MultipartRequest('POST', uri);
@@ -54,7 +54,8 @@ class PhotoScreen extends ConsumerWidget {
         String responseBody = await response.stream.bytesToString();
 
         Map<String, dynamic> decodedResponse = json.decode(responseBody);
-        return decodedResponse['filePath'].toString();
+        // print(decodedResponse);
+        return decodedResponse['relativePaths'][0].toString();
       } else {
         print('image upload failed');
         return null;
@@ -154,7 +155,8 @@ class PhotoScreen extends ConsumerWidget {
                           List.from(currentuser!.gallery ?? [])
                             ..add(imageValue);
 
-                      // Update the user's gallery using copyWith
+                      // Update the user's gallery using copyWiths
+                      // print(newGallery);
                       ref
                           .read(authNotifierProvider.notifier)
                           .update(currentuser.copyWith(gallery: newGallery));

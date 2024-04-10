@@ -2,7 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
+import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 import 'package:traveltales/features/review/presentation/widget/destination_review_screen.dart';
@@ -24,31 +27,45 @@ class DestinationDashboard extends ConsumerWidget {
             Stack(
               children: [
                 Container(
-                    height: 300,
-                    // decoration: BoxDecoration(
-                    // image: DecorationImage(
-                    //     image:
-                    //         AssetImage(destinationModel.imageUrl!.first), //TODO
-                    //     fit: BoxFit.cover),
-                    // ),
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      //What if its empty List []
-                      itemCount: destinationModel.imageUrl!.length,
-                      itemBuilder: (context, index) {
-                        final assetImage =
-                            Image.asset("assets/travelPic/temp.jpeg");
-                        if (destinationModel.imageUrl != null &&
-                            index < destinationModel.imageUrl!.length) {
-                          return CachedNetworkImage(
-                            imageUrl:
-                                "http://10.0.2.2:8000/uploads/5f99a4646969ff4f0dc6e8101.jpg",
-                            errorWidget: (context, url, error) => assetImage,
-                          );
-                        }
-                        // else??
-                      },
-                    )),
+                  height: 300,
+                  // decoration: BoxDecoration(
+                  // image: DecorationImage(
+                  //     image:
+                  //         AssetImage(destinationModel.imageUrl!.first), //TODO
+                  //     fit: BoxFit.cover),
+                  // ),
+                  child: destinationModel.imageUrl?.length == 0
+                      ? Center(
+                          child: Text("Add Images"),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: destinationModel.imageUrl?.length,
+                          itemBuilder: (context, index) {
+                            final assetImage = Image.asset(
+                              "assets/travelPic/temp.jpeg",
+                              fit: BoxFit.cover,
+                            );
+                            if (destinationModel.imageUrl != null &&
+                                index < destinationModel.imageUrl!.length) {
+                              return CachedNetworkImage(
+                                imageUrl: ref
+                                    .read(destinationListProvider.notifier)
+                                    .parseImage(
+                                        path:
+                                            destinationModel.imageUrl![index]),
+                                placeholder: (context, url) {
+                                  return assetImage;
+                                },
+                                errorWidget: (context, url, error) =>
+                                    assetImage,
+                              );
+                            }
+                            return assetImage;
+                            // else??
+                          },
+                        ),
+                ),
                 iconMethods(context, top: 7, left: 7, icon: Icons.arrow_back),
                 //Only show the add to favourite button if the user is normal user
                 if (ref.read(authNotifierProvider)!.role == false)
@@ -64,17 +81,17 @@ class DestinationDashboard extends ConsumerWidget {
                         ),
                         child: FavouriteButton(destination: destinationModel)),
                   ),
-                // Positioned(
-                //     bottom: 10,
-                //     left: 200,
-                //     child: MyCustomSmoothPageIndicator(
-                //       pageController: pageController,
-                //       count: destinationModel.imageUrl!.length,
-                //       activeColor: const Color(
-                //           0xffCA8226), //colors chai theme ko use garnu paryo
-                //       inActiveColor: const Color(0xffFFCC5C),
-                //       pageScrollDuration: const Duration(milliseconds: 200),
-                //     ))
+                Positioned(
+                    bottom: 10,
+                    left: 200,
+                    child: MyCustomSmoothPageIndicator(
+                      pageController: pageController,
+                      count: destinationModel.imageUrl!.length,
+                      activeColor: const Color(
+                          0xffCA8226), //colors chai theme ko use garnu paryo
+                      inActiveColor: const Color(0xffFFCC5C),
+                      pageScrollDuration: const Duration(milliseconds: 200),
+                    ))
               ],
             ),
             Container(

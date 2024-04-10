@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
@@ -42,61 +43,86 @@ class DestinationListItem extends ConsumerWidget {
                 borderRadius: BorderRadius.all(
                   Radius.circular(25),
                 ),
-                image: DecorationImage(
-                  fit: BoxFit.fitWidth,
-                  image: destination.imageUrl!.isEmpty
-                      ? AssetImage("assets/images/aa.jpg")
-                      : AssetImage(destination.imageUrl!.first), //TODO
-                ),
-                boxShadow: [
-                  BoxShadow(
-                      offset: Offset(4, 4), color: Colors.grey, blurRadius: 1)
-                ],
+                // image: DecorationImage(
+                //   fit: BoxFit.fitWidth,
+                //   image: destination.imageUrl!.isEmpty
+                //       ? AssetImage("assets/images/aa.jpg")
+                //       : AssetImage(destination.imageUrl!.first), //TODO
+                //    ),
               ),
-              // child: Image(
-              //   image: CachedNetworkImageProvider(
-              //       "http://10.0.2.2:8000/uploads/5f99a4646969ff4f0dc6e8101.jpg"),
-              //   fit: BoxFit.cover,
-              // ),
+              child: Consumer(builder: (context, ref, child) {
+                final assetImage = Image.asset(
+                  "assets/travelPic/temp.jpeg",
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                );
+
+                if (destination.imageUrl == null ||
+                    destination.imageUrl!.isEmpty) {
+                  return ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25),
+                    ),
+                    child: assetImage,
+                  );
+                } else {
+                  // final url =
+                  // ref
+                  //     .read(destinationFormProvider(destination).notifier)
+                  //     .getDestinationImageUrl(0);
+
+                  return ClipRRect(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25),
+                    ),
+                    child: CustomCacheNetworkImage(
+                      url: ref
+                          .read(destinationListProvider.notifier)
+                          .parseImage(path: destination.imageUrl!.first),
+                    ),
+                  );
+                }
+              }),
             ),
 
             Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-                  decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.22),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(25),
-                          bottomRight: Radius.circular(25))),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        destination.name!,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: Theme.of(context).colorScheme.background),
-                      ),
-                      RatingBar.builder(
-                          ignoreGestures: true,
-                          itemSize: 17,
-                          allowHalfRating: true,
-                          initialRating: destination.rating!,
-                          //destination.rating!.toDouble(),
-                          itemCount: 5,
-                          itemBuilder: (context, _) => Icon(
-                                Icons.star,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .tertiaryContainer,
-                              ),
-                          onRatingUpdate: (value) {})
-                    ],
-                  ),
-                )),
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.22),
+                    borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(25),
+                        bottomRight: Radius.circular(25))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      destination.name!,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).colorScheme.background),
+                    ),
+                    RatingBar.builder(
+                        ignoreGestures: true,
+                        itemSize: 17,
+                        allowHalfRating: true,
+                        initialRating: destination.rating!,
+                        //destination.rating!.toDouble(),
+                        itemCount: 5,
+                        itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                            ),
+                        onRatingUpdate: (value) {})
+                  ],
+                ),
+              ),
+            ),
             //Icon Button
             Positioned(
               top: 15,
@@ -184,5 +210,28 @@ class DestinationListItem extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+class CustomCacheNetworkImage extends StatelessWidget {
+  const CustomCacheNetworkImage({super.key, required this.url});
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    final assetImage = Image.asset(
+      "assets/travelPic/temp.jpeg",
+      fit: BoxFit.cover,
+      width: double.infinity,
+    );
+    return CachedNetworkImage(
+        imageUrl: url,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        placeholder: (context, url) {
+          return assetImage;
+        },
+        errorWidget: (context, url, error) => assetImage);
   }
 }

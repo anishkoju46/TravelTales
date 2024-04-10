@@ -30,7 +30,7 @@ class DestinationRepository extends Repository<DestinationModel> {
       "coordinates": destination.coordinates!.toJson(),
       "description": destination.description,
       "itinerary": destination.itinerary,
-      "imageUrl": destination.imageUrl,
+      "imageUrl": destination.imageUrl ?? [],
       "region": destination.region,
       "bestSeason": destination.bestSeason,
       "duration": destination.duration,

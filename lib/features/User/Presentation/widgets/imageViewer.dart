@@ -89,8 +89,11 @@ class _ImageViewerState extends State<ImageViewer> {
                           .deleteProfileUrl();
 
                       final currentUser = ref.watch(authNotifierProvider);
-                      ref.read(authNotifierProvider.notifier).update(
-                          currentUser!.copyWith(imageUrl: imageValue.imageUrl));
+                      ref
+                          .read(authNotifierProvider.notifier)
+                          .update(currentUser!.copyWith(imageUrl: ""));
+
+                      // print(imageValue.imageUrl);
 
                       Navigator.pop(context);
                     },

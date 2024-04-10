@@ -1,4 +1,10 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/category/domain/category_model_new.dart';
 import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
@@ -7,6 +13,10 @@ import 'package:traveltales/features/destination/domain/destination_model_new.da
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/form_controller.dart';
+
+import 'package:http/http.dart' as http;
+
+import 'package:http_parser/http_parser.dart';
 
 class DestinationFormController extends FormController<DestinationModel> {
   @override
@@ -51,7 +61,8 @@ class DestinationFormController extends FormController<DestinationModel> {
   }
 
   @override
-  handleSubmit(BuildContext context, {bool isAdd = false}) async {
+  Future<String?> handleSubmit(BuildContext context,
+      {bool isAdd = false}) async {
     if (isValidated) {
       // print(state.length);
       if (state != arg) {
@@ -65,11 +76,14 @@ class DestinationFormController extends FormController<DestinationModel> {
                 .read(destinationListProvider.notifier)
                 .handleSubmit(destination);
             CustomSnack.success(context, message: "Destination Added");
-            // resetForm();
             state = DestinationModel();
-            Future.delayed(Duration(milliseconds: 10), () {
+
+            await Future.delayed(Duration(milliseconds: 10), () {
               resetForm();
+              // print("Destinaation IDDD:: ${destination.id}");
+              return destination.id;
             });
+            return destination.id;
           } else {
             final destination =
                 await repository.editDestination(destination: state);
@@ -86,18 +100,125 @@ class DestinationFormController extends FormController<DestinationModel> {
           CustomSnack.error(context, message: e.toString());
           print(e);
           print(s);
+          return null;
         }
         //Navigator.pop(context);
-        resetForm();
       } else {
         CustomSnack.info(context, message: "No changes Made");
+        return null;
       }
     }
+    return null;
+  }
+
+  String getDestinationImageUrl(int index) {
+    final baseUrl = DestinationRepository().baseUrl;
+    return "${baseUrl}${state.imageUrl![index].replaceAll('\\', '/')}";
+  }
+
+  String getDestinationImageUrlForDeletion(int index) {
+    return "${state.imageUrl![index]}";
   }
 
   @override
   updateState() {
     // TODO: implement updateState
     throw UnimplementedError();
+  }
+
+  List<File> images = [];
+
+  File? image;
+  final _picker = ImagePicker();
+  bool showspinner = false;
+
+  // Future getImage() async {
+  //   final pickedFile =
+  //       await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+  //   if (pickedFile != null) {
+  //     image = File(pickedFile.path);
+
+  //     final pickedSize = await pickedFile.length();
+  //     print("pickedFile: ${pickedSize} bytes");
+  //     // print(pickedSize)
+  //     final size = await image!.length();
+  //     print("Image: ${size} bytes");
+
+  //     //  images?.add(image!);
+  //   } else {
+  //     print("no image selected");
+  //   }
+  // }
+
+  Future getImage() async {
+    var file = await getImageFile();
+    if (file != null) {
+      images.add(file);
+      state = state.copyWith();
+    } else {
+      print("no image selected");
+    }
+  }
+
+  Future<File?> getImageFile() async {
+    final pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+    if (pickedFile != null) {
+      return File(pickedFile.path);
+    }
+    return null;
+  }
+
+  void removeImage(int index) {
+    if (index >= 0 && index < images.length) {
+      images.removeAt(index);
+      state = state.copyWith();
+    }
+  }
+
+  Future<String?> uploadImage(
+      {required String token, required String id, List<File>? files}) async {
+    final baseUrl = AuthRepository().baseUrl;
+    var uri = Uri.parse('${baseUrl}destinations/addDestinationImage/${id}');
+
+    var request = http.MultipartRequest('POST', uri);
+
+    request.headers['x-access-token'] = token;
+
+    for (var file in files ?? images) {
+      var stream = http.ByteStream(file.openRead());
+      stream.cast();
+      var length = await file.length();
+      var multiport = http.MultipartFile('image', stream, length,
+          contentType: MediaType.parse('image/jpg'));
+      request.files.add(multiport);
+    }
+    //extracting extension of the uploaded image
+    // String extension = image!.path.split('.').last;
+
+    request.fields['image'] = 'image';
+
+    var response = await request.send();
+    try {
+      if (response.statusCode == 200) {
+        print('image uploaded');
+
+        String responseBody = await response.stream.bytesToString();
+
+        Map<String, dynamic> decodedResponse = json.decode(responseBody);
+        // print(decodedResponse);
+        return decodedResponse['relativePaths'][0].toString();
+
+        // Map<String, dynamic> decodedResponse = json.decode(response as String);
+        // print(decodedResponse);
+        // return decodedResponse;
+      } else {
+        print('image upload failed');
+        return null;
+      }
+    } catch (e, s) {
+      print("${e} ${s}");
+      return null;
+    }
   }
 }

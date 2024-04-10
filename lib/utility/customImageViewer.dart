@@ -43,22 +43,21 @@ class _CustomImageViewerState extends State<CustomImageViewer> {
                   final urll = ref
                       .read(authNotifierProvider.notifier)
                       .getGalleryImageUrlForDeletion(index!);
-                  // print(urll);
+                  print(urll);
 
-                  //var imageValue =
-                  await UserRepository(
+                  var imageValue = await UserRepository(
                           token: ref.watch(authNotifierProvider)?.token)
                       .deleteImageFromGallery(imageUrl: urll);
 
-                  // final currentUser = ref.watch(authNotifierProvider);
-                  // await ref.read(authNotifierProvider.notifier).update(
-                  //     currentUser!.copyWith(gallery: imageValue.gallery));
+                  print(imageValue.gallery);
+                  final currentUser = ref.watch(authNotifierProvider);
 
-                  // AlertBox(
-                  //     confirmText: "Delete",
-                  //     onPressed: () async {
-                  //     },
-                  //     title: "Delete Photo");
+                  final updatedUser =
+                      currentUser!.copyWith(gallery: imageValue.gallery);
+
+                  await ref
+                      .read(authNotifierProvider.notifier)
+                      .update(updatedUser);
                   Navigator.pop(context);
                 },
                 icon: const Icon(

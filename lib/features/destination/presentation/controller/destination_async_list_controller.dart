@@ -93,6 +93,11 @@ class DestinationController extends AsyncListController<DestinationModel> {
     }
   }
 
+  String parseImage({required String path}) {
+    final baseUrl = DestinationRepository().baseUrl;
+    return "${baseUrl}${path.replaceAll('\\', '/')}";
+  }
+
   // searchDestination(BuildContext context, {required String query}) async {
   //   try {
   //     await DestinationRepository(token: ref.watch(authNotifierProvider)?.token)

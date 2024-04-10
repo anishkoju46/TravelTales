@@ -142,7 +142,7 @@ class AuthController extends Notifier<UserModel?> {
 
   String getImageUrl() {
     final baseUrl = AuthRepository().baseUrl;
-    return "${baseUrl}${state?.imageUrl!.replaceAll('\\', '/')}";
+    return "${baseUrl}${state?.imageUrl?.replaceAll('\\', '/')}";
   }
 
   String getGalleryImageUrls(int index) {
