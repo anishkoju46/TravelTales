@@ -5,6 +5,7 @@ import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/photo/presentation/photo_screen.dart';
 import 'package:traveltales/utility/alertBox.dart';
+import 'package:traveltales/utility/custom_snack.dart';
 
 class CustomImageViewer extends StatefulWidget {
   const CustomImageViewer({super.key, required this.url, this.index});
@@ -23,7 +24,11 @@ class _CustomImageViewerState extends State<CustomImageViewer> {
       backgroundColor: Colors.black,
       body: Stack(children: [
         Center(
-          child: MyNetworkImage(imageUrl: widget.url),
+          child: InteractiveViewer(
+              child: MyNetworkImage(
+            imageUrl: widget.url,
+            allowFullScreen: false,
+          )),
         ),
         IconButton(
             onPressed: () {
@@ -59,6 +64,8 @@ class _CustomImageViewerState extends State<CustomImageViewer> {
                       .read(authNotifierProvider.notifier)
                       .update(updatedUser);
                   Navigator.pop(context);
+
+                  CustomSnack.info(context, message: "Image Deleted");
                 },
                 icon: const Icon(
                   Icons.delete,

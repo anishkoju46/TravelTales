@@ -11,6 +11,7 @@ import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/customImageViewer.dart';
+import 'package:traveltales/utility/custom_snack.dart';
 
 class PhotoScreen extends ConsumerWidget {
   PhotoScreen({super.key});
@@ -54,6 +55,7 @@ class PhotoScreen extends ConsumerWidget {
         String responseBody = await response.stream.bytesToString();
 
         Map<String, dynamic> decodedResponse = json.decode(responseBody);
+
         // print(decodedResponse);
         return decodedResponse['relativePaths'][0].toString();
       } else {
@@ -163,6 +165,8 @@ class PhotoScreen extends ConsumerWidget {
                     }
                     // print(imageValue);
                     Navigator.pop(context); // Close the dialog
+
+                    CustomSnack.success(context, message: "Image Uploaded");
                   },
                   child: Text('Confirm'),
                 ),
@@ -216,30 +220,39 @@ class MyGridView extends ConsumerWidget {
 }
 
 class MyNetworkImage extends StatelessWidget {
-  const MyNetworkImage({super.key, required this.imageUrl, this.imageIndex});
+  const MyNetworkImage({
+    super.key,
+    required this.imageUrl,
+    this.imageIndex,
+    this.allowFullScreen = true,
+  });
 
   final String imageUrl;
   final int? imageIndex;
+  final bool allowFullScreen;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => CustomImageViewer(
-              url: imageUrl,
-              index: imageIndex,
-              // ref
-              //     .read(authNotifierProvider.notifier)
-              //     .getGalleryImageUrls(index)
+        if (allowFullScreen)
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CustomImageViewer(
+                url: imageUrl,
+                index: imageIndex,
+                // ref
+                //     .read(authNotifierProvider.notifier)
+                //     .getGalleryImageUrls(index)
+              ),
             ),
-          ),
-        );
+          );
       },
       child: CachedNetworkImage(
+        colorBlendMode: BlendMode.colorBurn,
         imageUrl: imageUrl,
-        // placeholder: (context, url) => CircularProgressIndicator(),
+        placeholder: (context, url) =>
+            Center(child: CircularProgressIndicator()),
         errorWidget: (context, url, error) => Icon(Icons.error),
         fit: BoxFit.cover,
       ),

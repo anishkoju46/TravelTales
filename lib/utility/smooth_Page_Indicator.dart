@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MyCustomSmoothPageIndicator extends StatefulWidget {
-  const MyCustomSmoothPageIndicator(
-      {super.key,
-      required this.pageController,
-      required this.count,
-      this.activeColor,
-      this.inActiveColor,
-      this.pageScrollDuration});
+  const MyCustomSmoothPageIndicator({
+    super.key,
+    required this.pageController,
+    required this.count,
+    this.activeColor,
+    this.inActiveColor,
+    this.pageScrollDuration,
+  });
   final PageController pageController;
   final int count;
   final Color? activeColor;

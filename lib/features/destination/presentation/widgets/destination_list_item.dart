@@ -230,7 +230,10 @@ class CustomCacheNetworkImage extends StatelessWidget {
         fit: BoxFit.cover,
         width: double.infinity,
         placeholder: (context, url) {
-          return assetImage;
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+          //assetImage;
         },
         errorWidget: (context, url, error) => assetImage);
   }

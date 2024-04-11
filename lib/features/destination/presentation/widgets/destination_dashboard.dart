@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
@@ -35,11 +37,11 @@ class DestinationDashboard extends ConsumerWidget {
                   //     fit: BoxFit.cover),
                   // ),
                   child: destinationModel.imageUrl?.length == 0
-                      ? Center(
-                          child: Text("Add Images"),
+                      ? Image.asset(
+                          "assets/travelPic/temp.jpeg",
+                          fit: BoxFit.cover,
                         )
-                      : ListView.builder(
-                          scrollDirection: Axis.horizontal,
+                      : PageView.builder(
                           itemCount: destinationModel.imageUrl?.length,
                           itemBuilder: (context, index) {
                             final assetImage = Image.asset(
@@ -49,13 +51,16 @@ class DestinationDashboard extends ConsumerWidget {
                             if (destinationModel.imageUrl != null &&
                                 index < destinationModel.imageUrl!.length) {
                               return CachedNetworkImage(
+                                fit: BoxFit.cover,
                                 imageUrl: ref
                                     .read(destinationListProvider.notifier)
                                     .parseImage(
                                         path:
                                             destinationModel.imageUrl![index]),
                                 placeholder: (context, url) {
-                                  return assetImage;
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
                                 },
                                 errorWidget: (context, url, error) =>
                                     assetImage,
@@ -82,16 +87,36 @@ class DestinationDashboard extends ConsumerWidget {
                         child: FavouriteButton(destination: destinationModel)),
                   ),
                 Positioned(
-                    bottom: 10,
-                    left: 200,
-                    child: MyCustomSmoothPageIndicator(
-                      pageController: pageController,
-                      count: destinationModel.imageUrl!.length,
-                      activeColor: const Color(
-                          0xffCA8226), //colors chai theme ko use garnu paryo
-                      inActiveColor: const Color(0xffFFCC5C),
-                      pageScrollDuration: const Duration(milliseconds: 200),
-                    ))
+                  bottom: 10,
+                  left: MediaQuery.of(context).size.width / 2 - 30,
+                  child: MyCustomSmoothPageIndicator(
+                    pageController: pageController,
+                    count: destinationModel.imageUrl!.length,
+                    activeColor:
+                        Theme.of(context).colorScheme.tertiaryContainer,
+                    // inActiveColor: Theme.of(context).colorScheme.primary,
+                    pageScrollDuration: const Duration(milliseconds: 200),
+                  ),
+                )
+
+                // Positioned(
+                //   bottom: 10,
+                //   left: MediaQuery.of(context).size.width / 2 - 30,
+                //   child: SmoothPageIndicator(
+                //     controller: pageController,
+                //     count: destinationModel.imageUrl!.length,
+                //     effect: const WormEffect(
+                //         dotColor: Colors.white,
+                //         dotWidth: 15,
+                //         dotHeight: 7,
+                //         activeDotColor: Colors.amber),
+                //     onDotClicked: (index) {
+                //       pageController.animateToPage(index,
+                //           duration: const Duration(milliseconds: 300),
+                //           curve: Curves.linear);
+                //     },
+                //   ),
+                // )
               ],
             ),
             Container(

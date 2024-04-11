@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/User/Presentation/state/user_state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/custom_network_image.dart';
 
 class UserList extends ConsumerWidget {
   const UserList({super.key});
@@ -64,13 +66,26 @@ class UserList extends ConsumerWidget {
                                                   .colorScheme
                                                   .tertiaryContainer),
                                           shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(user
-                                                    .imageUrl!.isEmpty
-                                                ? "assets/images/default2.jpeg"
-                                                : "${user.imageUrl}"),
-                                          ),
+                                          // image: DecorationImage(
+                                          //   fit: BoxFit.cover,
+                                          //   image: AssetImage(user
+                                          //           .imageUrl!.isEmpty
+                                          //       ? "assets/images/default2.jpeg"
+                                          //       : "${user.imageUrl}"),
+                                          // ),
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                          child: Consumer(
+                                              builder: (context, ref, child) {
+                                            final baseUrl =
+                                                UserRepository().baseUrl;
+                                            return CustomNetworkImage(
+                                                allowFullScreen: false,
+                                                url:
+                                                    "$baseUrl${user.imageUrl.replaceAll('\\', '/')}");
+                                          }),
                                         ),
                                       ),
                                       Expanded(

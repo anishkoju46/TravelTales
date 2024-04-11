@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/review/domain/review_model_new.dart';
 import 'package:traveltales/features/review/presentation/state/review_state.dart';
+import 'package:traveltales/utility/custom_network_image.dart';
 
 //eutaboxko code yesma
 //reviewko model ni
@@ -39,18 +41,29 @@ class ReviewBox extends ConsumerWidget {
                   border: Border.all(
                       color: Theme.of(context).colorScheme.tertiaryContainer),
                   shape: BoxShape.circle,
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: review.user!.imageUrl!.isEmpty
-                        ? AssetImage("assets/images/default2.jpeg")
-                        : NetworkImage(
-                                "http://10.0.2.2:8000/${review.user?.imageUrl?.replaceAll('\\', '/')}")
-                            as ImageProvider<Object>
-                    // image: AssetImage(review.user!.imageUrl!.isEmpty
-                    //     ? "assets/images/default2.jpeg"
-                    //     : "${review.user?.imageUrl}")
-                    ,
-                  ),
+                  // image: DecorationImage(
+                  //   fit: BoxFit.cover,
+                  //   image:
+                  //   review.user!.imageUrl!.isEmpty
+                  //       ? AssetImage("assets/images/default2.jpeg")
+                  //       : NetworkImage(
+                  //               "http://10.0.2.2:8000/${review.user?.imageUrl?.replaceAll('\\', '/')}")
+                  //           as ImageProvider<Object>
+
+                  //   // image: AssetImage(review.user!.imageUrl!.isEmpty
+                  //   //     ? "assets/images/default2.jpeg"
+                  //   //     : "${review.user?.imageUrl}")
+                  // ),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Consumer(builder: (context, ref, child) {
+                    final baseUrl = UserRepository().baseUrl;
+                    return CustomNetworkImage(
+                        allowFullScreen: false,
+                        url:
+                            "$baseUrl${review.user?.imageUrl?.replaceAll('\\', '/')}");
+                  }),
                 ),
                 // child: Consumer(builder: (context, ref, child) {
                 //   final assetImage = Image.asset("assets/images/default2.jpeg");
@@ -111,8 +124,8 @@ class ReviewBox extends ConsumerWidget {
                   ],
                 ),
               ),
-              if (ref.read(authNotifierProvider)!.role == true)
-                IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+              // if (ref.read(authNotifierProvider)!.role == true)
+              //   IconButton(onPressed: () {}, icon: Icon(Icons.delete))
             ],
           ),
         )

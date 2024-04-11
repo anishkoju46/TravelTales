@@ -1,15 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/User/Presentation/controller/profile_controller.dart';
 import 'package:traveltales/features/User/Presentation/widgets/change_password_screen.dart';
 import 'package:traveltales/features/User/Presentation/widgets/emergency_contacts_screen.dart';
-import 'package:traveltales/features/User/Presentation/widgets/imageViewer.dart';
 import 'package:traveltales/features/auth/data/repository/auth_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/alertBox.dart';
@@ -19,6 +16,7 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:http_parser/http_parser.dart';
+import 'package:traveltales/utility/custom_network_image.dart';
 
 class ProfileScreen extends ConsumerWidget {
   ProfileScreen({super.key});
@@ -361,42 +359,42 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-class CustomNetworkImage extends StatelessWidget {
-  const CustomNetworkImage({
-    super.key,
-    required this.url,
-    this.allowFullScreen = true,
-    this.color,
-    // required this.authController,
-  });
+// class CustomNetworkImage extends StatelessWidget {
+//   const CustomNetworkImage({
+//     super.key,
+//     required this.url,
+//     this.allowFullScreen = true,
+//     this.color,
+//     // required this.authController,
+//   });
 
-  final String url;
-  final bool allowFullScreen;
-  final Color? color;
+//   final String url;
+//   final bool allowFullScreen;
+//   final Color? color;
 
-  // final UserModel? authController;
+//   // final UserModel? authController;
 
-  @override
-  Widget build(BuildContext context) {
-    final assetImage = Image.asset("assets/images/default2.jpeg");
+//   @override
+//   Widget build(BuildContext context) {
+//     final assetImage = Image.asset("assets/images/default2.jpeg");
 
-    return GestureDetector(
-      onTap: () {
-        if (allowFullScreen)
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ImageViewer(url: url),
-          ));
-      },
-      child: CachedNetworkImage(
-        colorBlendMode: BlendMode.colorBurn,
-        color: color,
-        fit: BoxFit.cover,
-        placeholder: (context, url) {
-          return assetImage;
-        },
-        imageUrl: url,
-        errorWidget: (context, url, error) => assetImage,
-      ),
-    );
-  }
-}
+//     return GestureDetector(
+//       onTap: () {
+//         if (allowFullScreen)
+//           Navigator.of(context).push(MaterialPageRoute(
+//             builder: (context) => ImageViewer(url: url),
+//           ));
+//       },
+//       child: CachedNetworkImage(
+//         colorBlendMode: BlendMode.colorBurn,
+//         color: color,
+//         fit: BoxFit.cover,
+//         placeholder: (context, url) {
+//           return assetImage;
+//         },
+//         imageUrl: url,
+//         errorWidget: (context, url, error) => assetImage,
+//       ),
+//     );
+//   }
+// }

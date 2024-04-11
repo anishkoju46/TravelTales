@@ -11,6 +11,7 @@ import 'package:traveltales/features/destination/data/respository/destination_re
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/alertBox.dart';
+import 'package:traveltales/utility/custom_snack.dart';
 import 'package:traveltales/utility/validator.dart';
 
 import 'dart:io';
@@ -196,17 +197,20 @@ class DestinationForm extends ConsumerWidget {
                                                   id: id);
                                       print(imageValue);
 
-                                      // if (imageValue != null) {
-                                      //   List<String> newImages = List.from(
-                                      //       destinationFormState.imageUrl ?? [])
-                                      //     ..add(imageValue);
-                                      //   print(newImages);
+                                      if (imageValue != null) {
+                                        List<String> newImages = List.from(
+                                            destinationFormState.imageUrl ?? [])
+                                          ..add(imageValue);
+                                        print(newImages);
 
-                                      //   var abc = destinationFormState.copyWith(
-                                      //       imageUrl: newImages);
+                                        // var abc = destinationFormState.copyWith(
+                                        //     imageUrl: newImages);
 
-                                      //   destinationFormController.update(abc);
-                                      // }
+                                        destinationFormController.update(
+                                            imageUrl: newImages);
+                                        CustomSnack.success(context,
+                                            message: "Image Uploaded");
+                                      }
                                     }
                                   },
                                   child: destinationFormState.imageUrl!.isEmpty
@@ -305,6 +309,11 @@ class DestinationForm extends ConsumerWidget {
                                                                       imageUrl:
                                                                           path,
                                                                       id: id!);
+
+                                                              CustomSnack.info(
+                                                                  context,
+                                                                  message:
+                                                                      "Image Deleted");
                                                             }
                                                           },
                                                           child: Icon(
@@ -339,6 +348,22 @@ class DestinationForm extends ConsumerWidget {
                                                       .token
                                                       .toString(),
                                                   id: id);
+
+                                      if (imageValue != null) {
+                                        List<String> newImages = List.from(
+                                            destinationFormState.imageUrl ?? [])
+                                          ..add(imageValue);
+                                        print(newImages);
+
+                                        // var abc = destinationFormState.copyWith(
+                                        //     imageUrl: newImages);
+
+                                        destinationFormController.update(
+                                            imageUrl: newImages);
+
+                                        CustomSnack.success(context,
+                                            message: "Image Uploaded");
+                                      }
                                     }
                                   },
                                   child: Container(

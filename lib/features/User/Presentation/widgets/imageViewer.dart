@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Data/user_repository.dart';
-import 'package:traveltales/features/User/Presentation/widgets/profile_screen.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/utility/custom_network_image.dart';
 
 class ImageViewer extends StatefulWidget {
   const ImageViewer({super.key, required this.url});
