@@ -67,4 +67,9 @@ class DestinationRepository extends Repository<DestinationModel> {
       {required String query}) async {
     return await search(query: query);
   }
+
+  Future<DestinationModel> deleteDestinationImages(
+      {required String imageUrl, required String id}) async {
+    return await deleteDestinationImage(imageUrl: imageUrl, id: id);
+  }
 }

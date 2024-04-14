@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:traveltales/utility/custom_location.dart';
 
 class NewMapStateContoller {
   NewMapStateContoller({required this.setStateFn});
@@ -22,9 +24,23 @@ class NewMapStateContoller {
 
   // MapController get controller => arg;
 
-  void gotoDefault(MapController controller) {
-    controller.center = const LatLng(
-        Angle.degree(27.67291697667757), Angle.degree(85.43107431974025));
+  // void gotoDefault(MapController controller) {
+  //   controller.center = const LatLng(
+  //       Angle.degree(27.67291697667757), Angle.degree(85.43107431974025));
+  //   setState();
+  // }
+
+  Position? position;
+  // MapController get controller => arg;
+  void gotoDefault(MapController controller) async {
+    final myPosition = await CustomLocation.determinePosition();
+    position = myPosition;
+    controller.center = LatLng(
+      Angle.degree(position!.latitude),
+      Angle.degree(position!.longitude),
+    );
+    // print(Angle.degree(position!.latitude));
+    // print(Angle.degree(position!.longitude));
     setState();
   }
 

@@ -16,6 +16,7 @@ class ImageViewer extends StatefulWidget {
 }
 
 class _ImageViewerState extends State<ImageViewer> {
+  _ImageViewerState();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -77,7 +78,6 @@ class _ImageViewerState extends State<ImageViewer> {
                   Icons.arrow_back,
                   color: Colors.white,
                 )),
-
             Consumer(builder: (context, ref, child) {
               return Positioned(
                 right: 0,

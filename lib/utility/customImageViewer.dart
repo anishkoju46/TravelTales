@@ -8,9 +8,14 @@ import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/custom_snack.dart';
 
 class CustomImageViewer extends StatefulWidget {
-  const CustomImageViewer({super.key, required this.url, this.index});
+  const CustomImageViewer(
+      {super.key,
+      required this.url,
+      this.index,
+      this.showDeleteButton = false});
   final String url;
   final int? index;
+  final bool showDeleteButton;
 
   @override
   State<CustomImageViewer> createState() => _CustomImageViewerState();
@@ -38,41 +43,45 @@ class _CustomImageViewerState extends State<CustomImageViewer> {
               Icons.arrow_back,
               color: Colors.white,
             )),
-        Positioned(
-          right: 0,
-          top: 0,
-          child: Consumer(builder: (context, ref, child) {
-            return IconButton(
-                onPressed: () async {
-                  final index = widget.index;
-                  final urll = ref
-                      .read(authNotifierProvider.notifier)
-                      .getGalleryImageUrlForDeletion(index!);
-                  print(urll);
+        if (widget.showDeleteButton)
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Consumer(builder: (context, ref, child) {
+              return IconButton(
+                  onPressed: () async {
+                    final index = widget.index;
+                    final urll = ref
+                        .read(authNotifierProvider.notifier)
+                        .getGalleryImageUrlForDeletion(index!);
+                    print(urll);
 
-                  var imageValue = await UserRepository(
-                          token: ref.watch(authNotifierProvider)?.token)
-                      .deleteImageFromGallery(imageUrl: urll);
+                    var imageValue = await UserRepository(
+                            token: ref.watch(authNotifierProvider)?.token)
+                        .deleteGalleryImage(imageUrl: urll);
 
-                  print(imageValue.gallery);
-                  final currentUser = ref.watch(authNotifierProvider);
+                    print(imageValue?.gallery);
 
-                  final updatedUser =
-                      currentUser!.copyWith(gallery: imageValue.gallery);
+                    if (imageValue != null) {
+                      final currentUser = ref.watch(authNotifierProvider);
 
-                  await ref
-                      .read(authNotifierProvider.notifier)
-                      .update(updatedUser);
-                  Navigator.pop(context);
+                      final updatedUser = currentUser!.copyWith(
+                          gallery: currentUser.gallery!..remove(urll));
 
-                  CustomSnack.info(context, message: "Image Deleted");
-                },
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.white,
-                ));
-          }),
-        )
+                      await ref
+                          .read(authNotifierProvider.notifier)
+                          .update(updatedUser);
+                    }
+
+                    Navigator.pop(context);
+                    CustomSnack.info(context, message: "Image Deleted");
+                  },
+                  icon: const Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ));
+            }),
+          )
       ]),
     ));
   }

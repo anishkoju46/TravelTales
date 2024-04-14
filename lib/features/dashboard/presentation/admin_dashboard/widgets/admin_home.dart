@@ -10,71 +10,77 @@ class AdminHome extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Column(
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.topLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "ADMIN",
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineLarge
-                              ?.copyWith(fontWeight: FontWeight.w800),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            ref
-                                .read(destinationListProvider.notifier)
-                                .showForm(context);
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) {
-                            //   //YETA PASS GARNA PARXA HAI to EDIT destination
-                            //   return AddDestinationForm();
-                            // }));
-                          },
-                          icon: Icon(
-                            Icons.add_link,
-                            color:
-                                Theme.of(context).colorScheme.tertiaryContainer,
+    return RefreshIndicator(
+      onRefresh: () async {
+        await ref.refresh(destinationListProvider);
+      },
+      child: Column(
+        children: [
+          Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "ADMIN",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge
+                                ?.copyWith(fontWeight: FontWeight.w800),
                           ),
-                        )
-                      ],
+                          IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(destinationListProvider.notifier)
+                                  .showForm(context);
+                              // Navigator.push(context,
+                              //     MaterialPageRoute(builder: (context) {
+                              //   //YETA PASS GARNA PARXA HAI to EDIT destination
+                              //   return AddDestinationForm();
+                              // }));
+                            },
+                            icon: Icon(
+                              Icons.add_link,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  //Search bar
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: SearchBar(
-                      onTap: () {
-                        showSearch(
-                            context: context, delegate: UserSearchDelegate());
-                      },
-                      leading: Icon(Icons.search),
-                      hintText: "Search for a place",
+                    //Search bar
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: SearchBar(
+                        onTap: () {
+                          showSearch(
+                              context: context, delegate: UserSearchDelegate());
+                        },
+                        leading: Icon(Icons.search),
+                        hintText: "Search for a place",
+                      ),
                     ),
-                  ),
-                  Container(
-                      //color: Colors.red,
-                      padding: EdgeInsets.symmetric(vertical: 6),
-                      child: SizedBox(height: 38, child: CategoryList())),
-                ],
+                    Container(
+                        //color: Colors.red,
+                        padding: EdgeInsets.symmetric(vertical: 6),
+                        child: SizedBox(height: 38, child: CategoryList())),
+                  ],
+                ),
               ),
-            ),
-            //END OF TITLE AND SEARCH
-          ],
-        ),
-        Expanded(child: DestinationList()),
-      ],
+              //END OF TITLE AND SEARCH
+            ],
+          ),
+          Expanded(child: DestinationList()),
+        ],
+      ),
     );
   }
 }

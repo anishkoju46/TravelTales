@@ -125,7 +125,7 @@ class DestinationListItem extends ConsumerWidget {
             ),
             //Icon Button
             Positioned(
-              top: 15,
+              top: 10,
               right: 15,
               child: Container(
                 decoration: BoxDecoration(
@@ -153,7 +153,7 @@ class DestinationListItem extends ConsumerWidget {
             //Delete Button ho hai
             if (ref.read(authNotifierProvider)!.role!)
               Positioned(
-                top: 75,
+                top: 70,
                 right: 15,
                 child: Container(
                     decoration: BoxDecoration(

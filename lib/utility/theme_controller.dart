@@ -61,3 +61,7 @@ class ThemeController extends Notifier<ThemeData> {
 
   //final ThemeData sdf = ThemeData.from(colorScheme: colorScheme).copy
 }
+
+extension ContextGetter on BuildContext {
+  ThemeData get theme => Theme.of(this);
+}

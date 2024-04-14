@@ -5,8 +5,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:traveltales/features/User/Data/user_repository.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
+import 'package:traveltales/features/review/data/repository/review_repository.dart';
 import 'package:traveltales/features/review/domain/review_model_new.dart';
 import 'package:traveltales/features/review/presentation/state/review_state.dart';
+import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/custom_network_image.dart';
 
 //eutaboxko code yesma
@@ -124,8 +126,29 @@ class ReviewBox extends ConsumerWidget {
                   ],
                 ),
               ),
-              // if (ref.read(authNotifierProvider)!.role == true)
-              //   IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+              if (ref.read(authNotifierProvider)!.role == true)
+                IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertBox(
+                              confirmText: "Delete",
+                              onPressed: () async {
+                                await ReviewRepository(
+                                        token: ref
+                                            .read(authNotifierProvider)
+                                            ?.token)
+                                    .deleteReview(review.id!);
+
+                                ref.refresh(reviewListProvider);
+                                Navigator.pop(context);
+                              },
+                              title: "Delete Review");
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.delete))
             ],
           ),
         )

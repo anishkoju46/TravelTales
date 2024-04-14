@@ -72,42 +72,47 @@ class PhotoScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     String baseUrl = "http://10.0.2.2:8000/";
     final user = ref.watch(authNotifierProvider);
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Gallery",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge
-                      ?.copyWith(fontWeight: FontWeight.w800),
-                ),
-                IconButton(
-                    onPressed: () async {
-                      await getImage();
+    return RefreshIndicator(
+      onRefresh: () async {
+        ref.refresh(authNotifierProvider);
+      },
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Gallery",
+                    style: Theme.of(context)
+                        .textTheme
+                        .headlineLarge
+                        ?.copyWith(fontWeight: FontWeight.w800),
+                  ),
+                  IconButton(
+                      onPressed: () async {
+                        await getImage();
 
-                      if (image != null) {
-                        customShowDialog(context, ref);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.add_photo_alternate,
-                      size: 30,
-                    ))
-              ],
+                        if (image != null) {
+                          customShowDialog(context, ref);
+                        }
+                      },
+                      icon: Icon(
+                        Icons.add_photo_alternate,
+                        size: 30,
+                      ))
+                ],
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: MyGridView(user: user, baseUrl: baseUrl),
-        ),
-      ],
+          Expanded(
+            child: MyGridView(user: user, baseUrl: baseUrl),
+          ),
+        ],
+      ),
     );
   }
 
@@ -162,11 +167,11 @@ class PhotoScreen extends ConsumerWidget {
                       ref
                           .read(authNotifierProvider.notifier)
                           .update(currentuser.copyWith(gallery: newGallery));
+
+                      CustomSnack.success(context, message: "Image Uploaded");
                     }
                     // print(imageValue);
                     Navigator.pop(context); // Close the dialog
-
-                    CustomSnack.success(context, message: "Image Uploaded");
                   },
                   child: Text('Confirm'),
                 ),
@@ -241,6 +246,7 @@ class MyNetworkImage extends StatelessWidget {
               builder: (context) => CustomImageViewer(
                 url: imageUrl,
                 index: imageIndex,
+                showDeleteButton: true,
                 // ref
                 //     .read(authNotifierProvider.notifier)
                 //     .getGalleryImageUrls(index)

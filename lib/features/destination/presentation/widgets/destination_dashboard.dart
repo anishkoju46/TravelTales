@@ -12,7 +12,10 @@ import 'package:traveltales/features/destination/presentation/widgets/destinatio
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
 import 'package:traveltales/features/review/presentation/widget/destination_review_screen.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/customImageViewer.dart';
 import 'package:traveltales/utility/smooth_Page_Indicator.dart';
+
+final currentIndexProvider = StateProvider<int>((ref) => 0);
 
 class DestinationDashboard extends ConsumerWidget {
   DestinationDashboard({super.key, required this.destinationModel});
@@ -50,20 +53,34 @@ class DestinationDashboard extends ConsumerWidget {
                             );
                             if (destinationModel.imageUrl != null &&
                                 index < destinationModel.imageUrl!.length) {
-                              return CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: ref
-                                    .read(destinationListProvider.notifier)
-                                    .parseImage(
-                                        path:
-                                            destinationModel.imageUrl![index]),
-                                placeholder: (context, url) {
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CustomImageViewer(
+                                            url: ref
+                                                .read(destinationListProvider
+                                                    .notifier)
+                                                .parseImage(
+                                                    path: destinationModel
+                                                        .imageUrl![index]),
+                                            index: index,
+                                          )));
                                 },
-                                errorWidget: (context, url, error) =>
-                                    assetImage,
+                                child: CachedNetworkImage(
+                                  fit: BoxFit.cover,
+                                  imageUrl: ref
+                                      .read(destinationListProvider.notifier)
+                                      .parseImage(
+                                          path: destinationModel
+                                              .imageUrl![index]),
+                                  placeholder: (context, url) {
+                                    return Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorWidget: (context, url, error) =>
+                                      assetImage,
+                                ),
                               );
                             }
                             return assetImage;

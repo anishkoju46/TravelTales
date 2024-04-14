@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
@@ -90,7 +91,16 @@ class UserSearchDelegate extends SearchDelegate {
       } else {
         return Container(
           alignment: Alignment.center,
-          child: Text("Type to Search, eg: langtang"),
+          decoration: BoxDecoration(
+              // color: Colors.red,
+              image: DecorationImage(
+                  image: AssetImage("assets/images/Hiking_pana.png"))),
+          child: Text(
+            "Type to Search, eg: langtang...",
+            style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontWeight: FontWeight.w700),
+          ),
         );
       }
     });

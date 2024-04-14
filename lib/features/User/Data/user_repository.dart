@@ -62,4 +62,8 @@ class UserRepository extends Repository<UserModel> {
 
     // return added;
   }
+
+  Future<UserModel>? deleteGalleryImage({required String imageUrl}) async {
+    return await deleteImageFromGallery(imageUrl: imageUrl);
+  }
 }

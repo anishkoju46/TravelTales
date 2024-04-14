@@ -78,14 +78,14 @@ class EditProfileScreen extends ConsumerWidget {
                         readOnly: isCurrentUser == true ? true : false,
                         validator: phoneNumberValidator),
 
-                    if (ref.read(authNotifierProvider)!.role == true)
-                      SwitchListTile(
-                          title: Text("Is Admin"),
-                          value: userFormState.role ?? false,
-                          //false,
-                          onChanged: (value) {
-                            userFormController.update(role: value);
-                          })
+                    // if (ref.read(authNotifierProvider)!.role == true)
+                    //   SwitchListTile(
+                    //       title: Text("Is Admin"),
+                    //       value: userFormState.role ?? false,
+                    //       //false,
+                    //       onChanged: (value) {
+                    //         userFormController.update(role: value);
+                    //       })
 
                     // if (ref.read(authNotifierProvider)!.role!) ...[
                     //   Row(

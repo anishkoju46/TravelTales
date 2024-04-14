@@ -6,6 +6,7 @@ import 'package:traveltales/features/destination/domain/destination_model_new.da
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/map/presentation/widgets/new_map_Screen.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
+import 'package:traveltales/utility/interactive_map_stateful.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
   const DestinationDetailScreen({super.key, required this.destinationModel});
@@ -38,6 +39,10 @@ class DestinationDetailScreen extends ConsumerWidget {
                           Angle.degree(
                               destinationModel.coordinates!.coordinates!.first),
                         );
+
+                        // return InteractiveMapPage(
+                        //     controller:
+                        //         MapController(location: destinationPin));
                         return TheMap(
                           pin: destinationPin,
                           controller: MapController(

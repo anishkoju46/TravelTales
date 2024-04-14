@@ -34,6 +34,7 @@ class DestinationForm extends ConsumerWidget {
     final categories = ref.read(categoryListProvider.notifier).usableCategories;
 
     final imageList = destinationFormController.images;
+    final image = destinationFormController.image;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -183,35 +184,50 @@ class DestinationForm extends ConsumerWidget {
                                   onTap: () async {
                                     await destinationFormController.getImage();
                                     //upload ni garnu paryo
-                                    final String? id = destinationFormState.id;
-                                    print(id);
-                                    if (id != null) {
-                                      var imageValue =
-                                          await destinationFormController
-                                              .uploadImage(
-                                                  token: ref
-                                                      .read(
-                                                          authNotifierProvider)!
-                                                      .token
-                                                      .toString(),
-                                                  id: id);
-                                      print(imageValue);
 
-                                      if (imageValue != null) {
-                                        List<String> newImages = List.from(
-                                            destinationFormState.imageUrl ?? [])
-                                          ..add(imageValue);
-                                        print(newImages);
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertBox(
+                                            confirmText: "Confirm",
+                                            onPressed: () async {
+                                              final String? id =
+                                                  destinationFormState.id;
+                                              // print(id);
+                                              if (id != null) {
+                                                var imageValue =
+                                                    await destinationFormController
+                                                        .uploadImage(
+                                                            token: ref
+                                                                .read(
+                                                                    authNotifierProvider)!
+                                                                .token
+                                                                .toString(),
+                                                            id: id);
+                                                // print(imageValue);
 
-                                        // var abc = destinationFormState.copyWith(
-                                        //     imageUrl: newImages);
+                                                if (imageValue != null) {
+                                                  List<String> newImages =
+                                                      List.from(
+                                                          destinationFormState
+                                                                  .imageUrl ??
+                                                              [])
+                                                        ..add(imageValue);
+                                                  print(newImages);
 
-                                        destinationFormController.update(
-                                            imageUrl: newImages);
-                                        CustomSnack.success(context,
-                                            message: "Image Uploaded");
-                                      }
-                                    }
+                                                  await destinationFormController
+                                                      .update(
+                                                          imageUrl: newImages);
+
+                                                  CustomSnack.success(context,
+                                                      message:
+                                                          "Image Uploaded");
+                                                }
+                                              }
+                                            },
+                                            title: "Upload Image");
+                                      },
+                                    );
                                   },
                                   child: destinationFormState.imageUrl!.isEmpty
                                       ? Container(
@@ -246,87 +262,104 @@ class DestinationForm extends ConsumerWidget {
                                       : Wrap(
                                           runSpacing: 8,
                                           spacing: 8,
-                                          children: destinationFormState
-                                              .imageUrl!
-                                              .map(
-                                                (e) => Stack(
-                                                  children: [
-                                                    Consumer(builder:
-                                                        (context, ref, child) {
-                                                      int index =
-                                                          destinationFormState
-                                                              .imageUrl!
-                                                              .indexOf(e);
-                                                      return Container(
-                                                        width: 140,
-                                                        height: 100,
-                                                        decoration: BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .black38)),
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          fit: BoxFit.cover,
-                                                          imageUrl: ref
-                                                              .read(
-                                                                  destinationListProvider
+                                          children:
+                                              destinationFormState.imageUrl!
+                                                  .map(
+                                                    (e) => Stack(
+                                                      children: [
+                                                        Consumer(builder:
+                                                            (context, ref,
+                                                                child) {
+                                                          int index =
+                                                              destinationFormState
+                                                                  .imageUrl!
+                                                                  .indexOf(e);
+                                                          return Container(
+                                                            width: 140,
+                                                            height: 100,
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .black38)),
+                                                            child:
+                                                                CachedNetworkImage(
+                                                              fit: BoxFit.cover,
+                                                              imageUrl: ref
+                                                                  .read(destinationListProvider
                                                                       .notifier)
-                                                              .parseImage(
-                                                                path: destinationFormState
-                                                                        .imageUrl![
-                                                                    index],
+                                                                  .parseImage(
+                                                                    path: destinationFormState
+                                                                            .imageUrl![
+                                                                        index],
+                                                                  ),
+                                                            ),
+                                                          );
+                                                        }),
+                                                        //=========================DELETE BUTTON
+                                                        Positioned(
+                                                          top: 0,
+                                                          right: 0,
+                                                          child: Container(
+                                                            // color: Colors.red,
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (context) {
+                                                                    return AlertBox(
+                                                                        confirmText:
+                                                                            "Confirm",
+                                                                        onPressed:
+                                                                            () async {
+                                                                          int index = destinationFormState
+                                                                              .imageUrl!
+                                                                              .indexOf(e);
+                                                                          if (index !=
+                                                                              -1) {
+                                                                            //delete API CALL GARNE
+                                                                            final String?
+                                                                                id =
+                                                                                destinationFormState.id;
+                                                                            final path =
+                                                                                destinationFormController.getDestinationImageUrlForDeletion(index);
+
+                                                                            // var imageValue =
+                                                                            await DestinationRepository(token: ref.read(authNotifierProvider)?.token).deleteDestinationImages(
+                                                                                imageUrl: path,
+                                                                                id: id!);
+
+                                                                            List<String> updatedImages = List.from(destinationFormState.imageUrl ??
+                                                                                [])
+                                                                              ..removeAt(index);
+
+                                                                            await destinationFormController.update(imageUrl: updatedImages);
+
+                                                                            Navigator.pop(context);
+
+                                                                            CustomSnack.info(context,
+                                                                                message: "Image Deleted");
+                                                                          }
+                                                                        },
+                                                                        title:
+                                                                            "Delete Image");
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: Icon(
+                                                                Icons.delete,
+                                                                color:
+                                                                    Colors.red,
                                                               ),
-                                                        ),
-                                                      );
-                                                    }),
-                                                    Positioned(
-                                                      top: 0,
-                                                      right: 0,
-                                                      child: Container(
-                                                        // color: Colors.red,
-                                                        child: GestureDetector(
-                                                          onTap: () {
-                                                            int index =
-                                                                destinationFormState
-                                                                    .imageUrl!
-                                                                    .indexOf(e);
-                                                            if (index != -1) {
-                                                              //delete API CALL GARNE
-                                                              final String? id =
-                                                                  destinationFormState
-                                                                      .id;
-                                                              final path =
-                                                                  destinationFormController
-                                                                      .getDestinationImageUrlForDeletion(
-                                                                          index);
-
-                                                              DestinationRepository(
-                                                                      token: ref
-                                                                          .read(
-                                                                              authNotifierProvider)
-                                                                          ?.token)
-                                                                  .deleteDestinationImage(
-                                                                      imageUrl:
-                                                                          path,
-                                                                      id: id!);
-
-                                                              CustomSnack.info(
-                                                                  context,
-                                                                  message:
-                                                                      "Image Deleted");
-                                                            }
-                                                          },
-                                                          child: Icon(
-                                                            Icons.remove,
-                                                            color: Colors.red,
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                              .toList(),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                  .toList(),
                                         ),
                                 ),
                               ),
@@ -337,7 +370,7 @@ class DestinationForm extends ConsumerWidget {
                                     await destinationFormController.getImage();
 
                                     final String? id = destinationFormState.id;
-                                    print(id);
+                                    // print(id);
                                     if (id != null) {
                                       var imageValue =
                                           await destinationFormController
@@ -348,6 +381,7 @@ class DestinationForm extends ConsumerWidget {
                                                       .token
                                                       .toString(),
                                                   id: id);
+                                      // print(imageValue);
 
                                       if (imageValue != null) {
                                         List<String> newImages = List.from(
@@ -355,10 +389,7 @@ class DestinationForm extends ConsumerWidget {
                                           ..add(imageValue);
                                         print(newImages);
 
-                                        // var abc = destinationFormState.copyWith(
-                                        //     imageUrl: newImages);
-
-                                        destinationFormController.update(
+                                        await destinationFormController.update(
                                             imageUrl: newImages);
 
                                         CustomSnack.success(context,
@@ -389,27 +420,8 @@ class DestinationForm extends ConsumerWidget {
                       ],
                     ),
 
-                    // IconButton(
-                    //     onPressed: () async {
-                    //       await destinationFormController.getImage();
+                    //==END OF UPLOAD IMAGE UI
 
-                    //       // await uploadImage(
-                    //       //   token: ref
-                    //       //       .watch(authNotifierProvider)!
-                    //       //       .token
-                    //       //       .toString(),
-                    //       //   // newImageUrl:
-                    //       // );
-                    //     },
-                    //     icon: Icon(Icons.add_photo_alternate)),
-                    // customTextFormField(
-                    //     initialValue:
-                    //         (destinationFormState.imageUrl?.first), //TODO
-                    //     labelText: "IMAGE URL HAI",
-                    //     onChanged: (value) {
-                    //       destinationFormController.update(imageUrl: [value]);
-                    //     },
-                    //     validator: imageValidator),
                     customTextFormField(
                         initialValue: destinationFormState.description,
                         labelText: "Description (in short)",
