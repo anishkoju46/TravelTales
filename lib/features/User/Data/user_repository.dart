@@ -32,6 +32,12 @@ class UserRepository extends Repository<UserModel> {
     });
   }
 
+  Future<UserModel> blockUser({
+    required String id,
+  }) async {
+    return await blockOne(id: id);
+  }
+
   @override
   Future<UserModel> fetchOne({Client? client, required String id}) {
     // TODO: implement fetchOne

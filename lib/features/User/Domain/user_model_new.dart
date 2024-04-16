@@ -97,7 +97,7 @@ class UserModel extends Equatable {
         phoneNumber: json["phoneNumber"],
         imageUrl: json["imageUrl"],
         role: json["role"],
-        block: json["block"],
+        block: json["block"] ?? false,
         favourites: json["favourites"] == null
             ? []
             : List<DestinationModel>.from(json["favourites"]!.map((x) =>

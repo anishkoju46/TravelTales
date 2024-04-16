@@ -89,18 +89,26 @@ class UserSearchDelegate extends SearchDelegate {
                   child: CircularProgressIndicator(),
                 ));
       } else {
-        return Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              // color: Colors.red,
-              image: DecorationImage(
-                  image: AssetImage("assets/images/Hiking_pana.png"))),
-          child: Text(
-            "Type to Search, eg: langtang...",
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w700),
-          ),
+        return Column(
+          children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                // color: Colors.red,
+                image: DecorationImage(
+                    image: AssetImage("assets/images/Hiking_pana.png"),
+                    fit: BoxFit.cover),
+              ),
+            ),
+            Text(
+              "Type to Search, eg: langtang...",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.w700),
+            ),
+          ],
         );
       }
     });

@@ -16,42 +16,52 @@ class EmergencyContactsScreen extends ConsumerWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
-          centerTitle: true,
-          title: Text("Hotline Numbers",
-              style: context.theme.textTheme.titleLarge),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+          title: Text(
+            "Emergency Contacts",
+            style: TextStyle(color: Theme.of(context).colorScheme.background),
+          ),
+          iconTheme:
+              IconThemeData(color: Theme.of(context).colorScheme.background),
         ),
-        body: Consumer(
-          builder: (context, ref, child) {
-            final hotlineList = ref.watch(hotlineListProvider);
-            return hotlineList.when(
-              data: (data) => data.isEmpty
-                  ? const Center(child: Text("No Hotlines Found"))
-                  : ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        final hotlineNumbers = data[index];
-
-                        return HotlineNumberItem(hotlineNumber: hotlineNumbers);
-                      },
-                    ),
-              error: (error, stackTrace) {
-                return Center(
-                  child: Text(error.toString()),
-                );
-              },
-              loading: () => const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await ref.refresh(hotlineListProvider);
           },
+          child: Consumer(
+            builder: (context, ref, child) {
+              final hotlineList = ref.watch(hotlineListProvider);
+              return hotlineList.when(
+                data: (data) => data.isEmpty
+                    ? const Center(child: Text("No Hotlines Found"))
+                    : ListView.builder(
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          final hotlineNumbers = data[index];
+
+                          return HotlineNumberItem(
+                              hotlineNumber: hotlineNumbers);
+                        },
+                      ),
+                error: (error, stackTrace) {
+                  return Center(
+                    child: Text(error.toString()),
+                  );
+                },
+                loading: () => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            },
+          ),
         ),
         floatingActionButton: Visibility(
           visible: isAdmin,
           child: FloatingActionButton(
             onPressed: () =>
                 ref.read(hotlineListProvider.notifier).showForm(context),
-            child: const Icon(Icons.add_call),
+            child:
+                Icon(Icons.add_call, color: context.theme.colorScheme.primary),
           ),
         ),
       ),

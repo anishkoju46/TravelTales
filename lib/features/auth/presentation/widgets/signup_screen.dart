@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Domain/user_model_new.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/utility/custom_textform_feild.dart';
+import 'package:traveltales/utility/theme_controller.dart';
 import 'package:traveltales/utility/validator.dart';
 
 class SignupScreen extends ConsumerWidget {
@@ -115,10 +116,9 @@ class SignupScreen extends ConsumerWidget {
                       ),
                       TextSpan(
                         text: " Login",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: context.theme.colorScheme.tertiaryContainer),
                       )
                     ],
                   ),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Controller/user_search_delegate.dart';
 import 'package:traveltales/features/category/presentation/widgets/category_list.dart';
+import 'package:traveltales/features/dashboard/controller/user_home_controller.dart';
+import 'package:traveltales/features/dashboard/state/user_home_state.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
 
@@ -12,7 +14,9 @@ class AdminHome extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
       onRefresh: () async {
-        await ref.refresh(destinationListProvider);
+        return ref.read(userHomeProvider.notifier).refresh();
+        // UserHomeController().refresh();
+        // await ref.refresh(destinationListProvider);
       },
       child: Column(
         children: [
@@ -66,6 +70,16 @@ class AdminHome extends ConsumerWidget {
                         },
                         leading: Icon(Icons.search),
                         hintText: "Search for a place",
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        "Categories",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.w600),
                       ),
                     ),
                     Container(

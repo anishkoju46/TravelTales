@@ -9,6 +9,7 @@ import 'package:traveltales/features/auth/presentation/state/state.dart';
 import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
 import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
+import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/custom_snack.dart';
@@ -184,50 +185,11 @@ class DestinationForm extends ConsumerWidget {
                                   onTap: () async {
                                     await destinationFormController.getImage();
                                     //upload ni garnu paryo
-
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertBox(
-                                            confirmText: "Confirm",
-                                            onPressed: () async {
-                                              final String? id =
-                                                  destinationFormState.id;
-                                              // print(id);
-                                              if (id != null) {
-                                                var imageValue =
-                                                    await destinationFormController
-                                                        .uploadImage(
-                                                            token: ref
-                                                                .read(
-                                                                    authNotifierProvider)!
-                                                                .token
-                                                                .toString(),
-                                                            id: id);
-                                                // print(imageValue);
-
-                                                if (imageValue != null) {
-                                                  List<String> newImages =
-                                                      List.from(
-                                                          destinationFormState
-                                                                  .imageUrl ??
-                                                              [])
-                                                        ..add(imageValue);
-                                                  print(newImages);
-
-                                                  await destinationFormController
-                                                      .update(
-                                                          imageUrl: newImages);
-
-                                                  CustomSnack.success(context,
-                                                      message:
-                                                          "Image Uploaded");
-                                                }
-                                              }
-                                            },
-                                            title: "Upload Image");
-                                      },
-                                    );
+                                    customShowDialog(
+                                        context,
+                                        destinationFormState,
+                                        destinationFormController,
+                                        ref);
                                   },
                                   child: destinationFormState.imageUrl!.isEmpty
                                       ? Container(
@@ -369,33 +331,11 @@ class DestinationForm extends ConsumerWidget {
                                   onTap: () async {
                                     await destinationFormController.getImage();
 
-                                    final String? id = destinationFormState.id;
-                                    // print(id);
-                                    if (id != null) {
-                                      var imageValue =
-                                          await destinationFormController
-                                              .uploadImage(
-                                                  token: ref
-                                                      .read(
-                                                          authNotifierProvider)!
-                                                      .token
-                                                      .toString(),
-                                                  id: id);
-                                      // print(imageValue);
-
-                                      if (imageValue != null) {
-                                        List<String> newImages = List.from(
-                                            destinationFormState.imageUrl ?? [])
-                                          ..add(imageValue);
-                                        print(newImages);
-
-                                        await destinationFormController.update(
-                                            imageUrl: newImages);
-
-                                        CustomSnack.success(context,
-                                            message: "Image Uploaded");
-                                      }
-                                    }
+                                    customShowDialog(
+                                        context,
+                                        destinationFormState,
+                                        destinationFormController,
+                                        ref);
                                   },
                                   child: Container(
                                     padding: EdgeInsets.symmetric(vertical: 10),
@@ -566,6 +506,43 @@ class DestinationForm extends ConsumerWidget {
     );
   }
 
+  Future<dynamic> customShowDialog(
+      BuildContext context,
+      DestinationModel destinationFormState,
+      DestinationFormController destinationFormController,
+      WidgetRef ref) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertBox(
+            confirmText: "Confirm",
+            onPressed: () async {
+              final String? id = destinationFormState.id;
+              // print(id);
+              if (id != null) {
+                var imageValue = await destinationFormController.uploadImage(
+                    token: ref.read(authNotifierProvider)!.token.toString(),
+                    id: id);
+                // print(imageValue);
+
+                if (imageValue != null) {
+                  List<String> newImages =
+                      List.from(destinationFormState.imageUrl ?? [])
+                        ..add(imageValue);
+                  print(newImages);
+
+                  await destinationFormController.update(imageUrl: newImages);
+
+                  CustomSnack.success(context, message: "Image Uploaded");
+                }
+                Navigator.pop(context);
+              }
+            },
+            title: "Add Image");
+      },
+    );
+  }
+
   Padding customTextFormField(
       {String? initialValue,
       IconData? iconData,
@@ -591,5 +568,60 @@ class DestinationForm extends ConsumerWidget {
       ),
     );
   }
+
+  // File? updatedImage;
+  // final _pickers = ImagePicker();
+
+  // Future getImageForUpdate() async {
+  //   final selectedFile =
+  //       await _pickers.pickImage(source: ImageSource.gallery, imageQuality: 80);
+  //   if (selectedFile != null) {
+  //     updatedImage = File(selectedFile.path);
+  //   } else {
+  //     print("no image selected");
+  //   }
+  // }
+
+  // Future<String?> uploadImageForUpdate({
+  //   required String token,
+  //   required String id,
+  // }) async {
+  //   if (updatedImage == null) {
+  //     print("Null");
+  //     return null;
+  //   }
+  //   var stream = http.ByteStream(updatedImage!.openRead());
+  //   stream.cast();
+  //   var length = await updatedImage!.length();
+  //   final baseUrl = AuthRepository().baseUrl;
+  //   var uri = Uri.parse('${baseUrl}destinations/addDestinationImage/${id}');
+
+  //   var request = http.MultipartRequest('POST', uri);
+
+  //   request.headers['x-access-token'] = token;
+
+  //   request.fields['image'] = 'image';
+  //   var multiport = http.MultipartFile('image', stream, length,
+  //       contentType: MediaType.parse('image/jpg'));
+  //   request.files.add(multiport);
+  //   var response = await request.send();
+  //   try {
+  //     if (response.statusCode == 200) {
+  //       print('image uploaded');
+
+  //       String responseBody = await response.stream.bytesToString();
+
+  //       Map<String, dynamic> decodedResponse = json.decode(responseBody);
+
+  //       // print(decodedResponse);
+  //       return decodedResponse['relativePaths'][0].toString();
+  //     } else {
+  //       print('image upload failed');
+  //       return null;
+  //     }
+  //   } catch (e, s) {
+  //     print("${e} ${s}");
+  //     return null;
+  //   }
+  // }
 }
-//USE STEPPER WIDGET IN FUTURE!

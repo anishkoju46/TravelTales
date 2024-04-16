@@ -26,11 +26,16 @@ class DestinationReview extends ConsumerWidget {
             child: reviewList.when(
               data: (data) => data.isEmpty
                   ? Center(child: Text("There are no reviews"))
-                  : ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (context, index) {
-                        return ReviewBox(review: data[index]);
-                      }),
+                  : RefreshIndicator(
+                      onRefresh: () async {
+                        ref.refresh(reviewListProvider);
+                      },
+                      child: ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            return ReviewBox(review: data[index]);
+                          }),
+                    ),
               error: ((error, stackTrace) => Center(
                     child: Text(error.toString()),
                   )),

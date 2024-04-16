@@ -130,25 +130,6 @@ class DestinationFormController extends FormController<DestinationModel> {
 
   File? image;
   final _picker = ImagePicker();
-  bool showspinner = false;
-
-  // Future getImage() async {
-  //   final pickedFile =
-  //       await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
-  //   if (pickedFile != null) {
-  //     image = File(pickedFile.path);
-
-  //     final pickedSize = await pickedFile.length();
-  //     print("pickedFile: ${pickedSize} bytes");
-  //     // print(pickedSize)
-  //     final size = await image!.length();
-  //     print("Image: ${size} bytes");
-
-  //     //  images?.add(image!);
-  //   } else {
-  //     print("no image selected");
-  //   }
-  // }
 
   Future getImage() async {
     var file = await getImageFile();
@@ -207,6 +188,8 @@ class DestinationFormController extends FormController<DestinationModel> {
 
         Map<String, dynamic> decodedResponse = json.decode(responseBody);
         // print(decodedResponse);
+        images.clear();
+
         return decodedResponse['relativePaths'][0].toString();
 
         // Map<String, dynamic> decodedResponse = json.decode(response as String);

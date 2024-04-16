@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/User/Controller/user_search_delegate.dart';
 import 'package:traveltales/features/category/presentation/widgets/category_list.dart';
+import 'package:traveltales/features/dashboard/controller/user_home_controller.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_list.dart';
 
@@ -33,7 +34,8 @@ class UserHome extends ConsumerWidget {
       // padding: EdgeInsets.symmetric(vertical: 10),
       child: RefreshIndicator(
         onRefresh: () async {
-          await ref.refresh(destinationListProvider);
+          return UserHomeController().refresh();
+          // await ref.refresh(destinationListProvider);
         },
         child: Column(
           children: [

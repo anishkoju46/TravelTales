@@ -4,7 +4,6 @@ import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
-import 'package:traveltales/features/map/presentation/widgets/new_map_Screen.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 import 'package:traveltales/utility/interactive_map_stateful.dart';
 
@@ -16,82 +15,57 @@ class DestinationDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: details(context, destinationModel: destinationModel),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
-                  ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            ref.refresh(destinationListProvider);
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: details(context, destinationModel: destinationModel),
                 ),
-                child: FilledButton.icon(
-                  onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(
-                      builder: (context) {
-                        final destinationPin = LatLng(
-                          Angle.degree(
-                              destinationModel.coordinates!.coordinates!.last),
-                          Angle.degree(
-                              destinationModel.coordinates!.coordinates!.first),
-                        );
-
-                        // return InteractiveMapPage(
-                        //     controller:
-                        //         MapController(location: destinationPin));
-                        return TheMap(
-                          pin: destinationPin,
-                          controller: MapController(
-                              location: LatLng(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(25),
+                    ),
+                  ),
+                  child: FilledButton.icon(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          final destinationPin = LatLng(
                             Angle.degree(destinationModel
                                 .coordinates!.coordinates!.last),
                             Angle.degree(destinationModel
                                 .coordinates!.coordinates!.first),
-                          )),
-                        );
-                      },
-                    ));
-                    // Navigator.push(context, MaterialPageRoute(
-                    //   builder: (context) {
-                    //     final destinationPin = LatLng(
-                    //       Angle.degree(
-                    //           destinationModel.coordinates!.coordinates!.last),
-                    //       Angle.degree(
-                    //           destinationModel.coordinates!.coordinates!.first),
-                    //     );
-                    //     return NewMapScreen(
-                    //       pin: destinationPin,
-                    //       controller: MapController(
-                    //         location: LatLng(
-                    //           Angle.degree(destinationModel
-                    //               .coordinates!.coordinates!.last),
-                    //           Angle.degree(destinationModel
-                    //               .coordinates!.coordinates!.first),
-                    //         ),
-                    //       ),
-                    //       provider: newMapProvider,
-                    //     );
-                    //     // return MapScreen(
-                    //     //     controller: MapController(
-                    //     //   location: LatLng(
-                    //     //       Angle.degree(destinationModel
-                    //     //           .coordinates!.coordinates!.last),
-                    //     //       Angle.degree(destinationModel
-                    //     //           .coordinates!.coordinates!.first)),
-                    //     //   // zoom: 3
-                    //     // ));
-                    //   },
-                    // ));
-                  },
-                  icon: Icon(Icons.explore_rounded),
-                  label: Text("Directions"),
-                ),
-              )
-            ],
+                          );
+
+                          return InteractiveMapPage(
+                              pin: destinationPin,
+                              controller:
+                                  MapController(location: destinationPin));
+                          // return TheMap(
+                          //   pin: destinationPin,
+                          //   controller: MapController(
+                          //       location: LatLng(
+                          //     Angle.degree(destinationModel
+                          //         .coordinates!.coordinates!.last),
+                          //     Angle.degree(destinationModel
+                          //         .coordinates!.coordinates!.first),
+                          //   )),
+                          // );
+                        },
+                      ));
+                    },
+                    icon: Icon(Icons.explore_rounded),
+                    label: Text("Directions"),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -120,7 +94,6 @@ class DestinationDetailScreen extends ConsumerWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(destinationModel.name!,
           style: Theme.of(context).textTheme.displaySmall),
-
       Container(
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,52 +148,6 @@ class DestinationDetailScreen extends ConsumerWidget {
           ],
         ),
       ),
-      // Container(
-      //   padding: EdgeInsets.symmetric(vertical: 5),
-      //   child: Column(
-      //     children: [
-      //       Row(
-      //         children: [
-      //           Expanded(
-      //             child: infoMethod(
-      //               destinationModel: destinationModel,
-      //               icon: Icons.landscape,
-      //               infoTitle: "Max Height",
-      //               information: destinationModel.maxHeight!,
-      //             ),
-      //           ),
-      //           Expanded(
-      //               child: infoMethod(
-      //                   destinationModel: destinationModel,
-      //                   infoTitle: "Best Season",
-      //                   information: destinationModel.bestSeason!,
-      //                   icon: Icons.foggy)),
-      //         ],
-      //       ),
-      //       SizedBox(
-      //         height: 10,
-      //       ),
-      //       Row(
-      //         children: [
-      //           Expanded(
-      //             child: infoMethod(
-      //               destinationModel: destinationModel,
-      //               icon: Icons.calendar_month,
-      //               infoTitle: "Duration",
-      //               information: destinationModel.duration!,
-      //             ),
-      //           ),
-      //           Expanded(
-      //               child: infoMethod(
-      //                   destinationModel: destinationModel,
-      //                   infoTitle: "Region",
-      //                   information: destinationModel.region!,
-      //                   icon: Icons.map)),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
       Container(
         padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(

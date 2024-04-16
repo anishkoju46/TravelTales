@@ -153,7 +153,7 @@ class DestinationListItem extends ConsumerWidget {
             //Delete Button ho hai
             if (ref.read(authNotifierProvider)!.role!)
               Positioned(
-                top: 70,
+                top: 68,
                 right: 15,
                 child: Container(
                     decoration: BoxDecoration(

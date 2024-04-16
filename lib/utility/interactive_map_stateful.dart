@@ -5,22 +5,48 @@ import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:example/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlng/latlng.dart';
 import 'package:map/map.dart';
+import 'package:traveltales/utility/custom_location.dart';
 
 class InteractiveMapPage extends StatefulWidget {
-  const InteractiveMapPage({Key? key, required this.controller})
+  const InteractiveMapPage(
+      {Key? key, required this.controller, required this.pin})
       : super(key: key);
   final MapController controller;
+  final LatLng pin;
 
   @override
   InteractiveMapPageState createState() => InteractiveMapPageState();
 }
 
 class InteractiveMapPageState extends State<InteractiveMapPage> {
-  void _gotoDefault() {
-    widget.controller.center = const LatLng(
-        Angle.degree(27.67291697667757), Angle.degree(85.43107431974025));
+  Position? position;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCurrentLocation();
+  }
+
+  void _fetchCurrentLocation() async {
+    final myPosition = await CustomLocation.determinePosition();
+    setState(() {
+      position = myPosition;
+    });
+  }
+
+  // MapController get controller => arg;
+  void gotoDefault(MapController controller) async {
+    final myPosition = await CustomLocation.determinePosition();
+    position = myPosition;
+    controller.center = LatLng(
+      Angle.degree(position!.latitude),
+      Angle.degree(position!.longitude),
+    );
+    // print(Angle.degree(position!.latitude));
+    // print(Angle.degree(position!.longitude));
     setState(() {});
   }
 
@@ -62,7 +88,13 @@ class InteractiveMapPageState extends State<InteractiveMapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Interactive Map'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(
+          "Maps",
+          style: TextStyle(color: Theme.of(context).colorScheme.background),
+        ),
+        iconTheme:
+            IconThemeData(color: Theme.of(context).colorScheme.background),
       ),
       body: MapLayout(
         controller: widget.controller,
@@ -120,8 +152,8 @@ class InteractiveMapPageState extends State<InteractiveMapPage> {
                     },
                   ),
                   Builder(builder: (context) {
-                    final offSet =
-                        transformer.toOffset(widget.controller.center);
+                    final offSet = transformer.toOffset(widget.pin);
+                    //transformer.toOffset(widget.controller.center);
                     // controller.projection.
                     return Positioned(
                         left: offSet.dx,
@@ -131,12 +163,32 @@ class InteractiveMapPageState extends State<InteractiveMapPage> {
                             Icon(
                               Icons.location_pin,
                               color: Colors.red,
-                              size: 30,
+                              size: 0,
                             ),
                             // Text(".")
                           ],
                         ));
-                  })
+                  }),
+                  if (position != null)
+                    Builder(
+                      builder: (context) {
+                        final secondOffset = transformer.toOffset(
+                          LatLng(
+                            Angle.degree(position!.latitude),
+                            Angle.degree(position!.longitude),
+                          ),
+                        );
+                        return Positioned(
+                          left: secondOffset.dx,
+                          top: secondOffset.dy,
+                          child: Icon(
+                            Icons.person_pin_circle,
+                            color: Colors.red,
+                            size: 30,
+                          ),
+                        );
+                      },
+                    ),
                 ],
               ),
             ),
@@ -144,7 +196,9 @@ class InteractiveMapPageState extends State<InteractiveMapPage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _gotoDefault,
+        onPressed: () {
+          gotoDefault(widget.controller);
+        },
         tooltip: 'My Location',
         child: const Icon(
           Icons.my_location,

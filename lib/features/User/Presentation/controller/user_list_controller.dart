@@ -31,7 +31,26 @@ class UserListController extends AsyncListController<UserModel> {
       await UserRepository(token: ref.watch(authNotifierProvider)?.token)
           .delete(user.id!);
       remove(user);
-      CustomSnack.success(context, message: "Destination Deleted");
+      CustomSnack.success(context, message: "User Deleted");
+    } catch (e, s) {
+      CustomSnack.error(context, message: e.toString());
+    }
+  }
+
+  blockUser(BuildContext context, UserModel user,
+      {required bool isBlock}) async {
+    try {
+      if (isBlock) {
+        await UserRepository(token: ref.watch(authNotifierProvider)?.token)
+            .blockUser(id: user.id!);
+        // remove(user);
+        CustomSnack.info(context, message: "User Unblocked Sucessfully");
+      } else {
+        await UserRepository(token: ref.watch(authNotifierProvider)?.token)
+            .blockUser(id: user.id!);
+        // remove(user);
+        CustomSnack.error(context, message: "User Blocked Sucessfully");
+      }
     } catch (e, s) {
       CustomSnack.error(context, message: e.toString());
     }

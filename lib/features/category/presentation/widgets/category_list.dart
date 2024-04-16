@@ -3,6 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/category/domain/category_model_new.dart';
 import 'package:traveltales/features/category/presentation/controller/category_async_list_controller.dart';
 import 'package:traveltales/features/category/presentation/controller/category_controller.dart';
+import 'package:traveltales/features/destination/domain/destination_model_new.dart';
 
 class CategoryList extends ConsumerWidget {
   const CategoryList({super.key});
@@ -10,10 +11,14 @@ class CategoryList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryList = ref.watch(categoryListProvider);
+    final selectedCategory = ref.watch(CategoryNotifierProvider);
     return categoryList.when(
         data: (data) {
-          final selectedCategory = ref.watch(CategoryNotifierProvider);
           final categories = [CategoryModel(name: "All"), ...data];
+
+          // final topRated = [CategoryModel(name: "Top Rated"), ...data];
+          // topRated.sort((a, b) => b..compareTo(a.rating));
+
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),

@@ -46,13 +46,11 @@ class HotlineNumberItem extends ConsumerWidget {
               margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               decoration: BoxDecoration(
-                  // color: Colors.amber,
                   border: Border.all(),
                   borderRadius: BorderRadius.circular(25)),
               child: Row(
                 children: [
                   Container(
-                    color: Colors.red,
                     margin: const EdgeInsets.only(right: 10),
                     padding: const EdgeInsets.all(6),
                     child: const Icon(
@@ -63,7 +61,10 @@ class HotlineNumberItem extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(organizationName),
+                        Text(
+                          organizationName,
+                          style: context.theme.textTheme.titleMedium,
+                        ),
                         Text(phoneNumber),
                       ],
                     ),
@@ -73,18 +74,17 @@ class HotlineNumberItem extends ConsumerWidget {
                   if (isAdmin)
                     Consumer(builder: (context, ref, child) {
                       return Container(
-                        color: Colors.red,
                         child: Row(
                           children: [
-                            TextButton(
+                            IconButton(
                               onPressed: () {
                                 ref
                                     .read(hotlineListProvider.notifier)
                                     .showForm(context, model: hotlineNumber);
                               },
-                              child: Text("Edit"),
+                              icon: Icon(Icons.edit),
                             ),
-                            TextButton(
+                            IconButton(
                               onPressed: () async {
                                 await showDialog(
                                   context: context,
@@ -104,7 +104,7 @@ class HotlineNumberItem extends ConsumerWidget {
                                   },
                                 );
                               },
-                              child: const Text("Delete"),
+                              icon: Icon(Icons.delete),
                             ),
                           ],
                         ),

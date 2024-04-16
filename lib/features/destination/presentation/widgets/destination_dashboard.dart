@@ -2,11 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
-import 'package:traveltales/features/destination/data/respository/destination_repository.dart';
 import 'package:traveltales/features/destination/domain/destination_model_new.dart';
-import 'package:traveltales/features/destination/presentation/controller/destination_form_controller.dart';
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/features/destination/presentation/widgets/destination_detail_screen.dart';
 import 'package:traveltales/features/favourite/presentation/widgets/favourite_button.dart';
@@ -15,7 +12,7 @@ import 'package:traveltales/utility/arrowBackWidget.dart';
 import 'package:traveltales/utility/customImageViewer.dart';
 import 'package:traveltales/utility/smooth_Page_Indicator.dart';
 
-final currentIndexProvider = StateProvider<int>((ref) => 0);
+final activeImageIndexProvider = StateProvider<int>((ref) => 0);
 
 class DestinationDashboard extends ConsumerWidget {
   DestinationDashboard({super.key, required this.destinationModel});
@@ -23,6 +20,9 @@ class DestinationDashboard extends ConsumerWidget {
   final PageController pageController = PageController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // final navigationIndex = ref.read(activeImageIndexProvider.notifier);
+    int currentIndex = ref.watch(activeImageIndexProvider);
+    print("First Wala ${currentIndex}");
     return SafeArea(
         child: DefaultTabController(
       length: 2,
@@ -33,19 +33,20 @@ class DestinationDashboard extends ConsumerWidget {
               children: [
                 Container(
                   height: 300,
-                  // decoration: BoxDecoration(
-                  // image: DecorationImage(
-                  //     image:
-                  //         AssetImage(destinationModel.imageUrl!.first), //TODO
-                  //     fit: BoxFit.cover),
-                  // ),
                   child: destinationModel.imageUrl?.length == 0
                       ? Image.asset(
                           "assets/travelPic/temp.jpeg",
                           fit: BoxFit.cover,
                         )
                       : PageView.builder(
+                          controller: pageController,
                           itemCount: destinationModel.imageUrl?.length,
+                          onPageChanged: (index) {
+                            currentIndex = index;
+                            print("Second Wala ${currentIndex}");
+                            ref.read(activeImageIndexProvider.notifier).state =
+                                currentIndex;
+                          },
                           itemBuilder: (context, index) {
                             final assetImage = Image.asset(
                               "assets/travelPic/temp.jpeg",
@@ -106,33 +107,38 @@ class DestinationDashboard extends ConsumerWidget {
                 Positioned(
                   bottom: 10,
                   left: MediaQuery.of(context).size.width / 2 - 30,
-                  child: MyCustomSmoothPageIndicator(
-                    pageController: pageController,
-                    count: destinationModel.imageUrl!.length,
-                    activeColor:
-                        Theme.of(context).colorScheme.tertiaryContainer,
-                    // inActiveColor: Theme.of(context).colorScheme.primary,
-                    pageScrollDuration: const Duration(milliseconds: 200),
-                  ),
+                  child: Consumer(builder: (context, ref, child) {
+                    return MyCustomSmoothPageIndicator(
+                      pageController: pageController,
+                      count: destinationModel.imageUrl!.length,
+                      activeColor:
+                          Theme.of(context).colorScheme.tertiaryContainer,
+                      // inActiveColor: Theme.of(context).colorScheme.primary,
+                      pageScrollDuration: const Duration(milliseconds: 200),
+                    );
+                  }),
                 )
 
                 // Positioned(
                 //   bottom: 10,
                 //   left: MediaQuery.of(context).size.width / 2 - 30,
-                //   child: SmoothPageIndicator(
-                //     controller: pageController,
-                //     count: destinationModel.imageUrl!.length,
-                //     effect: const WormEffect(
-                //         dotColor: Colors.white,
-                //         dotWidth: 15,
-                //         dotHeight: 7,
-                //         activeDotColor: Colors.amber),
-                //     onDotClicked: (index) {
-                //       pageController.animateToPage(index,
-                //           duration: const Duration(milliseconds: 300),
-                //           curve: Curves.linear);
-                //     },
-                //   ),
+                //   child: Consumer(builder: (context, ref, child) {
+                //      final activeIndex = ref.watch(activeImageIndexProvider.notifier).state;
+                //     return SmoothPageIndicator(
+                //       controller: pageController,
+                //       count: destinationModel.imageUrl!.length,
+                //       effect: const WormEffect(
+                //           dotColor: Colors.white,
+                //           dotWidth: 15,
+                //           dotHeight: 7,
+                //           activeDotColor: Colors.amber),
+                //       onDotClicked: (index) {
+                //         pageController.animateToPage(index,
+                //             duration: const Duration(milliseconds: 300),
+                //             curve: Curves.linear);
+                //       },
+                //     );
+                //   }),
                 // )
               ],
             ),

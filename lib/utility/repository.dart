@@ -71,6 +71,14 @@ abstract class Repository<T> {
     // return null;
   }
 
+  Future<T> blockOne({required String id}) async {
+    final response = await (client ?? Client()).put(
+      Uri.parse(baseUrl + endPoint + "blockUser/" + id),
+      headers: headers,
+    );
+    return fromJson(_handleStatusCode(response).body);
+  }
+
   Future<T> removeOne({Client? client, String id = ""}) async {
     client ??= Client();
 
