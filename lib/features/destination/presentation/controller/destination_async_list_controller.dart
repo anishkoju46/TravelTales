@@ -70,7 +70,12 @@ class DestinationController extends AsyncListController<DestinationModel> {
   }
 
   Future<void> emergencyContact(String phoneNumber) async {
-    final String phoneNumberWithCountryCode = "+977$phoneNumber";
+    String phoneNumberWithCountryCode = phoneNumber;
+
+    if (phoneNumber.startsWith('98')) {
+      phoneNumberWithCountryCode = "+977$phoneNumber";
+    }
+
     final Uri phoneLaunchUri =
         Uri(scheme: 'tel', path: phoneNumberWithCountryCode);
     if (await canLaunchUrl(phoneLaunchUri)) {

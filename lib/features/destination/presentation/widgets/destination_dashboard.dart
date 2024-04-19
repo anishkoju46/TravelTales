@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:traveltales/features/auth/presentation/state/state.dart';
@@ -22,7 +24,7 @@ class DestinationDashboard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final navigationIndex = ref.read(activeImageIndexProvider.notifier);
     int currentIndex = ref.watch(activeImageIndexProvider);
-    print("First Wala ${currentIndex}");
+    // print("First Wala ${currentIndex}");
     return SafeArea(
         child: DefaultTabController(
       length: 2,
@@ -32,6 +34,7 @@ class DestinationDashboard extends ConsumerWidget {
             Stack(
               children: [
                 Container(
+                  // color: Colors.red,
                   height: 300,
                   child: destinationModel.imageUrl?.length == 0
                       ? Image.asset(
@@ -43,7 +46,7 @@ class DestinationDashboard extends ConsumerWidget {
                           itemCount: destinationModel.imageUrl?.length,
                           onPageChanged: (index) {
                             currentIndex = index;
-                            print("Second Wala ${currentIndex}");
+                            // print("Second Wala ${currentIndex}");
                             ref.read(activeImageIndexProvider.notifier).state =
                                 currentIndex;
                           },
@@ -105,41 +108,21 @@ class DestinationDashboard extends ConsumerWidget {
                         child: FavouriteButton(destination: destinationModel)),
                   ),
                 Positioned(
-                  bottom: 10,
-                  left: MediaQuery.of(context).size.width / 2 - 30,
-                  child: Consumer(builder: (context, ref, child) {
-                    return MyCustomSmoothPageIndicator(
-                      pageController: pageController,
-                      count: destinationModel.imageUrl!.length,
-                      activeColor:
-                          Theme.of(context).colorScheme.tertiaryContainer,
-                      // inActiveColor: Theme.of(context).colorScheme.primary,
-                      pageScrollDuration: const Duration(milliseconds: 200),
-                    );
-                  }),
+                  left: MediaQuery.of(context).size.width / 2,
+                  bottom: 0,
+                  child: Container(
+                    child: Consumer(builder: (context, ref, child) {
+                      return MyCustomSmoothPageIndicator(
+                        pageController: pageController,
+                        count: destinationModel.imageUrl!.length,
+                        activeColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        // inActiveColor: Theme.of(context).colorScheme.primary,
+                        pageScrollDuration: const Duration(milliseconds: 200),
+                      );
+                    }),
+                  ),
                 )
-
-                // Positioned(
-                //   bottom: 10,
-                //   left: MediaQuery.of(context).size.width / 2 - 30,
-                //   child: Consumer(builder: (context, ref, child) {
-                //      final activeIndex = ref.watch(activeImageIndexProvider.notifier).state;
-                //     return SmoothPageIndicator(
-                //       controller: pageController,
-                //       count: destinationModel.imageUrl!.length,
-                //       effect: const WormEffect(
-                //           dotColor: Colors.white,
-                //           dotWidth: 15,
-                //           dotHeight: 7,
-                //           activeDotColor: Colors.amber),
-                //       onDotClicked: (index) {
-                //         pageController.animateToPage(index,
-                //             duration: const Duration(milliseconds: 300),
-                //             curve: Curves.linear);
-                //       },
-                //     );
-                //   }),
-                // )
               ],
             ),
             Container(

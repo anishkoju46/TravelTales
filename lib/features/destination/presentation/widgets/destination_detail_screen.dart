@@ -6,6 +6,7 @@ import 'package:traveltales/features/destination/domain/destination_model_new.da
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/arrowBackWidget.dart';
 import 'package:traveltales/utility/interactive_map_stateful.dart';
+import 'package:traveltales/utility/theme_controller.dart';
 
 class DestinationDetailScreen extends ConsumerWidget {
   const DestinationDetailScreen({super.key, required this.destinationModel});
@@ -174,16 +175,27 @@ class DestinationDetailScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Emergency Contacts",
+            Text("Emergency Contact",
                 style: Theme.of(context).textTheme.headlineSmall),
+
             Consumer(builder: (context, ref, child) {
-              return FilledButton(
-                  onPressed: () {
-                    ref.read(destinationListProvider.notifier).emergencyContact(
-                        destinationModel.emergencyContact!.first);
-                  },
-                  child: Text(destinationModel.emergencyContact!.first));
+              return hotlineContainer(context,
+                  organizationName: "ICE (In case of Emergency)",
+                  phoneNumber: destinationModel.emergencyContact!.first,
+                  onTap: () async {
+                await ref
+                    .read(destinationListProvider.notifier)
+                    .emergencyContact(destinationModel.emergencyContact!.first);
+              });
             })
+            // Consumer(builder: (context, ref, child) {
+            //   return ElevatedButton(
+            //       onPressed: () {
+            //         ref.read(destinationListProvider.notifier).emergencyContact(
+            //             destinationModel.emergencyContact!.first);
+            //       },
+            //       child: Text(destinationModel.emergencyContact!.first));
+            // })
           ],
         ),
       ),
@@ -215,5 +227,49 @@ class DestinationDetailScreen extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Widget hotlineContainer(
+    BuildContext context, {
+    required String organizationName,
+    required String phoneNumber,
+    required Function onTap,
+  }) {
+    return Consumer(builder: (context, ref, child) {
+      return GestureDetector(
+        onTap: () {
+          onTap();
+        },
+        child: Container(
+          //margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+          // padding: const EdgeInsets.symmetric(vertical: 15),
+          // decoration: BoxDecoration(
+          //     border: Border.all(), borderRadius: BorderRadius.circular(25)),
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.all(6),
+                child: const Icon(
+                  Icons.phone,
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      organizationName,
+                      // style: context.theme.textTheme.titleMedium,
+                    ),
+                    Text(phoneNumber),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

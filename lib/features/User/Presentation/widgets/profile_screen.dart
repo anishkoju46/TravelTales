@@ -170,62 +170,64 @@ class ProfileScreen extends ConsumerWidget {
               return Column(
                 children: [
                   Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        customListTile(context,
-                            leadingIcon: Icons.person,
-                            title: "Edit Profile", onTap: () {
-                          ref.read(profileProvider.notifier).edit(context);
-                        }),
-                        customListTile(context,
-                            leadingIcon: Icons.key,
-                            title: "Change Password", onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return ChangePasswordScreen();
-                            },
-                          ));
-                        }),
-                        customListTile(context,
-                            leadingIcon: Icons.phone,
-                            title: "Emergency Contacts", onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return EmergencyContactsScreen();
-                            },
-                          ));
-                        }),
-                        customListTile(context,
-                            leadingIcon: Icons.info,
-                            title: "About Us", onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return AboutUs();
-                            },
-                          ));
-                        }),
-                        customListTile(context,
-                            leadingIcon: Icons.exit_to_app,
-                            title: "Sign Out",
-                            color: Theme.of(context)
-                                .colorScheme
-                                .tertiaryContainer, onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertBox(
-                                  confirmText: "Sign Out",
-                                  onPressed: () {
-                                    ref
-                                        .watch(authNotifierProvider.notifier)
-                                        .logout(context);
-                                  },
-                                  title: "Sign Out?");
-                            },
-                          );
-                        })
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          customListTile(context,
+                              leadingIcon: Icons.person,
+                              title: "Edit Profile", onTap: () {
+                            ref.read(profileProvider.notifier).edit(context);
+                          }),
+                          customListTile(context,
+                              leadingIcon: Icons.key,
+                              title: "Change Password", onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return ChangePasswordScreen();
+                              },
+                            ));
+                          }),
+                          customListTile(context,
+                              leadingIcon: Icons.phone,
+                              title: "Emergency Contacts", onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return EmergencyContactsScreen();
+                              },
+                            ));
+                          }),
+                          customListTile(context,
+                              leadingIcon: Icons.info,
+                              title: "About Us", onTap: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return AboutUs();
+                              },
+                            ));
+                          }),
+                          customListTile(context,
+                              leadingIcon: Icons.exit_to_app,
+                              title: "Sign Out",
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiaryContainer, onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertBox(
+                                    confirmText: "Sign Out",
+                                    onPressed: () {
+                                      ref
+                                          .watch(authNotifierProvider.notifier)
+                                          .logout(context);
+                                    },
+                                    title: "Sign Out?");
+                              },
+                            );
+                          }),
+                        ],
+                      ),
                     ),
                   ),
                   Text("Version 1.1.0")

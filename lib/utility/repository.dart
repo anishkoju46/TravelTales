@@ -232,6 +232,11 @@ abstract class Repository<T> {
   }) {
     if (response.statusCode == code) return response;
 
+    if (response.statusCode == 402) {
+      // print(response.body);
+      return response;
+    }
+
     final decodedResponse = jsonDecode(response.body);
     throw "${decodedResponse["message"]}";
 

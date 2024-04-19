@@ -29,6 +29,7 @@ class AlertBox extends ConsumerWidget {
       title: Container(
         alignment: Alignment.center,
         child: Text(
+          textAlign: TextAlign.center,
           title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.w600,

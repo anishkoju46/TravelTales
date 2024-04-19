@@ -22,8 +22,6 @@ class InteractiveMapPage extends StatefulWidget {
 }
 
 class InteractiveMapPageState extends State<InteractiveMapPage> {
-  Position? position;
-
   @override
   void initState() {
     super.initState();
@@ -36,6 +34,8 @@ class InteractiveMapPageState extends State<InteractiveMapPage> {
       position = myPosition;
     });
   }
+
+  Position? position;
 
   // MapController get controller => arg;
   void gotoDefault(MapController controller) async {
@@ -163,7 +163,7 @@ class InteractiveMapPageState extends State<InteractiveMapPage> {
                             Icon(
                               Icons.location_pin,
                               color: Colors.red,
-                              size: 0,
+                              size: 30,
                             ),
                             // Text(".")
                           ],
