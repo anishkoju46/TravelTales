@@ -20,11 +20,7 @@ class UserList extends ConsumerWidget {
     final userList = ref.watch(userListProvider);
 
     final List<UserModel> filteredUsers = userList.maybeWhen(
-      data: (data) => data
-          .where((e) => e.role == false
-              //&& e.block == false
-              )
-          .toList(),
+      data: (data) => data.where((e) => e.role == false).toList(),
       orElse: () => [],
     );
 
@@ -38,14 +34,9 @@ class UserList extends ConsumerWidget {
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(vertical: 15),
               color: Theme.of(context).colorScheme.primary,
-              // width: double.infinity,
               child: Text("User List",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.copyWith(color: Theme.of(context).colorScheme.onPrimary)
-                  // TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                  )),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary))),
           Expanded(
             child: userList.when(
               data: (data) {

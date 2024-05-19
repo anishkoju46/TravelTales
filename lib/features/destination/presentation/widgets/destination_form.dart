@@ -13,6 +13,7 @@ import 'package:traveltales/features/destination/presentation/controller/destina
 import 'package:traveltales/features/destination/presentation/state/destination_state.dart';
 import 'package:traveltales/utility/alertBox.dart';
 import 'package:traveltales/utility/custom_snack.dart';
+import 'package:traveltales/utility/theme_controller.dart';
 import 'package:traveltales/utility/validator.dart';
 
 import 'dart:io';
@@ -61,18 +62,6 @@ class DestinationForm extends ConsumerWidget {
                           destinationFormController.update(name: value);
                         },
                         validator: destinationNameValidator),
-
-                    // if (image != null)
-                    //   Container(
-                    //     color:
-                    // Colors.red,
-                    //     child: Image.file(
-                    //       image!,
-                    //       width: 80,
-                    //       height: 40,
-                    //       fit: BoxFit.cover,
-                    //     ),
-                    //   ),
                     Column(
                       children: [
                         //This Column is for ADD ONLY:
@@ -312,8 +301,10 @@ class DestinationForm extends ConsumerWidget {
                                                               },
                                                               child: Icon(
                                                                 Icons.delete,
-                                                                color:
-                                                                    Colors.red,
+                                                                color: context
+                                                                    .theme
+                                                                    .colorScheme
+                                                                    .tertiaryContainer,
                                                               ),
                                                             ),
                                                           ),

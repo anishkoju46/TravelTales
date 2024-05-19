@@ -10,7 +10,6 @@ import 'package:traveltales/utility/custom_textform_feild.dart';
 import 'package:traveltales/utility/validator.dart';
 
 class ChangePasswordScreen extends ConsumerWidget {
-  // const
   ChangePasswordScreen({super.key, this.userModel});
   final UserModel? userModel;
 
@@ -22,8 +21,6 @@ class ChangePasswordScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final userFormController = ref.read(userFormProvider(userModel).notifier);
-    // final userFormState = ref.watch(userFormProvider(userModel));
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -37,20 +34,6 @@ class ChangePasswordScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          // Container(
-          //   color: Theme.of(context).colorScheme.primary,
-          //   width: double.infinity,
-          //   child: Row(
-          //     children: [
-          //       ArrowBackWidget(),
-          //       Text(
-          //         "Change Password",
-          //         style:
-          //             TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-          //       )
-          //     ],
-          //   ),
-          // ),
           Column(
             children: [
               Form(

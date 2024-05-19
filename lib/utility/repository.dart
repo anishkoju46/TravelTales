@@ -12,6 +12,7 @@ abstract class Repository<T> {
   Repository({this.token, this.client});
   // final baseUrl = "http://localhost:8000/";
   final baseUrl = "http://10.0.2.2:8000/";
+  // final baseUrl = "http://54.179.206.51:8000/";
   // final baseUrl = "https://traveltales.loca.lt/";
   final endPoint = "api";
 

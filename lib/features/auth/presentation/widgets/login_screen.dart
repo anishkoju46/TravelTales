@@ -11,7 +11,6 @@ class LoginScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginFormState = ref.watch(loginNotifierProvider);
-    //final currentUserController = ref.read(authNotifierProvider.notifier);
     final loginController = ref.read(loginNotifierProvider.notifier);
     return SafeArea(
       child: Scaffold(

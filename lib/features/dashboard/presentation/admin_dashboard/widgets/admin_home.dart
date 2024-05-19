@@ -15,8 +15,6 @@ class AdminHome extends ConsumerWidget {
     return RefreshIndicator(
       onRefresh: () async {
         return ref.read(userHomeProvider.notifier).refresh();
-        // UserHomeController().refresh();
-        // await ref.refresh(destinationListProvider);
       },
       child: Column(
         children: [
@@ -44,11 +42,6 @@ class AdminHome extends ConsumerWidget {
                               ref
                                   .read(destinationListProvider.notifier)
                                   .showForm(context);
-                              // Navigator.push(context,
-                              //     MaterialPageRoute(builder: (context) {
-                              //   //YETA PASS GARNA PARXA HAI to EDIT destination
-                              //   return AddDestinationForm();
-                              // }));
                             },
                             icon: Icon(
                               Icons.add_link,

@@ -17,25 +17,10 @@ class UserHome extends ConsumerWidget {
 
     final destinationController = ref.read(destinationListProvider.notifier);
 
-    // final debouncer = Debouncer(Duration(milliseconds: 500));
-
-    //  Timer? debounceTimer;
-
-    // void onSearchChanged(String value) {
-    //   if (debounceTimer != null) {
-    //     debounceTimer!.cancel();
-    //   }
-    //   debounceTimer = Timer(Duration(microseconds: 500), () async {
-    //     await destinationController.searchDestination(context, query: value);
-    //   });
-    // }
-
     return Container(
-      // padding: EdgeInsets.symmetric(vertical: 10),
       child: RefreshIndicator(
         onRefresh: () async {
           return UserHomeController().refresh();
-          // await ref.refresh(destinationListProvider);
         },
         child: Column(
           children: [

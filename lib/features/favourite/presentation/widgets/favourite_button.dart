@@ -18,11 +18,6 @@ class FavouriteButton extends ConsumerWidget {
     return InkWell(
       onTap: () {
         favouriteController.toggleFavourites(context, destination, isFavourite);
-        // favouriteList.removeFromFavourites(context, destination);
-        // ref
-        //     .read(userListProvider.notifier)
-        //     .addToFavourites(context, destination);
-        // ref.read(favouriteProvider.notifier).handleFavourite(destination);
       },
       child: Container(
         padding: EdgeInsets.all(7),

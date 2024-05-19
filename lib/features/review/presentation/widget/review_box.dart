@@ -43,19 +43,6 @@ class ReviewBox extends ConsumerWidget {
                   border: Border.all(
                       color: Theme.of(context).colorScheme.tertiaryContainer),
                   shape: BoxShape.circle,
-                  // image: DecorationImage(
-                  //   fit: BoxFit.cover,
-                  //   image:
-                  //   review.user!.imageUrl!.isEmpty
-                  //       ? AssetImage("assets/images/default2.jpeg")
-                  //       : NetworkImage(
-                  //               "http://10.0.2.2:8000/${review.user?.imageUrl?.replaceAll('\\', '/')}")
-                  //           as ImageProvider<Object>
-
-                  //   // image: AssetImage(review.user!.imageUrl!.isEmpty
-                  //   //     ? "assets/images/default2.jpeg"
-                  //   //     : "${review.user?.imageUrl}")
-                  // ),
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
@@ -67,17 +54,6 @@ class ReviewBox extends ConsumerWidget {
                             "$baseUrl${review.user?.imageUrl?.replaceAll('\\', '/')}");
                   }),
                 ),
-                // child: Consumer(builder: (context, ref, child) {
-                //   final assetImage = Image.asset("assets/images/default2.jpeg");
-                //   return ClipRRect(
-                //     borderRadius: BorderRadius.circular(100),
-                //     child: CachedNetworkImage(
-                //       imageUrl: ref.read(reviewFormProvider(user)),
-                //       errorWidget: (context, url, error) => assetImage,
-                //       // placeholder: (context, url) => ,
-                //     ),
-                //   );
-                // }),
               ),
               Expanded(
                 child: Column(

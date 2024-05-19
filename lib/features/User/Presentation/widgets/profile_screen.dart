@@ -24,16 +24,8 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // String baseUrl = "http://10.0.2.2:8000/";
     return Consumer(builder: (context, ref, child) {
       final user = ref.watch(authNotifierProvider);
-
-      // String userProfilePath = user!.imageUrl!;
-
-      // if (userProfilePath.isNotEmpty && userProfilePath.contains('\\')) {
-      //   userProfilePath = userProfilePath.replaceAll('\\', '/');
-      // }
-
       return Column(children: [
         //Profile Part 1
         Expanded(
@@ -65,14 +57,6 @@ class ProfileScreen extends ConsumerWidget {
                         height: 150,
                         width: 150,
                         decoration: BoxDecoration(
-                            // image: DecorationImage(
-                            //   // image: user!.imageUrl!.isEmpty
-                            //   //     ? AssetImage("assets/images/default2.jpeg")
-                            //   //     : CachedNetworkImageProvider(
-                            //   //             "${baseUrl}${user.imageUrl!.replaceAll('\\', '/')}")
-                            //   //         as ImageProvider<Object>,
-                            // ),
-                            // shape: BoxShape.circle,
                             borderRadius: BorderRadius.circular(100),
                             //color: Colors.amber,
                             border: Border.all()),
@@ -82,17 +66,7 @@ class ProfileScreen extends ConsumerWidget {
                               url: ref
                                   .read(authNotifierProvider.notifier)
                                   .getImageUrl(),
-                              // user: user
-                            )
-                            // user?.imageUrl != null &&
-                            //         user!.imageUrl!.isNotEmpty
-                            //     ? CustomNetworkImage(
-                            //         Url: ref
-                            //             .read(authNotifierProvider.notifier)
-                            //             .getImageUrl(),
-                            //         user: user)
-                            //     : Image.asset("assets/images/default2.jpeg"),
-                            ),
+                            )),
                       ),
                       //This is the Edit button that is on Stack.
                       Positioned(
@@ -230,7 +204,7 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  Text("Version 1.1.0")
+                  // Text("Version 1.1.0")
                 ],
               );
             }),
@@ -329,14 +303,10 @@ class ProfileScreen extends ConsumerWidget {
     var length = await image!.length();
     final baseUrl = AuthRepository().baseUrl;
     var uri = Uri.parse('${baseUrl}users/uploadPicture');
-    // var uri = Uri.parse('http://localhost:8000/users/uploadPicture');
 
     var request = http.MultipartRequest('POST', uri);
 
     request.headers['x-access-token'] = token;
-
-    //extracting extension of the uploaded image
-    // String extension = image!.path.split('.').last;
 
     request.fields['image'] = 'image';
     var multiport = http.MultipartFile('image', stream, length,

@@ -38,9 +38,6 @@ class UserFormController extends FormController<UserModel> {
   handleSubmit(BuildContext context) async {
     if (isValidated) {
       if (state != arg) {
-        //TODO admin ko lagi list of users
-        //ref.read(userListProvider.notifier).handleSubmit(context, model: state);
-        //Navigator.pop(context);
         try {
           final user = await UserRepository(
                   token: ref.watch(authNotifierProvider)?.token)

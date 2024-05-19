@@ -35,14 +35,6 @@ class HotlineNumberForm extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          // Text(
-          //   "Add Hotline Numbers",
-          //   style: Theme.of(context)
-          //       .textTheme
-          //       .headlineMedium
-          //       ?.copyWith(fontWeight: FontWeight.w500),
-          // ),
-
           Form(
             key: HotlineNumberFormController.formKey,
             child: Column(
@@ -76,18 +68,6 @@ class HotlineNumberForm extends ConsumerWidget {
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
                         return "Contact number cannot be empty";
-                      }
-
-                      // Regular expression to validate phone number format
-                      final phoneRegex = RegExp(
-                        r'^98\d{8}$', // Assuming a 10-digit numeric wala phone number
-                        caseSensitive: false,
-                        multiLine: false,
-                      );
-
-                      // Check if the value matches the phone number format
-                      if (!phoneRegex.hasMatch(value)) {
-                        return "Invalid Contact number format";
                       }
 
                       // Return null if the phone number is valid

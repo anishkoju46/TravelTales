@@ -22,9 +22,8 @@ class DestinationDashboard extends ConsumerWidget {
   final PageController pageController = PageController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final navigationIndex = ref.read(activeImageIndexProvider.notifier);
     int currentIndex = ref.watch(activeImageIndexProvider);
-    // print("First Wala ${currentIndex}");
+
     return SafeArea(
         child: DefaultTabController(
       length: 2,
@@ -108,20 +107,18 @@ class DestinationDashboard extends ConsumerWidget {
                         child: FavouriteButton(destination: destinationModel)),
                   ),
                 Positioned(
-                  left: MediaQuery.of(context).size.width / 2,
+                  left: MediaQuery.of(context).size.width / 3,
                   bottom: 0,
-                  child: Container(
-                    child: Consumer(builder: (context, ref, child) {
-                      return MyCustomSmoothPageIndicator(
-                        pageController: pageController,
-                        count: destinationModel.imageUrl!.length,
-                        activeColor:
-                            Theme.of(context).colorScheme.tertiaryContainer,
-                        // inActiveColor: Theme.of(context).colorScheme.primary,
-                        pageScrollDuration: const Duration(milliseconds: 200),
-                      );
-                    }),
-                  ),
+                  child: Consumer(builder: (context, ref, child) {
+                    return MyCustomSmoothPageIndicator(
+                      pageController: pageController,
+                      count: destinationModel.imageUrl!.length,
+                      activeColor:
+                          Theme.of(context).colorScheme.tertiaryContainer,
+                      // inActiveColor: Theme.of(context).colorScheme.primary,
+                      pageScrollDuration: const Duration(milliseconds: 200),
+                    );
+                  }),
                 )
               ],
             ),

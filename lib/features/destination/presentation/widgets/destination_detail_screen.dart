@@ -43,6 +43,8 @@ class DestinationDetailScreen extends ConsumerWidget {
                             Angle.degree(destinationModel
                                 .coordinates!.coordinates!.first),
                           );
+                          print(destinationPin.latitude);
+                          print(destinationPin.longitude);
 
                           return InteractiveMapPage(
                               pin: destinationPin,

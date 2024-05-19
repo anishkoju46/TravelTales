@@ -32,27 +32,6 @@ class FavouriteScreen extends ConsumerWidget {
                           ?.copyWith(fontWeight: FontWeight.w800),
                     ),
                   ),
-                  //Search bar
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(vertical: 10),
-                  //   child: SearchBar(
-                  //     onTap: () {},
-                  //     leading: Icon(Icons.search),
-                  //     hintText: "Search for a place",
-                  //   ),
-                  // ),
-                  //Title: Category
-                  // Container(
-                  //   alignment: Alignment.topLeft,
-                  //   child: Text(
-                  //     "Categories",
-                  //     style: Theme.of(context)
-                  //         .textTheme
-                  //         .headlineSmall
-                  //         ?.copyWith(fontWeight: FontWeight.w500),
-                  //   ),
-                  // ),
-                  // Category Navigator Bar
                 ],
               ),
             ),
